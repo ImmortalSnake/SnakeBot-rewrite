@@ -1,0 +1,27 @@
+{
+  "name": "snakebot-rewrite",
+  "version": "1.0.0",
+  "description": "Rewrite of the original SnakeBot in typescript and using the klasa library",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/mongodb": "^3.1.28",
+    "@types/ms": "^0.7.30",
+    "@types/node-fetch": "^2.3.7",
+    "discord.js": "github:discordjs/discord.js#master",
+    "discord.js-lavalink": "github:mrjacz/discord.js-lavalink#v3",
+    "dotenv": "^8.0.0",
+    "klasa": "github:dirigeants/klasa",
+    "mongodb": "^3.2.7",
+    "ms": "^2.1.2",
+    "node-opus": "^0.3.2",
+    "simple-youtube-api": "^5.2.1",
+    "weather-js": "^2.0.0",
+    "youtube-dl": "^2.0.0",
+    "ytdl-core-discord": "^1.0.3"
+  }
+}
