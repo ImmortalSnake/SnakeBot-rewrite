@@ -19,9 +19,13 @@ export default class extends Command {
         }
 
         if (!minutes) return msg.sendMessage('Enter number of minutes');
-        await (msg.guild as KlasaGuild).settings.update([]);
-        this.client.schedule.create('automeme', minutes * 60 * 1000, {
+        await (msg.guild as KlasaGuild).settings.update('automeme.enabled', true);
+        await (msg.guild as KlasaGuild).settings.update('automeme.limit', minutes);
+        await (msg.guild as KlasaGuild).settings.update('automeme.channel', msg.channel.id);
+        await this.client.schedule.create('automeme', minutes * 60 * 1000, {
             data: { channel: msg.channel.id }
         });
+
+        return msg.send('Automemes have been enabled');
     }
 }
