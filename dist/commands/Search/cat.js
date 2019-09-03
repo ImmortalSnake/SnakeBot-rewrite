@@ -10,12 +10,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const klasa_1 = require("klasa");
 class default_1 extends klasa_1.Command {
-    run(msg, [text]) {
+    run(msg) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield this.client.meme.meme(msg.channel.id);
+            yield this.client.meme.cat(msg.channel.id);
             return null;
         });
     }
 }
 exports.default = default_1;
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoibWVtZS5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uLy4uL3NyYy9jb21tYW5kcy9GdW4vbWVtZS50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7O0FBQUEsaUNBQTREO0FBRzVELGVBQXFCLFNBQVEsZUFBTztJQUVuQixHQUFHLENBQUMsR0FBaUIsRUFBRSxDQUFDLElBQUksQ0FBVzs7WUFDaEQsTUFBTyxJQUFJLENBQUMsTUFBbUIsQ0FBQyxJQUFJLENBQUMsSUFBSSxDQUFDLEdBQUcsQ0FBQyxPQUFPLENBQUMsRUFBRSxDQUFDLENBQUM7WUFDMUQsT0FBTyxJQUFJLENBQUM7UUFDaEIsQ0FBQztLQUFBO0NBQ0o7QUFORCw0QkFNQyJ9
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiY2F0LmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vLi4vc3JjL2NvbW1hbmRzL1NlYXJjaC9jYXQudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7OztBQUFBLGlDQUE0RDtBQUc1RCxlQUFxQixTQUFRLGVBQU87SUFDbkIsR0FBRyxDQUFDLEdBQWlCOztZQUM5QixNQUFPLElBQUksQ0FBQyxNQUFtQixDQUFDLElBQUksQ0FBQyxHQUFHLENBQUMsR0FBRyxDQUFDLE9BQU8sQ0FBQyxFQUFFLENBQUMsQ0FBQztZQUN6RCxPQUFPLElBQUksQ0FBQztRQUNoQixDQUFDO0tBQUE7Q0FDSjtBQUxELDRCQUtDIn0=

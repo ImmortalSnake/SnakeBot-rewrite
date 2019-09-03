@@ -12,7 +12,7 @@ export default class extends Task {
         if (!enabled) return;
 
         await (this.client as SnakeBot).meme.meme(channel);
-        this.client.schedule.create('automeme', limit, {
+        this.client.schedule.create('automeme', Date.now() + (limit * 60 * 1000), {
             data: { channel },
             catchUp: true
         });

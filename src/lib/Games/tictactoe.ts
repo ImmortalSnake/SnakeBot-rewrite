@@ -1,9 +1,10 @@
 import { Client, KlasaMessage } from 'klasa';
 import { Message } from 'discord.js';
+import SnakeBot from '../client';
 
 export default class TicTacToe {
 
-    client: Client;
+    client: SnakeBot;
     AI: boolean;
     comp: string | null;
     player1: string;
@@ -14,8 +15,12 @@ export default class TicTacToe {
     players: string[] | null;
 
     public board = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
+    public dict = {
+        X: ':x:',
+        O: ':o:'
+    };
 
-    constructor(client: Client, AI: boolean) {
+    constructor(client: SnakeBot, AI: boolean) {
 
         this.client = client;
         this.AI = AI;
@@ -32,12 +37,12 @@ export default class TicTacToe {
     public async play(msg: KlasaMessage, players: string[]) {
         this.players = players;
         if (this.AI) {
-            let difficulty = await msg.prompt('Select Difficulty:\n1] Easy\n2] Medium\n3] Impossible')
+            let difficulty = await msg.prompt('Select Difficulty:\n1 - Easy\n2 - Medium\n3 - Impossible')
             .then(r => r.content)
             .catch(e => { return e; });
 
             difficulty = parseInt(`${difficulty}`);
-            if (!difficulty || difficulty > 4 || difficulty < 1) return msg.send('Invalid Difficulty Level');
+            if (!difficulty || difficulty > 3 || difficulty < 1) return msg.send('Invalid Difficulty Level');
             this.difficulty = difficulty;
         }
         let res = await this.move(msg).catch(e => { return e; });
@@ -49,7 +54,7 @@ export default class TicTacToe {
 
         if (this.verifyWin(this.board, 'X')) return 'X has won';
         else if (this.verifyWin(this.board, 'O')) return 'O has won';
-        else if (this.board.filter(s => parseInt(s)).length === 0) return 'Tie';
+        else if (this.board.filter(s => parseInt(s)).length === 0) return 'Its A Tie';
 
         let m;
         if (this.AI && this.comp === this.first) m = this.AIMove();
@@ -120,6 +125,12 @@ export default class TicTacToe {
         return this.board[m] !== 'X' || this.board[m] !== 'O';
     }
 
+    private emojify(n: number): string {
+        if (this.board[n] === 'X') return ':x:';
+        else if (this.board[n] === 'O') return ':o:';
+        else return `:${this.client.utils.number_string(n + 1)}:`;
+    }
+
     private async prompt(msg: KlasaMessage, prompt: string, user: string) {
         const mess = await msg.channel.send(prompt) as Message;
         const collected = await mess.channel.awaitMessages(m => m.author.id === user, { time: 30000, max: 1});
@@ -130,12 +141,10 @@ export default class TicTacToe {
 
     private getBoard(board: string[]) {
         return `
-\`\`\`js
-| ${board[0]} | ${board[1]} | ${board[2]} |
-| ${board[3]} | ${board[4]} | ${board[5]} |
-| ${board[6]} | ${board[7]} | ${board[8]} |
-\`\`\`
-        `;
+${this.emojify(0)} ${this.emojify(1)} ${this.emojify(2)}
+${this.emojify(3)} ${this.emojify(4)} ${this.emojify(5)}
+${this.emojify(6)} ${this.emojify(7)} ${this.emojify(8)}
+`;
     }
 
     private verifyWin(board: string[], player: string) {

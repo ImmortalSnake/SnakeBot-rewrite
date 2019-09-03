@@ -50,7 +50,7 @@ export default class LavaAudioManager {
 
     public async ytsearch(msg: KlasaMessage, query: string, max = 1) {
         const tracks = [];
-        const videos = await this.youtube.searchVideos(query, max);
+        const videos = await this.youtube.searchVideos(query, max).catch(console.log);
         for (const video of videos) {
             let track = await this.lavaSearch(msg, `https://youtube.com/watch?v=${video.id}`, 1).catch(console.log);
             if (!track) return null;

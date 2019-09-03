@@ -12,7 +12,7 @@ export default class extends Command {
     public async run(msg: KlasaMessage): Promise<KlasaMessage | KlasaMessage[] | null> {
         let audio = (this.client as SnakeBot).audio;
 
-        if (!(msg.member as GuildMember).voice.channel) return msg.send('not in vc');
+        if (!(msg.member as GuildMember).voice.channel) return msg.send('You need to be in a voice channel');
         return audio.join((msg.member as GuildMember).voice.channel as VoiceChannel)
             .then(() => {
                 return msg.sendMessage('Successfully joined your Voice Channel!');

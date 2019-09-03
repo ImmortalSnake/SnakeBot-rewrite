@@ -15,7 +15,7 @@
     "discord.js": "github:discordjs/discord.js#master",
     "discord.js-lavalink": "github:mrjacz/discord.js-lavalink#v3",
     "dotenv": "^8.0.0",
-    "klasa": "github:dirigeants/klasa",
+    "klasa": "github:dirigeants/klasa#master",
     "mongodb": "^3.2.7",
     "ms": "^2.1.2",
     "node-opus": "^0.3.2",
