@@ -115,13 +115,13 @@ export default class TicTacToe {
         return best;
     }
 
-    private evaluate(state: string[]) {
+    private evaluate(state: string[]): number {
         if (this.verifyWin(state, this.comp as string)) return 1;
         else if (this.verifyWin(state, this.player1)) return -1;
         return 0;
     }
 
-    public validMove(m: number) {
+    public validMove(m: number): boolean {
         return this.board[m] !== 'X' || this.board[m] !== 'O';
     }
 
@@ -131,7 +131,7 @@ export default class TicTacToe {
         else return `:${this.client.utils.number_string(n + 1)}:`;
     }
 
-    private async prompt(msg: KlasaMessage, prompt: string, user: string) {
+    private async prompt(msg: KlasaMessage, prompt: string, user: string): Promise<Message | undefined> {
         const mess = await msg.channel.send(prompt) as Message;
         const collected = await mess.channel.awaitMessages(m => m.author.id === user, { time: 30000, max: 1});
         await mess.delete();
@@ -139,7 +139,7 @@ export default class TicTacToe {
         return collected.first();
     }
 
-    private getBoard(board: string[]) {
+    private getBoard(board: string[]): string {
         return `
 ${this.emojify(0)} ${this.emojify(1)} ${this.emojify(2)}
 ${this.emojify(3)} ${this.emojify(4)} ${this.emojify(5)}
@@ -147,7 +147,7 @@ ${this.emojify(6)} ${this.emojify(7)} ${this.emojify(8)}
 `;
     }
 
-    private verifyWin(board: string[], player: string) {
+    private verifyWin(board: string[], player: string): boolean {
         return (board[0] === board[1] && board[0] === board[2] && board[0] === player)
             || (board[0] === board[3] && board[0] === board[6] && board[0] === player)
             || (board[3] === board[4] && board[3] === board[5] && board[3] === player)
