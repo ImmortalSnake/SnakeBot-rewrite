@@ -1,17 +1,21 @@
-import { Command, CommandStore, KlasaMessage } from 'klasa';
-import SnakeBot from '../../lib/client';
+import { CommandStore, KlasaMessage } from 'klasa';
+import SnakeCommand from '../../lib/structures/base/SnakeCommand';
 
-export default class extends Command {
-    constructor(client: SnakeBot, store: CommandStore, file: string[], directory: string) {
-        super(client, store, file, directory, {
+export default class extends SnakeCommand {
+
+    public constructor(store: CommandStore, file: string[], directory: string) {
+        super(store, file, directory, {
             aliases: ['discrim'],
-            usage: '<discrim:regex/\\d{4}/>'
+            usage: '[discriminator:regex/\\d{4}/]'
         });
     }
 
     public async run(msg: KlasaMessage, [discriminator]: [string]): Promise<KlasaMessage | KlasaMessage[]> {
-        const users = this.client.users.filter(u => u.discriminator === discriminator).map(u => u.tag);
-        return msg.sendMessage(`**Users with the Discriminator: ${discriminator}**\n${users.length > 2000 ? users.slice(0, 1999) : users}`);
+        if (!discriminator) discriminator = msg.author.discriminator;
+
+        const users = this.client.users.filter(u => u.discriminator === discriminator).map(u => u.tag).join(' ');
+        return msg.sendMessage(`**Users with the Discriminator: ${discriminator}**\n${users.slice(0, 1999)}`);
     }
+
 }
 

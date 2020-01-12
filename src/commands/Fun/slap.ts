@@ -1,12 +1,13 @@
-import { Command, CommandStore, KlasaMessage } from 'klasa';
-import SnakeBot from '../../lib/client';
+import { CommandStore, KlasaMessage } from 'klasa';
 import slaps from '../../lib/Data/ts/slaps';
 import { GuildMember, MessageEmbed, User } from 'discord.js';
+import SnakeCommand from '../../lib/structures/base/SnakeCommand';
 
-export default class extends Command {
-    public constructor(client: SnakeBot, store: CommandStore, file: string[], directory: string) {
-        super(client, store, file, directory, {
-            usage: '<user:member>',
+export default class extends SnakeCommand {
+
+    public constructor(store: CommandStore, file: string[], directory: string) {
+        super(store, file, directory, {
+            usage: '<user:member>'
         });
     }
 
@@ -18,4 +19,5 @@ export default class extends Command {
             .setImage(gif)
             .setTitle(`_**${(msg.author as User).username}** slaps **${member.user.username}**._`));
     }
+
 }

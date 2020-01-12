@@ -1,11 +1,12 @@
-import { Command, CommandStore, KlasaMessage } from 'klasa';
-import SnakeBot from '../../lib/client';
+import { CommandStore, KlasaMessage } from 'klasa';
 import flip from '../../lib/Data/json/flip.json';
+import SnakeCommand from '../../lib/structures/base/SnakeCommand';
 
-export default class extends Command {
-    public constructor(client: SnakeBot, store: CommandStore, file: string[], directory: string) {
-        super(client, store, file, directory, {
-            usage: '<text:...str{1,500}>',
+export default class extends SnakeCommand {
+
+    public constructor(store: CommandStore, file: string[], directory: string) {
+        super(store, file, directory, {
+            usage: '<text:...str{1,500}>'
         });
     }
 
@@ -14,6 +15,7 @@ export default class extends Command {
         for (let i = text.length - 1; i >= 0; i--) {
             flipped += (flip as any)[text[i]] || text[i];
         }
-        return msg.sendMessage(flipped);
+        return msg.send(flipped);
     }
+
 }

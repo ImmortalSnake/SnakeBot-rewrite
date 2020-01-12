@@ -1,10 +1,11 @@
-import { Command, CommandStore, KlasaMessage, KlasaUser } from 'klasa';
-import SnakeBot from '../../lib/client';
+import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
 import ImageHandler from '../../lib/utils/ImageHandler';
+import SnakeCommand from '../../lib/structures/base/SnakeCommand';
 
-export default class extends Command {
-    public constructor(client: SnakeBot, store: CommandStore, file: string[], directory: string) {
-        super(client, store, file, directory, {
+export default class extends SnakeCommand {
+
+    public constructor(store: CommandStore, file: string[], directory: string) {
+        super(store, file, directory, {
             cooldown: 10,
             usage: '[user:user]'
         });
@@ -13,7 +14,7 @@ export default class extends Command {
     public async run(msg: KlasaMessage, [user]: [KlasaUser]): Promise<KlasaMessage | KlasaMessage[]> {
         await msg.channel.startTyping();
         return new ImageHandler()
-            .magikImage(msg, user || msg.author).then(async (res) => {
+            .magikImage(msg, user || msg.author).then(async res => {
                 await msg.channel.stopTyping();
                 return msg.send({
                     files: [{
@@ -25,4 +26,5 @@ export default class extends Command {
                 });
             });
     }
+
 }
