@@ -2,9 +2,6 @@ import { Message, TextChannel, User } from 'discord.js';
 
 export default class Util {
 
-    static yes: string[];
-    static no: string[];
-
     public readonly yes = ['yes', 'y', 'ye', 'yeah', 'yup', 'yea', 'ya'];
     public readonly no = ['no', 'n', 'nah', 'nope', 'nop'];
 
@@ -15,7 +12,7 @@ export default class Util {
         };
         const verify = await channel.awaitMessages(filter, {
             max: 1,
-            time,
+            time
         });
         if (!verify.size) return 0;
         const choice = (verify.first() as Message).content.toLowerCase();
@@ -24,7 +21,7 @@ export default class Util {
         return false;
     }
 
-   public number_string(num: number): string {
+    public number_string(num: number): string {
         switch (num) {
             case 1: return 'one';
             case 2: return 'two';
@@ -40,9 +37,20 @@ export default class Util {
         }
     }
 
-
-    static comma(num: number) {
+    public static comma(num: number) {
         return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+    }
+
+    public static formatTime(syncTime: string, asyncTime?: string): string {
+        return asyncTime ? `⏱ ${asyncTime}<${syncTime}>` : `⏱ ${syncTime}`;
+    }
+
+    public static async getHaste(evalResult: string, language: string): Promise<string> {
+        // eslint-disable-next-line no-undef
+        const key = await fetch('https://hasteb.in/documents', { method: 'POST', body: evalResult })
+            .then(response => response.json())
+            .then(body => body.key);
+        return `https://hasteb.in/${key}.${language}`;
     }
 
 }

@@ -1,4 +1,4 @@
-import { KlasaMessage, KlasaGuild } from 'klasa';
+import { KlasaMessage } from 'klasa';
 import { MessageEmbed, ClientUser, User, Message, TextChannel, Guild } from 'discord.js';
 const ms = require('ms');
 
@@ -12,8 +12,8 @@ interface LogHandlerOptions {
     duration?: number;
 }
 
-export default async function(msg: KlasaMessage, { id, reason, user, type, moderator, duration}: LogHandlerOptions): Promise<Message | Message[]> {
-    const chan = (msg.guild as Guild).channels.get((msg.guild as KlasaGuild).settings.get('channels.log')) || msg.channel;
+export default async function(msg: KlasaMessage, { id, reason, user, type, moderator, duration }: LogHandlerOptions): Promise<Message | Message[]> {
+    const chan = (msg.guild as Guild).channels.get(msg.guildSettings.get('channels.log') as string) || msg.channel;
     const _user = msg.client.users.get(user) as User;
     const mod = msg.client.users.get(moderator) as User;
     const logEmbed = new MessageEmbed()
@@ -26,6 +26,6 @@ export default async function(msg: KlasaMessage, { id, reason, user, type, moder
         .setFooter('At: ')
         .setTimestamp();
 
-    if (duration) logEmbed.addField('Duration', ms(duration, { long: true }), true);
+    if (duration) logEmbed.addField('Duration', ms(duration, { 'long': true }), true);
     return (chan as TextChannel).send(logEmbed);
 }
