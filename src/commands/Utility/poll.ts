@@ -1,10 +1,12 @@
-import { Command, CommandStore, KlasaMessage, KlasaUser } from 'klasa';
+import { CommandStore, KlasaMessage } from 'klasa';
 import SnakeBot from '../../lib/client';
+import SnakeCommand from '../../lib/structures/base/SnakeCommand';
 
-export default class extends Command {
-    public constructor(client: SnakeBot, store: CommandStore, file: string[], directory: string) {
-        super(client, store, file, directory, {
-            usage: '<title:...str>',
+export default class extends SnakeCommand {
+
+    public constructor(store: CommandStore, file: string[], directory: string) {
+        super(store, file, directory, {
+            usage: '<title:...str>'
         });
     }
 
@@ -19,4 +21,5 @@ export default class extends Command {
 
         return m;
     }
+
 }

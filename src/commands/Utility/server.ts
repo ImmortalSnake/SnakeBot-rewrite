@@ -1,13 +1,13 @@
-import { Command, CommandStore, KlasaMessage, KlasaUser, Timestamp, KlasaGuild } from 'klasa';
-import SnakeBot from '../../lib/client';
+import { CommandStore, KlasaMessage, Timestamp, KlasaGuild } from 'klasa';
 import { GuildMember, MessageEmbed } from 'discord.js';
+import SnakeCommand from '../../lib/structures/base/SnakeCommand';
 
-export default class extends Command {
+export default class extends SnakeCommand {
+
     public timestamp = new Timestamp('d MMMM YYYY');
-
-    constructor(client: SnakeBot, store: CommandStore, file: string[], directory: string) {
-        super(client, store, file, directory, {
-            aliases : ['server-info', 'serverinfo']
+    public constructor(store: CommandStore, file: string[], directory: string) {
+        super(store, file, directory, {
+            aliases: ['server-info', 'serverinfo']
         });
     }
 
@@ -16,7 +16,7 @@ export default class extends Command {
         return msg.sendEmbed(new MessageEmbed()
             .setDescription('**Server Information**')
             .setColor('#15f153')
-            .setThumbnail(server.icon as string)
+            .setThumbnail(server.iconURL() ?? '')
             .addField('❯ Server Name', server.name, true)
             .addField('❯ Total Members', server.memberCount, true)
             .addField('❯ Region', server.region, true)
@@ -25,6 +25,7 @@ export default class extends Command {
             .addField('❯ Emojis', server.emojis.size, true)
             .addField('❯ Created At', this.timestamp.display(server.createdAt), true)
             .addField('❯ Joined At', this.timestamp.display((msg.member as GuildMember).joinedAt as Date), true)
-            .addField('❯ Roles (' + server.roles.size + ')', server.roles.map(r => r).join(''), true));
+            .addField(`❯ Roles (${server.roles.size})`, Object.values(server.roles).join(' ').slice(0, 1024)));
     }
+
 }

@@ -59,5 +59,5 @@ export default [
     'It\'s a joke, not a dick. You don\'t have to take it so hard.',
     'You need to go up to your daddy, get on your knees and apologize to each and every brother and sister that didn\'t make it to your mother\'s egg before you',
     'Don\'t you worry your pretty little head about it. The operative word being little. Not pretty.',
-    'You\'re like a square blade, all edge and no point.',
+    'You\'re like a square blade, all edge and no point.'
 ];

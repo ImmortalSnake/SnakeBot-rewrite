@@ -1,11 +1,13 @@
-import { Command, CommandStore, KlasaMessage, KlasaUser } from 'klasa';
+import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
 import SnakeBot from '../../lib/client';
 import tictactoe from '../../lib/Games/tictactoe';
-import { GuildMember, ClientUser, Message } from 'discord.js';
+import { GuildMember, Message } from 'discord.js';
+import SnakeCommand from '../../lib/structures/base/SnakeCommand';
 
-export default class extends Command {
-    public constructor(client: SnakeBot, store: CommandStore, file: string[], directory: string) {
-        super(client, store, file, directory, {
+export default class extends SnakeCommand {
+
+    public constructor(store: CommandStore, file: string[], directory: string) {
+        super(store, file, directory, {
             usage: '[opponent:member]',
             cooldown: 60,
             cooldownLevel: 'channel'
@@ -25,9 +27,10 @@ export default class extends Command {
         const game = new tictactoe(this.client as SnakeBot, opp ? false : true);
         const res = await game.play(msg,
             [(msg.author as KlasaUser).id,
-                opp ? (opp as GuildMember).user.id : (this.client.user as ClientUser).id]);
+                opp ? opp.user.id : this.client.user!.id]);
 
         await msg.channel.send(res);
         return null;
     }
+
 }

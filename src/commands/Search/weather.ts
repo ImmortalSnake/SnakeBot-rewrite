@@ -1,36 +1,49 @@
-import { Command, CommandStore, KlasaMessage, KlasaUser } from 'klasa';
-import SnakeBot from '../../lib/client';
+import { CommandStore, KlasaMessage } from 'klasa';
 import { MessageEmbed } from 'discord.js';
-const weather = require('weather-js');
+import { SnakeBotConfig } from '../../config';
+import SnakeCommand from '../../lib/structures/base/SnakeCommand';
+import fetch from 'node-fetch';
 
-export default class extends Command {
-    public constructor(client: SnakeBot, store: CommandStore, file: string[], directory: string) {
-        super(client, store, file, directory, {
-            usage: '<city:...str>',
+export default class extends SnakeCommand {
+
+    public constructor(store: CommandStore, file: string[], directory: string) {
+        super(store, file, directory, {
+            cooldown: 10,
+            usage: '<city:...str>'
         });
     }
 
     public async run(msg: KlasaMessage, [city]: [string]): Promise<KlasaMessage | KlasaMessage[] | null> {
-        weather.find({ search: city, degreeType: 'F' }, function(err: any, result: any[]) {
-            if (err) throw 'Please enter a valid location';
-            if (result.length === 0) throw 'Please enter a valid location';
+        await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&APPID=${SnakeBotConfig.WeatherKey}`)
+            .then(res => res.json())
+            .then(data => {
+                if (!data.weather) throw 'Invalid City Name!';
+                const temp = data.main.temp - 273.15;
 
-            const current = result[0].current;
-            const location = result[0].location;
+                return msg.send(new MessageEmbed()
+                    .setAuthor(`${data.name}, ${data.sys.country}`)
+                    .setThumbnail(`http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`)
+                    .setDescription(`
+                **${data.weather[0].main}** - *${data.weather[0].description}*
 
-            return msg.sendEmbed(new MessageEmbed()
-                    .setDescription(`**${current.skytext}**`)
-                    .setAuthor(`Weather for ${current.observationpoint}`)
-                    .setThumbnail(current.imageUrl)
-                    .setColor(0x00AE86)
-                    .addField('Timezone', `UTC${location.timezone}`, true)
-                    .addField('Degree Type', location.degreetype, true)
-                    .addField('Temperature', `${current.temperature} Degrees`, true)
-                    .addField('Feels Like', `${current.feelslike} Degrees`, true)
-                    .addField('Winds', current.winddisplay, true)
-                    .addField('Humidity', `${current.humidity}%`, true));
-        });
+                **Temperature:** \`${temp.toFixed(2)} C\` | \`${this.celsiusToFarenheit(temp).toFixed(2)} F\`
+                **Feels Like:** \`${(data.main.feels_like - 273.15).toFixed(2)} C\` | \`${this.celsiusToFarenheit(data.main.feels_like - 273.15).toFixed(2)}\`
+                **Humidity:** \`${data.main.humidity}%\`
+                **Pressure:** \`${data.main.pressure} hPa\`
+                ${data.visibility ? `**Visibility:** \`${data.visibility}\`\n` : ''}\
+                ${data.wind ? `**Wind:** \`${data.wind.speed} m/s\`\n` : ''}\
+                ${data.clouds ? `**Cloudiness:** \`${data.clouds.all}%\`\n` : ''}\
+                ${data.rain ? `**Rain:** \`${data.rain['1h']} mm\`\n` : ''}\
+                ${data.snow ? `**Snow:** \`${data.snow['1h']} mm\`` : ''}
+                `)
+                    .setFooter('Powered by Open Weather'));
+            });
 
         return null;
     }
+
+    public celsiusToFarenheit(temp: number) {
+        return ((temp * 9) / 5) + 32;
+    }
+
 }

@@ -1,11 +1,12 @@
-import { Command, CommandStore, KlasaMessage, KlasaUser } from 'klasa';
-import SnakeBot from '../../lib/client';
+import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
 import connect4 from '../../lib/Games/connect4';
-import { GuildMember, ClientUser, Message } from 'discord.js';
+import { GuildMember, Message } from 'discord.js';
+import SnakeCommand from '../../lib/structures/base/SnakeCommand';
 
-export default class extends Command {
-    public constructor(client: SnakeBot, store: CommandStore, file: string[], directory: string) {
-        super(client, store, file, directory, {
+export default class extends SnakeCommand {
+
+    public constructor(store: CommandStore, file: string[], directory: string) {
+        super(store, file, directory, {
             usage: '[opponent:member]',
             cooldown: 60,
             cooldownLevel: 'channel'
@@ -24,18 +25,15 @@ export default class extends Command {
             if (responses.size === 0) throw 'Challenge Request Timeout!';
             if ((responses.first() as Message).content.toLowerCase() === 'n') throw 'Challenge was rejected';
         } else {
-            let start = await msg.prompt('Do you want to start first? (y/n)')
-            .then(m => m.content.toLowerCase())
-            .catch();
+            const start = await msg.ask('Do you want to start first? (y/n)');
 
-            if (start === 'y') players = [(msg.author as KlasaUser).id, (this.client.user as ClientUser).id];
-            else players = [(this.client.user as ClientUser).id, (msg.author as KlasaUser).id];
+            if (start) players = [msg.author!.id, this.client.user!.id];
+            else players = [this.client.user!.id, msg.author!.id];
         }
 
-        const game = new connect4(this.client as SnakeBot, msg, players);
-        const res = await game.run(msg);
-
+        await new connect4(msg, players).run();
         // await msg.channel.send(res);
         return null;
     }
+
 }

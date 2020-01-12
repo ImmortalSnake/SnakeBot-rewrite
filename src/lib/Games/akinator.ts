@@ -4,16 +4,9 @@ import { URL } from 'url';
 import { KlasaMessage } from 'klasa';
 import Util from '../utils/Util';
 
-let sessions = new Map();
+const sessions = new Map();
 
 export default class Akinator {
-
-    private getURL(type = '', object = {}): string {
-        const url = new URL(`https://srv6.akinator.com:9126/ws/${type}`);
-
-        for (const [key, val] of Object.entries(object)) url.searchParams.append(key, val as string);
-        return url.toString();
-    }
 
     public async play(msg: KlasaMessage) {
         if (sessions.has(msg.channel.id)) throw 'Only one game may be occuring per channel.';
@@ -78,11 +71,12 @@ ${data.answers.map((answer: any) => answer.answer).join(' | ')}`));
         if (!body || !body.parameters) return null;
 
         const data = body.parameters;
+        console.log(session, data, res.url);
         sessions.set(channel.id, {
             id: session.id,
             signature: session.signature,
-            step: Number.parseInt(data.step, 10),
-            progression: Number.parseInt(data.progression, 10)
+            step: parseInt(data.step, 10),
+            progression: parseInt(data.progression, 10)
         });
         return data;
     }
@@ -102,7 +96,7 @@ ${data.answers.map((answer: any) => answer.answer).join(' | ')}`));
         }));
 
         const body = await res.json();
-        console.log(body);
+        console.log(session, res.url, body);
         if (!body || !body.parameters || body.completion !== 'KO - ELEM LIST IS EMPTY') return null;
 
         return body.parameters.elements[0].element;
@@ -123,13 +117,24 @@ ${data.answers.map((answer: any) => answer.answer).join(' | ')}`));
         if (!body || !body.parameters) return null;
 
         const data = body.parameters;
+        console.log(data);
         sessions.set(channel.id, {
             id: data.identification.session,
             signature: data.identification.signature,
-            step: 0,
-            progression: Number.parseInt(data.step_information.progression, 10)
+            step: parseInt(data.step_information.step, 10),
+            progression: parseInt(data.step_information.progression, 10)
         });
 
         return data.step_information;
     }
+
+    private getURL(type = '', object = {}): string {
+        const url = new URL(`https://srv6.akinator.com:9126/ws/${type}`);
+
+        for (const [key, val] of Object.entries(object)) {
+            url.searchParams.append(key, val as string);
+        }
+        return url.toString();
+    }
+
 }

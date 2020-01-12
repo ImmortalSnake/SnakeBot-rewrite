@@ -1,6 +1,6 @@
 import SnakeBot from '../client';
 import { KlasaMessage, util } from 'klasa';
-import { User, Message } from 'discord.js';
+import { User } from 'discord.js';
 import fetch from 'node-fetch';
 
 interface Player {
@@ -15,28 +15,27 @@ interface Solution {
 }
 
 export default class Connect4 {
+
+    public board: number[][];
+    public client: SnakeBot;
+    public player1: Player;
+    public player2: Player;
+    public channel: string;
+    public author: User;
+    public difficulty: number;
+    public turn: Player;
+    public AI: boolean;
+    public over: boolean;
+    public state: string;
+
     public readonly empty = 0;
     public readonly p1 = 1;
     public readonly p2 = -1;
+    public readonly message: KlasaMessage;
 
-    // Impossible AI
-    public readonly solutionURL = (pos: string) => `https://connect4.gamesolver.org/solve?pos=${pos}`;
-
-    board: number[][];
-    client: SnakeBot;
-    player1: Player;
-    player2: Player;
-    channel: string;
-    author: User;
-    difficulty: number;
-    turn: Player;
-    AI: boolean;
-    over: boolean;
-    state: string;
-
-    constructor(client: SnakeBot, message: KlasaMessage, players: string[]) {
+    public constructor(message: KlasaMessage, players: string[]) {
         this.board = this.createBoard();
-        this.client = client;
+        this.client = message.client as SnakeBot;
         this.player1 = {
             id: players[0],
             val: this.p1,
@@ -49,42 +48,44 @@ export default class Connect4 {
             name: (this.client.users.get(players[1]) as User).username
         };
 
+        this.message = message;
         this.channel = message.channel.id;
         this.author = message.author as User;
         this.difficulty = 1; // can be 1, 5, 10
         this.turn = this.player1;
-        this.AI = players.includes(client.id);
+        this.AI = players.includes(this.client.id);
         this.over = false;
         this.state = '';
     }
 
-    public async run(msg: KlasaMessage) {
-        if (this.AI) {
-            let difficulty = await msg.prompt('Select Difficulty\n1 - Easy\n2 - Medium\n3 - Impossible')
-            .then(m => parseInt(m.content))
-            .catch();
+    // Impossible AI
+    public readonly solutionURL = (pos: string) => `https://connect4.gamesolver.org/solve?pos=${pos}`;
 
-            if (!difficulty || difficulty > 3 || difficulty < 1) return msg.channel.send('Invalid Difficulty');
+    public async run() {
+        if (this.AI) {
+            const difficulty = await this.message.prompt('Select Difficulty\n1 - Easy\n2 - Medium\n3 - Impossible')
+                .then(mess => parseInt(mess.content, 10))
+                .catch();
+
+            if (!difficulty || difficulty > 3 || difficulty < 1) return this.message.channel.send('Invalid Difficulty');
             this.difficulty += difficulty ** 2;
         }
 
         while (!this.over) {
-            await msg.channel.send(this.display(this.board));
+            await this.message.channel.send(this.display(this.board));
             if (this.isClient(this.turn)) {
                 await this.computerMove(this.board, this.turn);
                 if (this.checkWin(this.board, this.turn.val)) {
-                    await msg.channel.send(this.display(this.board));
-                    return msg.channel.send('Sorry, you lost');
+                    return this.message.channel.send(`${this.display(this.board)}\nSorry, you lost`);
                 }
             } else {
-                await this.humanMove(this.board, this.turn, msg);
+                await this.humanMove(this.board, this.turn);
                 if (this.checkWin(this.board, this.turn.val)) {
-                    await msg.channel.send(this.display(this.board));
-                    return msg.channel.send(`<@${this.turn.id}> has won!!`);
+                    return this.message.channel.send(`${this.display(this.board)}\n<@${this.turn.id}> has won!!`);
                 }
             }
 
-            if (this.isBoardFull(this.board)) return msg.channel.send('Its a tie!');
+            if (this.isBoardFull(this.board)) return this.message.channel.send('Its a tie!');
             this.turn = this.turn === this.player1 ? this.player2 : this.player1;
         }
     }
@@ -106,13 +107,13 @@ export default class Connect4 {
         for (const i of board) {
             for (const j of i) {
                 if (j === this.empty) mess += ':white_large_square: ';
-                else if (j === this.p1) mess += ':large_blue_circle: ';
+                else if (j === this.p1) mess += ':blue_circle: ';
                 else mess += ':red_circle: ';
             }
             mess += '\n';
         }
 
-        mess += `:large_blue_circle: - **${this.player1.name}**\n:red_circle: - **${this.player2.name}**`;
+        mess += `:blue_circle: - **${this.player1.name}**\n:red_circle: - **${this.player2.name}**`;
         return mess;
     }
 
@@ -148,23 +149,23 @@ export default class Connect4 {
         return false;
     }
 
-    public async humanMove(board: number[][], player: Player, msg: KlasaMessage): Promise<number | null> {
-        let move = await this.prompt(msg, `Enter a number from 1 to 7 **(${player.name})**`, player.id)
-        .then(m => m.content)
-        .catch();
+    public async humanMove(board: number[][], player: Player): Promise<number | null> {
+        const move = await this.message.prompt(`Enter a number from 1 to 7 **(${player.name})**`, { user: player.id })
+            .then(m => m.content)
+            .catch();
 
-        if (!this.isValidMove(board, parseInt(move))) {
+        if (!this.isValidMove(board, parseInt(move, 10))) {
             if (move.toLowerCase() === 'cancel') {
                 this.over = true;
                 return null;
             }
-            await msg.channel.send('Invalid Move');
-            return this.humanMove(board, player, msg);
-        } else {
-            this.drop(board, player, parseInt(move) - 1);
-            this.state += move;
-            return parseInt(move);
+            await this.message.channel.send('Invalid Move');
+            return this.humanMove(board, player);
         }
+
+        this.drop(board, player, parseInt(move, 10) - 1);
+        this.state += move;
+        return parseInt(move, 10);
     }
 
     public async computerMove(board: number[][], player: Player) {
@@ -175,7 +176,7 @@ export default class Connect4 {
             return this.drop(board, player, move);
         }
 
-        let potentialMoves = this.getPotentialMoves(board, player, this.difficulty);
+        const potentialMoves = this.getPotentialMoves(board, player, this.difficulty);
         let bestMoveFitness = -10;
 
         for (let i = 0; i < 7; i++) {
@@ -192,7 +193,7 @@ export default class Connect4 {
     }
 
     private getPotentialMoves(board: number[][], player: Player, depth: number): number[] {
-        let potentialMoves = [0, 0, 0, 0, 0, 0, 0];
+        const potentialMoves = [0, 0, 0, 0, 0, 0, 0];
 
         if (depth === 0 || this.isBoardFull(board)) return potentialMoves;
 
@@ -206,7 +207,7 @@ export default class Connect4 {
             this.drop(dupeBoard, player, i);
 
             if (this.checkWin(dupeBoard, player.val)) {
-                potentialMoves[i] = 1 * m;
+                potentialMoves[i] = m;
                 break;
             } else {
                 const results = this.getPotentialMoves(dupeBoard, opponent, depth - 1);
@@ -246,11 +247,4 @@ export default class Connect4 {
         return false;
     }
 
-    private async prompt(msg: KlasaMessage, prompt: string, user: string): Promise<Message> {
-        const mess = await msg.channel.send(prompt) as Message;
-        const collected = await mess.channel.awaitMessages(m => m.author.id === user, { time: 60000, max: 1});
-        await mess.delete();
-        if (collected.size === 0) throw 'Timeout! Try again';
-        return collected.first() as Message;
-    }
 }

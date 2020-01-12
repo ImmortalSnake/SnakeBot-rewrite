@@ -1,13 +1,14 @@
-import { Command, CommandStore, KlasaMessage, util } from 'klasa';
-import SnakeBot from '../../lib/client';
+import { CommandStore, KlasaMessage, util } from 'klasa';
 import fetch from 'node-fetch';
 import { MessageEmbed } from 'discord.js';
+import SnakeCommand from '../../lib/structures/base/SnakeCommand';
 
 const ZWS = '\u200B';
 
-export default class extends Command {
-    public constructor(client: SnakeBot, store: CommandStore, file: string[], directory: string) {
-        super(client, store, file, directory, {
+export default class extends SnakeCommand {
+
+    public constructor(store: CommandStore, file: string[], directory: string) {
+        super(store, file, directory, {
             aliases: ['ud', 'urbandictionary'],
             requiredPermissions: ['EMBED_LINKS'],
             usage: '<query:...string{0,240}>',
@@ -20,13 +21,13 @@ export default class extends Command {
         const { list } = await response.json();
 
         let page = 1;
-        if (msg.flags) page = this.getFlags(msg) ? parseInt((this.getFlags(msg) as string).slice(4)) || 1 : 1;
+        if (msg.flags) page = msg.flagArgs.page ? parseInt(msg.flagArgs.page, 10) || 1 : 1;
 
         const result = list[page - 1];
         if (typeof result === 'undefined') {
-            throw page === 1 ?
-                'I could not find this entry in UrbanDictionary' :
-                'I could not find this page in UrbanDictionary, try a lower page';
+            throw page === 1
+                ? 'I could not find this entry in UrbanDictionary'
+                : 'I could not find this page in UrbanDictionary, try a lower page';
         }
 
         const definition = this.content(result.definition, result.permalink);
@@ -61,7 +62,4 @@ export default class extends Command {
         return str.substring(0, pos);
     }
 
-    public getFlags(msg: KlasaMessage) {
-        return Object.keys(msg.flags).find(f => f.toLowerCase().startsWith('page'));
-    }
 }
