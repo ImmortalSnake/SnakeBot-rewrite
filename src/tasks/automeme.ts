@@ -4,17 +4,18 @@ import SnakeBot from '../lib/client';
 
 export default class extends Task {
 
-    async run ({ channel }: { channel: string }) {
+    public async run({ channel }: { channel: string }) {
         const chan = this.client.channels.get(channel) as TextChannel;
         if (!chan) return;
 
-        const { enabled, limit} = chan.guild.settings.get('automeme');
+        const { enabled, limit } = chan.guild.settings.get('automeme') as any;
         if (!enabled) return;
 
         await (this.client as SnakeBot).meme.meme(channel);
-        this.client.schedule.create('automeme', Date.now() + (limit * 60 * 1000), {
+        await this.client.schedule.create('automeme', Date.now() + (limit * 60 * 1000), {
             data: { channel },
             catchUp: true
         });
     }
+
 }

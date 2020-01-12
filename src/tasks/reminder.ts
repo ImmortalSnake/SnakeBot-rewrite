@@ -1,12 +1,15 @@
-import { Task, KlasaUser } from 'klasa';
+import { Task } from 'klasa';
 
 interface ReminderOptions {
-    user: KlasaUser;
+    user: string;
     text: string;
 }
 
 export default class extends Task {
-    async run({ user, text }: ReminderOptions) {
-        if (user) await user.send(`Reminder: ${text}`).catch(e => console.log(e));
+
+    public async run({ user, text }: ReminderOptions) {
+        const _user = await this.client.users.fetch(user);
+        if (_user) await _user.send(`**Reminder:** \`${text}\``).catch(e => console.log(e));
     }
+
 }

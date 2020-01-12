@@ -7,13 +7,14 @@ interface UnmuteTaskOptions {
 
 export default class extends Task {
 
-    async run({ guild, user }: UnmuteTaskOptions) {
+    public async run({ guild, user }: UnmuteTaskOptions) {
         const _guild = this.client.guilds.get(guild);
         if (!_guild) return;
         const member = await _guild.members.fetch(user).catch(() => null);
         if (!member) return;
-        const muteRole = _guild.roles.get(_guild.settings.get('roles.muted')) || _guild.roles.find(r => r.name.toLowerCase() === 'muted');
+        const muteRole = member.roles.get(_guild.settings.get('roles.muted') as string) || member.roles.find(r => r.name.toLowerCase() === 'muted');
         if (!muteRole) return;
         await member.roles.remove(muteRole.id);
     }
+
 }

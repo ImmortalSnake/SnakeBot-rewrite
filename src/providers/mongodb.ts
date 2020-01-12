@@ -1,15 +1,35 @@
 import { Provider, util } from 'klasa';
 import { mongoOptions } from '../config';
-const { MongoClient } = require('mongodb');
+import { MongoClient } from 'mongodb';
 
+const resolveQuery = (query: any) => (util.isObject(query) ? query : { id: query });
+
+function flatten(obj: object, path = '') {
+    let output: any = {};
+    for (const [key, value] of Object.entries(obj)) {
+        if (util.isObject(value)) {
+            output = Object.assign(
+                output,
+                flatten(value, path ? `${path}.${key}` : key)
+            );
+        } else { output[path ? `${path}.${key}` : key] = value; }
+    }
+    return output;
+}
+
+function parseEngineInput(updated: any) {
+    return Object.assign(
+        {},
+        ...updated.map((entry: any) => ({ [entry.data[0]]: entry.data[1] }))
+    );
+}
 export default class extends Provider {
-    public db: any;
 
+    public db: any;
     public async init(): Promise<void> {
         const mongoClient = await MongoClient.connect(mongoOptions.uri,
-            util.mergeObjects(mongoOptions.options, { useNewUrlParser: true })
-        );
-        this.db = mongoClient.db('giveaway');
+            util.mergeObjects(mongoOptions.options, { useNewUrlParser: true }));
+        this.db = mongoClient.db('snakebot');
     }
 
     /* Table methods */
@@ -22,7 +42,7 @@ export default class extends Provider {
         return this.db
             .listCollections()
             .toArray()
-            .then((collections: any ) => collections.some((col: any) => col.name === table));
+            .then((collections: any) => collections.some((col: any) => col.name === table));
     }
 
     public createTable(table: string) {
@@ -73,42 +93,20 @@ export default class extends Provider {
             .insertOne(util.mergeObjects(this.parseUpdateInput(doc), resolveQuery(id)));
     }
 
-    delete(table: string, id: string) {
+    public delete(table: string, id: string) {
         return this.db.collection(table).deleteOne(resolveQuery(id));
     }
 
-    update(table: string, id: string, doc = {}) {
+    public update(table: string, id: string, doc = {}) {
         return this.db.collection(table).updateOne(resolveQuery(id), {
-            $set: util.isObject(doc) ? flatten(doc) : parseEngineInput(doc),
+            $set: util.isObject(doc) ? flatten(doc) : parseEngineInput(doc)
         });
     }
 
-    replace(table: string, id: string, doc = {}) {
+    public replace(table: string, id: string, doc = {}) {
         return this.db
             .collection(table)
             .replaceOne(resolveQuery(id), this.parseUpdateInput(doc));
     }
-}
 
-const resolveQuery = (query: any) => (util.isObject(query) ? query : { id: query });
-
-function flatten(obj: object, path = '') {
-    let output: any = {};
-    for (const [key, value] of Object.entries(obj)) {
-        if (util.isObject(value)) {
-            output = Object.assign(
-                output,
-                flatten(value, path ? `${path}.${key}` : key)
-            );
-        }
-        else {output[path ? `${path}.${key}` : key] = value; }
-    }
-    return output;
-}
-
-function parseEngineInput(updated: any) {
-    return Object.assign(
-        {},
-        ...updated.map((entry: any) => ({ [entry.data[0]]: entry.data[1] }))
-    );
 }
