@@ -1,19 +1,15 @@
-import { Command, CommandStore, KlasaMessage, KlasaUser } from 'klasa';
-import SnakeBot from '../../lib/client';
-import AudioTrack from '../../lib/structures/audio/track';
-import { Guild, GuildMember, VoiceChannel, ClientUser, VoiceState } from 'discord.js';
+import { KlasaMessage } from 'klasa';
+// import AudioTrack from '../../lib/structures/audio/track';
+import { GuildMember } from 'discord.js';
+import SnakeCommand from '../../lib/structures/base/SnakeCommand';
 
-export default class extends Command {
-    public constructor(client: SnakeBot, store: CommandStore, file: string[], directory: string) {
-        super(client, store, file, directory, {
-        });
-    }
+export default class extends SnakeCommand {
 
     public async run(msg: KlasaMessage): Promise<KlasaMessage | KlasaMessage[] | null> {
-        let audio = (this.client as SnakeBot).audio;
 
         if (!(msg.member as GuildMember).voice.channel) return msg.send('no vc');
-        audio.join((msg.member as GuildMember).voice.channel as VoiceChannel);
+        // audio.join((msg.member as GuildMember).voice.channel as VoiceChannel);
         return null;
     }
+
 }

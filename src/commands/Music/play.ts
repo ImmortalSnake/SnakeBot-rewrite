@@ -1,23 +1,29 @@
-import { Command, CommandStore, KlasaMessage, KlasaUser } from 'klasa';
+import { CommandStore, KlasaMessage } from 'klasa';
 import SnakeBot from '../../lib/client';
-import { Guild, GuildMember, VoiceChannel, ClientUser, VoiceState } from 'discord.js';
-import AudioEmbed from '../../lib/structures/audio/embed';
+import { Track } from 'shoukaku';
+import SnakeCommand from '../../lib/structures/base/SnakeCommand';
+// import AudioEmbed from '../../lib/structures/audio/embed';
 
-export default class extends Command {
-    public constructor(client: SnakeBot, store: CommandStore, file: string[], directory: string) {
-        super(client, store, file, directory, {
+export default class extends SnakeCommand {
+
+    public constructor(store: CommandStore, file: string[], directory: string) {
+        super(store, file, directory, {
             usage: '<query:...str{0,250}>'
         });
     }
 
     public async run(msg: KlasaMessage, [query]: [string]): Promise<KlasaMessage | KlasaMessage[] | null> {
-        let audio = (this.client as SnakeBot).audio;
-        if (!(msg.member as GuildMember).voice.channel || !((msg.member as GuildMember).voice.channel as VoiceChannel).members.has((this.client.user as ClientUser).id)) return msg.send('join my vc');
+        const { audio } = this.client as SnakeBot;
+        const source = msg.flagArgs.source ? msg.flagArgs.source.toLowerCase() : undefined;
 
-        let video = await audio.load(msg, query);
-        if (!video) throw 'Could not load track';
+        if (source && !['soundcloud', 'youtube'].includes(source)) throw 'Please enter a valid source (youtube|soundcloud)';
+        if (!msg.member!.voice.channel) return msg.send('You need to be in a voice channel!');
+        // if (this.client.voice && msg.member!.voice.channel.id !== this.client.voice.)
 
-        await audio.loadTrack(msg, video[0]).catch(console.log);
-        return null; // msg.sendMessage(new AudioEmbed(this.client, video[0]));
+        const tracks = await audio.play(msg, query, source as 'youtube' | 'soundcloud' | undefined);
+
+        console.log(tracks);
+        return msg.send(Array.isArray(tracks) ? `Successfully loaded playlist \`${(tracks as any).name}\`` : `Successfully loaded track: \`${(tracks as Track).info.title}\``); // msg.sendMessage(new AudioEmbed(this.client, video[0]));
     }
+
 }
