@@ -1,3 +1,4 @@
+/*
 import { Command, CommandStore, KlasaMessage, Timestamp } from 'klasa';
 import SnakeBot from '../../lib/client';
 import Util from '../../lib/utils/Util';
@@ -37,4 +38,12 @@ export default class extends Command {
                     });
             });
     }
+}
+*/
+
+import { Command } from 'klasa';
+export default class extends Command {
+
+    public enabled = false;
+
 }

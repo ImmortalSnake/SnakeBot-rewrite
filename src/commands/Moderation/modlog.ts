@@ -1,12 +1,11 @@
-import { Command, CommandStore, KlasaMessage, KlasaGuild, Timestamp, KlasaUser, RichDisplay } from 'klasa';
-import SnakeBot from '../../lib/client';
+import { CommandStore, KlasaMessage, KlasaGuild, KlasaUser, RichDisplay } from 'klasa';
 import { MessageEmbed, ClientUser, User } from 'discord.js';
-const ms = require('ms');
+import SnakeCommand from '../../lib/structures/base/SnakeCommand';
 
-export default class extends Command {
+export default class extends SnakeCommand {
 
-    public constructor(client: SnakeBot, store: CommandStore, file: string[], directory: string) {
-        super(client, store, file, directory, {
+    public constructor(store: CommandStore, file: string[], directory: string) {
+        super(store, file, directory, {
             aliases: ['modlogs'],
             usage: '[user:user]',
             requiredPermissions: ['MANAGE_GUILD'],
@@ -14,8 +13,8 @@ export default class extends Command {
         });
     }
 
-    public async run(msg: KlasaMessage, [user]: [KlasaUser]): Promise<KlasaMessage | KlasaMessage[] | null>  {
-        const cases = (msg.guild as KlasaGuild).settings.get('modlogs.cases');
+    public async run(msg: KlasaMessage, [user]: [KlasaUser]): Promise<KlasaMessage | KlasaMessage[] | null> {
+        const cases = msg.guildSettings.get('modlogs.cases') as any[];
         if (user) cases.filter((c: any) => c.user === user.id);
 
         if (cases.length === 0) throw `No cases were found for this ${user ? 'user' : 'guild'}`;
@@ -35,7 +34,8 @@ export default class extends Command {
             }
         }
 
-        display.run(await msg.send('Loading modlogs...') as KlasaMessage);
+        await display.run(await msg.send('Loading modlogs...') as KlasaMessage);
         return null;
     }
+
 }

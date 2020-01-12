@@ -1,22 +1,21 @@
+import { KlasaClientOptions } from 'klasa';
+
 export default {
     ownerID: '410806297580011520',
-    prefix: 's!',
+    mentionPrefix: true,
+    prefix: '+',
     preserveSettings: false,
     noPrefixDM: true,
-    disabledCorePieces: ['providers'],
-    providers: {
-    default: 'mongodb'
-    },
     pieceDefaults: {
-    commands: {
-      quotedStringSupport: true,
-      runIn: ['text'],
-      usageDelim: ' '
+        commands: {
+            quotedStringSupport: true,
+            runIn: ['text'],
+            usageDelim: ' '
+        }
     }
-  }
-};
+} as KlasaClientOptions;
 
-export let mongoOptions = {
+export const mongoOptions = {
     uri: process.env.DATABASE_URL || '',
     options: {
         useNewUrlParser: true,
@@ -27,13 +26,23 @@ export let mongoOptions = {
     }
 };
 
-export let musicOptions = {
-    host: process.env.HOST as string,
-    pass: 'youshallnotpass',
-    port: '/',
-    nodes: [{
+export const LavalinkServer = [
+    /*
+    {
+        name: 'Local Lavalink Server',
+        host: 'localhost',
+        auth: 'youshallnotpass',
+        port: 2333
+    },
+    */
+    {
+        name: 'Repl Lavalink Server',
         host: process.env.HOST as string,
-        port: '/',
-        password: 'youshallnotpass'
-    }]
+        auth: 'youshallnotpass',
+        port: '/' as unknown as number
+    }
+];
+
+export const SnakeBotConfig = {
+    WeatherKey: process.env.WEATHER_KEY as string
 };

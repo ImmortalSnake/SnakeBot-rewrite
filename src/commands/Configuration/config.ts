@@ -1,54 +1,70 @@
-import { Command, CommandStore, KlasaClient, KlasaMessage, util, SchemaFolder, KlasaGuild} from 'klasa';
-import { Guild } from 'discord.js';
+import { util, CommandStore, KlasaMessage, SettingsFolderUpdateResult, SchemaEntry, SchemaFolder, Schema } from 'klasa';
+import SnakeCommand from '../../lib/structures/base/SnakeCommand';
 
-export default class extends Command {
+export default class extends SnakeCommand {
 
-    constructor(client: KlasaClient, store: CommandStore, file: string[], dir: string) {
-        super(client, store, file, dir, {
-            subcommands: true,
-            aliases: ['settings'],
-            cooldown: 5,
-            description: 'Sets or shows server settings.',
+    public constructor(store: CommandStore, file: string[], directory: string) {
+        super(store, file, directory, {
             permissionLevel: 6,
-            usage: '<set|show|remove> (key:key) (value:value) [...]',
+            guarded: true,
+            subcommands: true,
+            description: language => language.get('COMMAND_CONF_SERVER_DESCRIPTION'),
+            usage: '<set|show|remove|reset> (key:key) (value:value)'
         });
 
         this
-        .createCustomResolver('key', (arg, possible, message, [action]) => {
-            if (action === 'show' || arg) return arg;
-            throw message.language.get('COMMAND_CONF_NOKEY');
-        })
-        .createCustomResolver('value', (arg, possible, message, [action]) => {
-            if (!['set', 'remove'].includes(action) || arg) return arg;
-            throw message.language.get('COMMAND_CONF_NOVALUE');
-        });
+            .createCustomResolver('key', (arg, __, msg, [action]) => {
+                if (action === 'show' || arg) return arg;
+                throw msg.language.get('COMMAND_CONF_NOKEY');
+            })
+            .createCustomResolver('value', (arg, possible, msg, [action]) => {
+                if (!['set', 'remove'].includes(action)) return null;
+                if (arg) return this.client.arguments.get('...string')!.run(arg, possible, msg);
+                throw msg.language.get('COMMAND_CONF_NOVALUE');
+            });
     }
 
-    async show(msg: KlasaMessage, [key, value]: string[]) {
-        const path = this.client.gateways.guilds.getPath(key, { avoidUnconfigurable: true, errors: false, piece: false });
-        if (!path) return msg.sendLocale('COMMAND_CONF_GET_NOEXT', [key]);
-        if (path.piece.type === 'Folder') {
+    public async show(msg: KlasaMessage, [key]: [string]): Promise<KlasaMessage | KlasaMessage[]> {
+        const entry = this.getPath(key);
+        if (!entry || (entry.type === 'Folder' ? !entry.configurableKeys.length : !(entry as Schema).configurableKeys.length)) return msg.sendLocale('COMMAND_CONF_GET_NOEXT', [key]);
+        if (entry.type === 'Folder') {
             return msg.sendLocale('COMMAND_CONF_SERVER', [
-                key ? `: ${key.split('.').map(util.toTitleCase).join('/')}` : '',
-                util.codeBlock('asciidoc', (msg.guild as KlasaGuild).settings.list(msg, path.piece as unknown as SchemaFolder))
+                key ? `: ${key.split('.').map(x => util.toTitleCase(x)).join('/')}` : '',
+                util.codeBlock('asciidoc', msg.guild!.settings.display(msg, entry))
             ]);
         }
-        return msg.sendLocale('COMMAND_CONF_GET', [path.piece.path, (msg.guild as KlasaGuild).settings.resolveString(msg, path.piece)]);
+        return msg.sendLocale('COMMAND_CONF_GET', [entry.path, msg.guild!.settings.display(msg, entry)]);
     }
 
-    async set(msg: KlasaMessage, [key, ...value]: string[]) {
-        const status = await (msg.guild as KlasaGuild).settings.update(key, value.join(' '), (msg.guild as Guild), { avoidUnconfigurable: true, action: 'add' });
-        return this.check(msg, key, status) || msg.sendLocale('COMMAND_CONF_UPDATED', [key, (msg.guild as KlasaGuild).settings.resolveString(msg, status.updated[0].piece)]);
+    public async set(msg: KlasaMessage, [key, valueToSet]: [string, string]): Promise<KlasaMessage | KlasaMessage[]> {
+        const entry = this.check(msg, key, await msg.guild!.settings.update(key, valueToSet, { onlyConfigurable: true, arrayAction: 'add' }));
+        return msg.sendLocale('COMMAND_CONF_UPDATED', [key, msg.guild!.settings.display(msg, entry)]);
     }
 
-    async remove(msg: KlasaMessage, [key, ...value]: string[]) {
-        const status = await (msg.guild as KlasaGuild).settings.update(key, value.join(' '), (msg.guild as Guild), { avoidUnconfigurable: true, action: 'remove' });
-        return this.check(msg, key, status) || msg.sendLocale('COMMAND_CONF_UPDATED', [key, (msg.guild as KlasaGuild).settings.resolveString(msg, status.updated[0].piece)]);
+    public async remove(msg: KlasaMessage, [key, valueToRemove]: [string, string]): Promise<KlasaMessage | KlasaMessage[]> {
+        const entry = this.check(msg, key, await msg.guild!.settings.update(key, valueToRemove, { onlyConfigurable: true, arrayAction: 'remove' }));
+        return msg.sendLocale('COMMAND_CONF_UPDATED', [key, msg.guild!.settings.display(msg, entry)]);
     }
 
-    check(msg: KlasaMessage, key: string, { errors, updated }: any) {
-        if (errors.length) return msg.sendMessage(String(errors[0]));
-        if (!updated.length) return msg.sendLocale('COMMAND_CONF_NOCHANGE', [key]);
-        return null;
+    public async reset(msg: KlasaMessage, [key]: [string]): Promise<KlasaMessage | KlasaMessage[]> {
+        const entry = this.check(msg, key, await msg.guild!.settings.reset(key));
+        return msg.sendLocale('COMMAND_CONF_RESET', [key, msg.guild!.settings.display(msg, entry)]);
     }
+
+    private check(msg: KlasaMessage, key: string, { errors, updated }: SettingsFolderUpdateResult): SchemaEntry {
+        if (errors.length) throw String(errors[0]);
+        if (!updated.length) throw msg.language.get('COMMAND_CONF_NOCHANGE', key);
+        return updated[0].entry;
+    }
+
+    private getPath(key: string): SchemaFolder | Schema | undefined {
+        const { schema } = this.client.gateways.get('guilds')!;
+        if (!key) return schema;
+        try {
+            return schema.get(key);
+        } catch (__) {
+            return undefined;
+        }
+    }
+
 }

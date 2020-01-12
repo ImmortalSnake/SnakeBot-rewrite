@@ -1,10 +1,11 @@
-import { Command, CommandStore, KlasaMessage } from 'klasa';
-import SnakeBot from '../../lib/client';
+import { KlasaMessage } from 'klasa';
+import SnakeCommand from '../../lib/structures/base/SnakeCommand';
 
-export default class extends Command {
+export default class extends SnakeCommand {
 
-    public async run(msg: KlasaMessage, [text]: [string]): Promise<KlasaMessage | KlasaMessage[] | null> {
-        await (this.client as SnakeBot).meme.meme(msg.channel.id);
+    public async run(msg: KlasaMessage): Promise<KlasaMessage | KlasaMessage[] | null> {
+        await this.client.meme.meme(msg.channel.id);
         return null;
     }
+
 }
