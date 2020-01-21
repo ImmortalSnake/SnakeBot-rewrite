@@ -2,9 +2,9 @@ import { Client, KlasaClientOptions } from 'klasa';
 import Embed from './utils/RichEmbedHandler';
 import permissionLevel from './structures/permissionLevel';
 import './structures/schemas/guildSchema';
-import AudioManager from './structures/audio/manager';
 import MemeHandler from './structures/meme';
 import Util from './utils/Util';
+import AudioManager from './structures/audio/Manager';
 
 export default class SnakeBot extends Client {
 

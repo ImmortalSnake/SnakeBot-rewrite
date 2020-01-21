@@ -53,4 +53,17 @@ export default class Util {
         return `https://hasteb.in/${key}.${language}`;
     }
 
+    public static isURL(url: string) {
+        try {
+            return Boolean(new URL(url));
+        } catch (__) {
+            return false;
+        }
+    }
+
+    public static msToDuration(ms: number): string {
+        let res = ``;
+        return res;
+    }
+
 }

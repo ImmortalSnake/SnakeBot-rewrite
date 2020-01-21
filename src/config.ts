@@ -27,20 +27,19 @@ export const mongoOptions = {
 };
 
 export const LavalinkServer = [
-    /*
     {
         name: 'Local Lavalink Server',
         host: 'localhost',
         auth: 'youshallnotpass',
         port: 2333
-    },
-    */
+    } /*
     {
         name: 'Repl Lavalink Server',
         host: process.env.HOST as string,
         auth: 'youshallnotpass',
         port: '/' as unknown as number
     }
+    */
 ];
 
 export const SnakeBotConfig = {

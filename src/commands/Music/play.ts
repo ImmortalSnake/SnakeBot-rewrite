@@ -1,29 +1,31 @@
 import { CommandStore, KlasaMessage } from 'klasa';
-import SnakeBot from '../../lib/client';
-import { Track } from 'shoukaku';
 import SnakeCommand from '../../lib/structures/base/SnakeCommand';
+import AudioTrack from '../../lib/structures/audio/AudioTrack';
+import { MessageEmbed } from 'discord.js';
+import Util from '../../lib/utils/Util';
 // import AudioEmbed from '../../lib/structures/audio/embed';
 
 export default class extends SnakeCommand {
 
     public constructor(store: CommandStore, file: string[], directory: string) {
         super(store, file, directory, {
-            usage: '<query:...str{0,250}>'
+            usage: '<track:song>'
         });
     }
 
-    public async run(msg: KlasaMessage, [query]: [string]): Promise<KlasaMessage | KlasaMessage[] | null> {
-        const { audio } = this.client as SnakeBot;
-        const source = msg.flagArgs.source ? msg.flagArgs.source.toLowerCase() : undefined;
+    public async run(msg: KlasaMessage, [tracks]: [AudioTrack[]]): Promise<KlasaMessage | KlasaMessage[] | null> {
+        if (!msg.member?.voice.channel) return msg.send('You need to be in a voice channel!');
+        tracks.forEach(track => this.client.audio.handleTrack(msg.guild!, track));
 
-        if (source && !['soundcloud', 'youtube'].includes(source)) throw 'Please enter a valid source (youtube|soundcloud)';
-        if (!msg.member!.voice.channel) return msg.send('You need to be in a voice channel!');
-        // if (this.client.voice && msg.member!.voice.channel.id !== this.client.voice.)
+        const { url, title, length } = tracks[0].info;
 
-        const tracks = await audio.play(msg, query, source as 'youtube' | 'soundcloud' | undefined);
+        const embed = new MessageEmbed()
+            .setURL(url)
+            .setTitle(title)
+            .addField('Length', Util.msToDuration(length))
+            .setFooter('Requested By', msg.author.tag);
 
-        console.log(tracks);
-        return msg.send(Array.isArray(tracks) ? `Successfully loaded playlist \`${(tracks as any).name}\`` : `Successfully loaded track: \`${(tracks as Track).info.title}\``); // msg.sendMessage(new AudioEmbed(this.client, video[0]));
+        return msg.send(tracks.length > 1 ? 'Playlist Loaded!' : 'Track Loaded', embed);
     }
 
 }

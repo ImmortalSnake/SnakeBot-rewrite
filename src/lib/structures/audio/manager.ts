@@ -1,62 +1,120 @@
 import SnakeBot from '../../client';
-import { Shoukaku, ShoukakuSocket, Track, LoadTrackResponse } from 'shoukaku';
-import Queue from './queue';
-import { KlasaMessage } from 'klasa';
+import fetch from 'node-fetch';
+import { PlayerManager, Player } from 'discord.js-lavalink';
 import { LavalinkServer } from '../../../config';
+import { VoiceChannel, Guild, Collection } from 'discord.js';
+import AudioTrack from './AudioTrack';
+import {} from 'simple-youtube-api';
+
+interface AudioPlayer {
+    tracks: AudioTrack[];
+    repeat: boolean;
+    player: Player;
+    volume: number;
+    current: AudioTrack | null;
+}
 
 export default class AudioManager {
 
     public client: SnakeBot;
-    public shoukaku: Shoukaku;
-    public queue: Queue;
+    public lavalink: PlayerManager;
+    public players: Collection<string, AudioPlayer>;
 
     public constructor(client: SnakeBot) {
-
         this.client = client;
-
-        // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-        // @ts-ignore
-        this.shoukaku = new Shoukaku(client, LavalinkServer, {
-            moveOnDisconnect: false,
-            resumable: false,
-            resumableTimeout: 30,
-            reconnectTries: 2,
-            restTimeout: 60000
+        this.players = new Collection();
+        this.lavalink = new PlayerManager(this.client, LavalinkServer, {
+            user: client.id,
+            shards: client.shardCount
         });
 
-        this.queue = new Queue(client);
     }
 
-    public get node(): ShoukakuSocket {
-        return this.shoukaku.getNode();
+    public get node() {
+        return this.lavalink.nodes.first()!;
     }
 
-    public async play(msg: KlasaMessage, query: string, search: 'youtube' | 'soundcloud' = 'youtube') {
-        const tracks = await this.node.rest.resolve(query, search);
-        if (!tracks) throw 'Sorry, Could not find anything with that query';
+    public async join(channel: VoiceChannel) {
+        const volume = 10;
+        const player = await this.lavalink.join({
+            guild: channel.guild.id,
+            channel: channel.id,
+            host: LavalinkServer[0].host
+        }, { selfdeaf: true });
 
-        if (Array.isArray(tracks)) {
-            const res = await this.queue.handle(this.node, tracks.shift()!, msg);
+        player.volume(volume);
 
-            // handle rest of them
-            for (const track of tracks) {
-                await this.queue.handle(this.node, track, msg);
-            }
+        return this.players.set(channel.guild.id, {
+            tracks: [],
+            repeat: false,
+            current: null,
+            volume,
+            player
+        });
+    }
 
-            if (res) await res.play();
+    public leave(guild: Guild) {
+        this.players.delete(guild.id);
+        return this.lavalink.leave(guild.id);
+    }
 
-            return tracks;
+    public async fetchSongs(query: string) {
+        const params = new URLSearchParams();
+        params.append('identifier', query);
+
+        return fetch(`http://${this.node.host}:${this.node.port}/loadtracks?${params.toString()}`, {
+            headers: { Authorization: this.node.password! }
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.status === 400) {
+                    throw 'Could not load the track!';
+                } else if (data.loadType === 'SEARCH_RESULT') {
+                    return data.tracks.map((track: any) => new AudioTrack(track));
+                }
+
+                return [];
+            })
+            .catch(err => {
+                console.error(err);
+                return null;
+            });
+    }
+
+    public handleTrack(guild: Guild, track: AudioTrack) {
+        const audio = this.players.get(guild.id);
+        if (!audio) throw 'I am not connected to any voice channel';
+
+        if (!audio.current) {
+            audio.current = track;
+            console.log(track);
+            return this.play(guild, track);
         }
-        let track;
 
-        if ((tracks as LoadTrackResponse).tracks) [track] = (tracks as LoadTrackResponse).tracks;
-        else track = tracks as Track;
+        audio.tracks.push(track);
+    }
 
-        const res = await this.queue.handle(this.node, track, msg);
-        if (res) await res.play();
+    public play(guild: Guild, song: AudioTrack) {
+        const audio = this.players.get(guild.id);
+        if (!audio) throw 'I am not connected to any voice channel';
 
-        return track;
+        try {
+            audio.player.play(song.track);
+            audio.player.on('end', (data: any) => {
+                if (data.reason === 'REPLACED') return;
+                if (audio.repeat && audio.current) {
+                    return this.play(guild, audio.current);
+                } else if (audio.tracks.length) {
+                    audio.current = audio.tracks.shift()!;
+                    return this.play(guild, audio.current);
+                }
 
+                return this.leave(guild);
+            });
+        } catch (err) {
+            throw err;
+        }
     }
 
 }
+
