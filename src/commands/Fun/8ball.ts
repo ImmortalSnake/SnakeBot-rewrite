@@ -11,7 +11,7 @@ export default class extends SnakeCommand {
     }
 
     public async run(msg: KlasaMessage): Promise<KlasaMessage | KlasaMessage[]> {
-        return msg.sendMessage(`🎱${replies[Math.floor(Math.random() * replies.length)]}🎱`);
+        return msg.sendMessage(`🎱**${replies[Math.floor(Math.random() * replies.length)]}**🎱`);
     }
 
 }

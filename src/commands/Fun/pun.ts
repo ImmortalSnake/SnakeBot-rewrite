@@ -6,7 +6,6 @@ export default class extends SnakeCommand {
 
     public constructor(store: CommandStore, file: string[], directory: string) {
         super(store, file, directory, {
-            usage: '<question:...str>',
             aliases: ['puns']
         });
     }
