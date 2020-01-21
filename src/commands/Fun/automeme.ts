@@ -5,29 +5,31 @@ export default class extends SnakeCommand {
 
     public constructor(store: CommandStore, file: string[], directory: string) {
         super(store, file, directory, {
-            usage: '[minutes:int{15,}]',
+            usage: '<minutes:int{15,}>',
             requiredPermissions: ['MANAGE_MESSAGES'],
             permissionLevel: 6
         });
     }
 
     public async run(msg: KlasaMessage, [minutes]: [number]): Promise<KlasaMessage | KlasaMessage[] | null> {
-        const automeme = msg.guild!.settings.get('automeme') as any;
+        const automeme = msg.guildSettings.get('automeme') as any;
 
-        if (automeme.enabled) {
-            await msg.guild!.settings.update('automeme.enabled', false);
+        if (automeme.channel) {
+            await msg.guildSettings.reset('automeme.channel');
             return msg.send('Disabled Automemes for the server!');
         }
 
-        if (!minutes) return msg.sendMessage('Enter number of minutes');
-        await msg.guild!.settings.update('automeme.enabled', true);
-        await msg.guild!.settings.update('automeme.limit', minutes);
-        await msg.guild!.settings.update('automeme.channel', msg.channel.id);
-        await this.client.schedule.create('automeme', minutes * 60 * 1000, {
-            data: { channel: msg.channel.id }
+        await msg.guildSettings.update([
+            ['automeme.limit', minutes],
+            ['automeme.channel', msg.channel.id]
+        ]);
+
+        await this.client.schedule.create('automeme', `*/${minutes} * * * *`, {
+            data: { channel: msg.channel.id },
+            catchUp: true
         });
 
-        return msg.send('Automemes have been enabled');
+        return msg.send(`:white_check_mark: Automemes have been set at ${msg.channel} for every **${minutes}** minutes`);
     }
 
 }

@@ -3,7 +3,6 @@ import { Client, SchemaFolder } from 'klasa';
 Client.defaultGuildSchema
     .add('automeme', (folder: SchemaFolder) => folder
         .add('limit', 'number', { configurable: false })
-        .add('enabled', 'boolean', { 'configurable': false, 'default': false })
         .add('channel', 'channel', { configurable: false }))
 
     .add('afkusers', 'any', { array: true })
