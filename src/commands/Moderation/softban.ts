@@ -20,7 +20,7 @@ export default class extends SnakeCommand {
             else if (!member.bannable) throw 'Could not ban this user';
         }
 
-        await user.send(`You were banned from ${(msg.guild as Guild).name} for reason:\n${reason}`);
+        await user.send(`You were banned from ${(msg.guild as Guild).name} for reason:\n${reason}`).catch(() => null);
         await (msg.guild as Guild).members.ban(user.id, { reason, days });
         await (msg.guild as Guild).members.unban(user.id, `Softban Released`);
 

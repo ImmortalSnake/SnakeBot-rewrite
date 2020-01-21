@@ -17,7 +17,7 @@ export default class extends SnakeCommand {
     public async run(msg: KlasaMessage, [user, reason = 'N/A']: [GuildMember, string]): Promise<KlasaMessage | KlasaMessage[]> {
         if (user && user.permissions.has('MANAGE_GUILD')) return msg.sendMessage('Cannot kick this user');
 
-        await user.send(`You were kicked from ${(msg.guild as Guild).name} for reason:\n${reason}`).catch();
+        await user.send(`You were kicked from ${(msg.guild as Guild).name} for reason:\n${reason}`).catch(() => null);
         await user.kick(reason);
 
         const data = {

@@ -14,7 +14,8 @@ export default class extends SnakeCommand {
     }
 
     public async run(msg: KlasaMessage, [user, reason = 'N/A']: [GuildMember, string]): Promise<KlasaMessage | KlasaMessage[]> {
-        await user.send(`You were warned in ${(msg.guild as Guild).name} for: ${reason}`).catch();
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        await user.send(`You were warned in ${(msg.guild as Guild).name} for: ${reason}`).catch(() => null);
 
         const data = {
             id: msg.guildSettings.get('modlogs.total') as number,

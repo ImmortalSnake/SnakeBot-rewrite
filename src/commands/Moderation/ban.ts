@@ -17,7 +17,7 @@ export default class extends SnakeCommand {
         const member = (msg.guild as Guild).members.get(user.id);
         if (member && member.permissions.has('MANAGE_GUILD')) return msg.sendMessage('Cannot ban this user');
 
-        await user.send(`You were banned from ${(msg.guild as Guild).name} for reason:\n${reason}`).catch();
+        await user.send(`You were banned from ${(msg.guild as Guild).name} for reason:\n${reason}`).catch(() => null);
         await (msg.guild as Guild).members.ban(user.id, { reason });
 
         const data = {
