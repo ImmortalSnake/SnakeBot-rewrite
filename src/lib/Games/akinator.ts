@@ -2,7 +2,6 @@ import { TextChannel, User, Message, MessageEmbed } from 'discord.js';
 import fetch from 'node-fetch';
 import { URL } from 'url';
 import { KlasaMessage } from 'klasa';
-import Util from '../utils/Util';
 
 const sessions = new Map();
 
@@ -41,17 +40,16 @@ ${data.answers.map((answer: any) => answer.answer).join(' | ')}`));
             return msg.channel.send('Hmm... I seem to be having a bit of trouble. Check back soon!');
         }
 
-        await msg.channel.send(new MessageEmbed()
+        const verification = await msg.ask(new MessageEmbed()
             .setColor(0xF78B26)
             .setTitle(`I'm ${Math.round(guess.proba * 100)}% sure it's...`)
             .setDescription(`${guess.name}${guess.description ? `\n_${guess.description}_` : ''}`)
             .setImage(guess.absolute_picture_path || null)
-            .setFooter('Is this your character? (y/n)'));
+            .setFooter('Is this your character? (y/n)'))
+            .catch(() => msg.channel.send('I guess your silence means I have won.'));
 
-        const verification = await new Util().verify(msg.channel as TextChannel, msg.author as User);
         sessions.delete(msg.channel.id);
 
-        if (verification === 0) return msg.channel.send('I guess your silence means I have won.');
         if (!verification) return msg.channel.send('Bravo, you have defeated me.');
 
         return msg.channel.send('Guessed right one more time! I love playing with you!');
@@ -62,7 +60,7 @@ ${data.answers.map((answer: any) => answer.answer).join(' | ')}`));
         const res = await fetch(this.getURL('answer', {
             session: session.id,
             signature: session.signature,
-            step: session.step,
+            step: (session.step as number) + 1,
             answer,
             question_filter: channel.nsfw ? '' : 'cat=1'
         }));
@@ -75,7 +73,7 @@ ${data.answers.map((answer: any) => answer.answer).join(' | ')}`));
         sessions.set(channel.id, {
             id: session.id,
             signature: session.signature,
-            step: parseInt(data.step, 10),
+            step: (session.step as number) + 1,
             progression: parseInt(data.progression, 10)
         });
         return data;
@@ -86,7 +84,7 @@ ${data.answers.map((answer: any) => answer.answer).join(' | ')}`));
         const res = await fetch(this.getURL('list', {
             session: session.id,
             signature: session.signature,
-            step: session.step,
+            step: (session.step as number) + 1,
             size: 2,
             max_pic_width: 246,
             max_pic_height: 294,
@@ -97,7 +95,7 @@ ${data.answers.map((answer: any) => answer.answer).join(' | ')}`));
 
         const body = await res.json();
         console.log(session, res.url, body);
-        if (!body || !body.parameters || body.completion !== 'KO - ELEM LIST IS EMPTY') return null;
+        if (!body || !body.parameters || body.completion === 'KO - ELEM LIST IS EMPTY') return null;
 
         return body.parameters.elements[0].element;
     }
@@ -108,7 +106,7 @@ ${data.answers.map((answer: any) => answer.answer).join(' | ')}`));
             player: 'website-desktop',
             uid_ext_session: '',
             frontaddr: 'NDYuMTA1LjExMC40NQ==',
-            constraint: 'ETAT<>\'AV\'',
+            constraint: `ETAT<>'AV'`,
             soft_constraint: channel.nsfw ? '' : 'ETAT=\'EN\'',
             question_filter: channel.nsfw ? '' : 'cat=1'
         }));

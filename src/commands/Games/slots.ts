@@ -11,7 +11,7 @@ export default class extends SnakeCommand {
     }
 
     public async run(msg: KlasaMessage): Promise<KlasaMessage | KlasaMessage[]> {
-        return msg.sendEmbed(await new Slots(this.client, msg).play());
+        return msg.sendEmbed(new Slots(msg).play());
     }
 
 }

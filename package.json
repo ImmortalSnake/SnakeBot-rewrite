@@ -16,7 +16,6 @@
     "discord.js-lavalink": "github:MrJacz/discord.js-lavalink",
     "dotenv": "^8.0.0",
     "klasa": "github:dirigeants/klasa#settings",
-    "lavalink": "^2.9.0",
     "mongodb": "^3.2.7",
     "ms": "^2.1.2",
     "simple-youtube-api": "^5.2.1"

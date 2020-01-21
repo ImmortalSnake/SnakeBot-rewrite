@@ -1,5 +1,5 @@
 import { ExtendableStore, Extendable } from 'klasa';
-import { Message } from 'discord.js';
+import { Message, MessageEmbed } from 'discord.js';
 
 export interface MessagePromptOptions {
     user?: string;
@@ -24,7 +24,7 @@ export default class extends Extendable {
 
     }
 
-    public async prompt(this: Message, content: string, options: MessagePromptOptions = {}): Promise<Message> {
+    public async prompt(this: Message, content: string | MessageEmbed, options: MessagePromptOptions = {}): Promise<Message> {
         const mess = await this.channel.send(content);
         const collected = await this.channel.awaitMessages(m => m.author.id === (options.user ? options.user : this.author.id), {
             time: options.time ?? 60000,
@@ -36,7 +36,7 @@ export default class extends Extendable {
         return collected.first()!;
     }
 
-    public async ask(this: Message, content: string, options: MessageAskOptions = {}): Promise<boolean> {
+    public async ask(this: Message, content: string | MessageEmbed, options: MessageAskOptions = {}): Promise<boolean> {
         const mess = await this.channel.send(content);
         await mess.react('❌');
         await mess.react('✅');
