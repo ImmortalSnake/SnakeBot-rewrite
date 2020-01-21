@@ -13,6 +13,7 @@ export default class SnakeBot extends Client {
     public meme: MemeHandler;
     public utils: Util;
     public audio: AudioManager;
+    public version = 'v0.4.2 - Alpha';
 
     public constructor(options: KlasaClientOptions = {}) {
         super(options);

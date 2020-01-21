@@ -59,7 +59,7 @@ export default class extends SnakeCommand {
 
     public async buildHelp(message: KlasaMessage) {
         const commands = await this._fetchCommands(message);
-        const prefix = message.guildSettings as any;
+        const prefix = message.guildSettings.get('prefix') as string;
 
         const helpMessage = [];
         for (const [category, list] of commands) {
@@ -71,7 +71,7 @@ export default class extends SnakeCommand {
 
     public async buildDisplay(message: KlasaMessage) {
         const commands = await this._fetchCommands(message);
-        const { prefix } = message.guildSettings as any;
+        const prefix = message.guildSettings.get('prefix') as string;
         const display = new RichDisplay();
         const color = (message.member as GuildMember).displayColor;
         for (const [category, list] of commands) {

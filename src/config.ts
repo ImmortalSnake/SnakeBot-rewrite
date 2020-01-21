@@ -18,6 +18,7 @@ export default {
 export const mongoOptions = {
     uri: process.env.DATABASE_URL || '',
     options: {
+        useUnifiedTopology: true,
         useNewUrlParser: true,
         reconnectInterval: 500,
         reconnectTries: Number.MAX_VALUE,

@@ -1,5 +1,6 @@
 import { CommandStore, KlasaMessage } from 'klasa';
 import SnakeCommand from '../../lib/structures/base/SnakeCommand';
+import Util from '../../lib/utils/Util';
 
 export default class extends SnakeCommand {
 
@@ -9,7 +10,7 @@ export default class extends SnakeCommand {
         });
     }
 
-    public async run(msg: KlasaMessage, [duration, text]: [any, string]): Promise<KlasaMessage | KlasaMessage[]> {
+    public async run(msg: KlasaMessage, [duration, text]: [number, string]): Promise<KlasaMessage | KlasaMessage[]> {
         await this.client.schedule.create('reminder', duration, {
             data: {
                 user: msg.author!.id,
@@ -17,7 +18,8 @@ export default class extends SnakeCommand {
             },
             catchUp: true
         });
-        return msg.sendMessage('A Reminder was created!');
+
+        return msg.sendLocale('COMMAND_REMINDER_CREATE', [Util.msToDuration(duration - Date.now())]);
     }
 
 }
