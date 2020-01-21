@@ -1,25 +1,7 @@
-import { Message, TextChannel, User } from 'discord.js';
+import { Minute, Second, Hour, Day } from './constants';
+import fetch from 'node-fetch';
 
 export default class Util {
-
-    public readonly yes = ['yes', 'y', 'ye', 'yeah', 'yup', 'yea', 'ya'];
-    public readonly no = ['no', 'n', 'nah', 'nope', 'nop'];
-
-    public async verify(channel: TextChannel, user: User, time = 30000): Promise<boolean | number> {
-        const filter = (res: Message) => {
-            const value = res.content.toLowerCase();
-            return (res.author as User).id === user.id && (this.yes.includes(value) || this.no.includes(value));
-        };
-        const verify = await channel.awaitMessages(filter, {
-            max: 1,
-            time
-        });
-        if (!verify.size) return 0;
-        const choice = (verify.first() as Message).content.toLowerCase();
-        if (this.yes.includes(choice)) return true;
-        if (this.no.includes(choice)) return false;
-        return false;
-    }
 
     public number_string(num: number): string {
         switch (num) {
@@ -61,9 +43,19 @@ export default class Util {
         }
     }
 
-    public static msToDuration(ms: number): string {
-        let res = ``;
-        return res;
+    public static msToDuration(duration: number): string {
+        const seconds = Math.floor((duration / Second) % 60);
+        const minutes = Math.floor((duration / Minute) % 60);
+        const hours = Math.floor((duration / Hour) % 24);
+        const days = Math.floor(duration / Day);
+
+        let mess = '';
+        if (days) mess += `**${days}** ${days > 1 ? 'days' : 'day'} `;
+        if (hours) mess += `**${hours}** ${hours > 1 ? 'hours' : 'hour'} `;
+        if (minutes) mess += `**${minutes}** ${minutes > 1 ? 'minutes' : 'minute'} `;
+        if (seconds) mess += `**${seconds}** ${seconds > 1 ? 'seconds' : 'second'} `;
+
+        return mess;
     }
 
 }
