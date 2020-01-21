@@ -4,7 +4,7 @@ import { PlayerManager, Player } from 'discord.js-lavalink';
 import { LavalinkServer } from '../../../config';
 import { VoiceChannel, Guild, Collection } from 'discord.js';
 import AudioTrack from './AudioTrack';
-import {} from 'simple-youtube-api';
+import { KlasaMessage } from 'klasa';
 
 interface AudioPlayer {
     tracks: AudioTrack[];
@@ -58,6 +58,13 @@ export default class AudioManager {
         return this.lavalink.leave(guild.id);
     }
 
+    public setVolume(guild: Guild, volume: number) {
+        const audio = this.players.get(guild.id);
+        if (!audio) throw `I am not in any voice channel!`;
+
+        return audio.player.volume(volume);
+    }
+
     public async fetchSongs(query: string) {
         const params = new URLSearchParams();
         params.append('identifier', query);
@@ -81,14 +88,15 @@ export default class AudioManager {
             });
     }
 
-    public handleTrack(guild: Guild, track: AudioTrack) {
-        const audio = this.players.get(guild.id);
+    public handleTrack(msg: KlasaMessage, track: AudioTrack) {
+        const audio = this.players.get(msg.guild!.id);
         if (!audio) throw 'I am not connected to any voice channel';
 
+        track.requester = msg.author.tag;
         if (!audio.current) {
             audio.current = track;
             console.log(track);
-            return this.play(guild, track);
+            return this.play(msg.guild!, track);
         }
 
         audio.tracks.push(track);
