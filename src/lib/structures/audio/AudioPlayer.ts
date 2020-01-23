@@ -2,7 +2,7 @@ import { Player, PlayerManager } from 'discord.js-lavalink';
 import AudioTrack from './AudioTrack';
 import Util from '../../utils/Util';
 import { KlasaMessage } from 'klasa';
-import { Guild, VoiceChannel } from 'discord.js';
+import { VoiceChannel } from 'discord.js';
 
 export default class AudioPlayer {
 
@@ -22,6 +22,7 @@ export default class AudioPlayer {
         this.channel = channel;
 
         this.player.volume(this.volume);
+        this.player.on('end', data => this.onEnd(data));
     }
 
     public setVolume(volume: number) {
@@ -43,28 +44,23 @@ export default class AudioPlayer {
         if (!this.current) {
             this.current = track;
             console.log(track);
-            return this.play(msg.guild!, track);
+            return this.player.play(track.track);
         }
 
         this.tracks.push(track);
     }
 
-    public play(guild: Guild, song: AudioTrack) {
+    public onEnd(data: any) {
         try {
-            this.player.play(song.track);
-            this.player.on('end', (data: any) => {
-                if (data.reason === 'REPLACED') return;
-                if (this.repeat && this.current) {
-                    return this.play(guild, this.current);
-                } else if (this.tracks.length) {
-                    this.current = this.tracks.shift()!;
-                    if (this.repeat) this.tracks.push(this.current);
+            if (data.reason === 'REPLACED') return;
+            if (this.repeat) this.tracks.push(this.current!);
+            if (this.tracks.length) {
+                this.current = this.tracks.shift()!;
 
-                    return this.play(guild, this.current);
-                }
+                return this.player.play(this.current.track);
+            }
 
-                return this.manager.leave(guild.id);
-            });
+            return this.manager.leave(this.channel.guild.id);
         } catch (err) {
             throw err;
         }
