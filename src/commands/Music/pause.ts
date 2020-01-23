@@ -1,14 +1,16 @@
-import { KlasaMessage } from 'klasa';
-import SnakeCommand from '../../lib/structures/base/SnakeCommand';
+import { KlasaMessage, CommandStore } from 'klasa';
+import MusicCommand from '../../lib/structures/base/MusicCommand';
 
-export default class extends SnakeCommand {
+export default class extends MusicCommand {
+
+    public constructor(store: CommandStore, file: string[], directory: string) {
+        super(store, file, directory, {
+            music: ['USER_VC', 'VOICE_PLAYING']
+        });
+    }
 
     public async run(msg: KlasaMessage): Promise<KlasaMessage | KlasaMessage[] | null> {
-        const player = this.client.audio.players.get(msg.guild!.id);
-        if (!msg.member!.voice.channel) return msg.send('You need to be in a voice channel');
-        if (!player?.current) throw 'I am not playing anything';
-
-        player.player.pause();
+        msg.guild!.audio!.player.pause();
         return msg.send(`Paused current playing music`);
     }
 

@@ -1,21 +1,22 @@
 import { CommandStore, KlasaMessage } from 'klasa';
-import SnakeCommand from '../../lib/structures/base/SnakeCommand';
 import AudioTrack from '../../lib/structures/audio/AudioTrack';
 import { MessageEmbed } from 'discord.js';
 import Util from '../../lib/utils/Util';
+import MusicCommand from '../../lib/structures/base/MusicCommand';
 // import AudioEmbed from '../../lib/structures/audio/embed';
 
-export default class extends SnakeCommand {
+export default class extends MusicCommand {
 
     public constructor(store: CommandStore, file: string[], directory: string) {
         super(store, file, directory, {
-            usage: '<track:song>'
+            usage: '<track:song>',
+            music: ['SAME_VC']
         });
     }
 
     public async run(msg: KlasaMessage, [tracks]: [AudioTrack[]]): Promise<KlasaMessage | KlasaMessage[] | null> {
         if (!msg.member?.voice.channel) return msg.send('You need to be in a voice channel!');
-        tracks.forEach(track => this.client.audio.handleTrack(msg, track));
+        tracks.forEach(track => msg.guild!.audio!.handleTrack(msg, track));
 
         const { uri, title, length } = tracks[0].info;
 

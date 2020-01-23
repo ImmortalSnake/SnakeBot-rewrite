@@ -16,6 +16,7 @@ export default class AudioTrack {
     public track: string;
     public info: AudioTrackInfo;
     public requester = '';
+    public skippers: string[] = [];
 
     public constructor(data: any) {
         this.track = data.track;

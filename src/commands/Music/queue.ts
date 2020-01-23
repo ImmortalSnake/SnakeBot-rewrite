@@ -1,13 +1,20 @@
-import { KlasaMessage, RichDisplay, util } from 'klasa';
-import SnakeCommand from '../../lib/structures/base/SnakeCommand';
+import { KlasaMessage, RichDisplay, util, CommandStore } from 'klasa';
 import { MessageEmbed } from 'discord.js';
 import AudioTrack from '../../lib/structures/audio/AudioTrack';
+import MusicCommand from '../../lib/structures/base/MusicCommand';
 
-export default class extends SnakeCommand {
+export default class extends MusicCommand {
+
+    public constructor(store: CommandStore, file: string[], directory: string) {
+        super(store, file, directory, {
+            aliases: ['connect'],
+            music: ['SNAKE_VC', 'QUEUE_NOT_EMPTY']
+        });
+    }
 
     public async run(msg: KlasaMessage): Promise<KlasaMessage | KlasaMessage[] | null> {
 
-        const player = this.client.audio.players.get(msg.guild!.id);
+        const player = msg.guild!.audio!;
         if (!player || !player.current) throw `I am not playing anything`;
 
         const response = await msg.send('Loading...');
@@ -15,6 +22,7 @@ export default class extends SnakeCommand {
         const queueDisplay = new RichDisplay(new MessageEmbed()
             .setColor(msg.member!.displayColor)
             .setTitle(`Music Queue for ${msg.guild!.name}`)
+            .addBlankField()
             .addField('Now Playing', `[${player.current.info.title}](${player.current.info.uri}) \`${player.current.requester}\``));
 
         const songFields = player.tracks.map((track, position) => this.generateSongField(msg, position, track));

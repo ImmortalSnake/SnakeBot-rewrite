@@ -1,20 +1,20 @@
 import { KlasaMessage, CommandStore } from 'klasa';
-import SnakeCommand from '../../lib/structures/base/SnakeCommand';
+import MusicCommand from '../../lib/structures/base/MusicCommand';
 
-export default class extends SnakeCommand {
+export default class extends MusicCommand {
 
     public constructor(store: CommandStore, file: string[], directory: string) {
         super(store, file, directory, {
-            usage: '<volume:int{1,100}>'
+            usage: '[volume:int{1,100}]',
+            music: ['DJ_REQUIRED', 'USER_VC', 'SAME_VC']
         });
     }
 
-    public async run(msg: KlasaMessage, [volume]: [number]): Promise<KlasaMessage | KlasaMessage[] | null> {
+    public async run(msg: KlasaMessage, [volume]: [number?]): Promise<KlasaMessage | KlasaMessage[] | null> {
+        if (!volume) return msg.send(`🔊 The volume for this guild is **${msg.guild!.audio!.volume}**`);
 
-        if (!msg.member!.voice.channel) return msg.send('You need to be in a voice channel');
-        this.client.audio.setVolume(msg.guild!, volume);
-
-        return msg.send(`Set the volume to **${volume}**`);
+        msg.guild!.audio!.setVolume(volume);
+        return msg.send(`🔊 Set the volume to **${volume}**`);
     }
 
 }
