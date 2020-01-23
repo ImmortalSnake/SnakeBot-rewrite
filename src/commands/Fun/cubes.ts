@@ -1,10 +1,13 @@
-import { Command, CommandStore, KlasaMessage, util } from 'klasa';
+import { CommandStore, KlasaMessage, util } from 'klasa';
+import SnakeCommand from '../../lib/structures/base/SnakeCommand';
 
-export default class extends Command {
+export default class extends SnakeCommand {
 
     public constructor(store: CommandStore, file: string[], directory: string) {
         super(store, file, directory, {
-            usage: '[text:...str{1,21}]'
+            usage: '[text:...str{1,21}]',
+            aliases: ['cubes'],
+            examples: ['superslitherysnakes']
         });
     }
 

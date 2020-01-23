@@ -11,7 +11,7 @@ export default class extends Argument {
 
         const { audio } = this.client as SnakeBot;
 
-        arg = arg.replace(/^<(.+)>$/g, '$1');
+        arg = this.getFullArgs(message, arg).replace(/^<(.+)>$/g, '$1');
         const parsedURL = this.parseURL(arg);
         let returnAll: boolean;
         let tracks: AudioTrack[];
@@ -43,6 +43,16 @@ export default class extends Argument {
         } catch (error) {
             return null;
         }
+    }
+
+    private getFullArgs(message: KlasaMessage, arg: string) {
+        const { args } = message;
+        const { usageDelim } = message.command!;
+
+        const index = args.indexOf(arg);
+        const rest = args.splice(index, args.length - index).join(usageDelim!);
+        console.log(rest);
+        return rest;
     }
 
 }

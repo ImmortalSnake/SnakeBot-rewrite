@@ -7,7 +7,8 @@ export default class extends SnakeCommand {
         super(store, file, directory, {
             usage: '<minutes:int{15,}>',
             requiredPermissions: ['MANAGE_MESSAGES'],
-            permissionLevel: 6
+            permissionLevel: 6,
+            examples: ['20']
         });
     }
 

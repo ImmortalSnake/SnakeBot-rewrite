@@ -6,7 +6,8 @@ export default class extends SnakeCommand {
 
     public constructor(store: CommandStore, file: string[], directory: string) {
         super(store, file, directory, {
-            usage: '<text:...str{1,500}>'
+            usage: '<text:...str{1,500}>',
+            examples: ['See this text get flipped!']
         });
     }
 
