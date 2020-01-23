@@ -15,7 +15,8 @@ Client.defaultGuildSchema
 
     .add('roles', (folder: SchemaFolder) => folder
         .add('mute', 'Role', { configurable: true })
-        .add('auto', 'Role', { configurable: true }))
+        .add('auto', 'Role', { configurable: true })
+        .add('dj', 'Role', { configurable: true }))
 
     .add('modlogs', (folder: SchemaFolder) => folder
         .add('total', 'number', { 'configurable': false, 'default': 0 })
