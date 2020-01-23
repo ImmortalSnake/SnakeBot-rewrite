@@ -1,23 +1,21 @@
 import { Minute, Second, Hour, Day } from './constants';
 import fetch from 'node-fetch';
 
-export default class Util {
+// eslint-disable-next-line @typescript-eslint/no-extraneous-class
+export default abstract class Util {
 
-    public number_string(num: number): string {
-        switch (num) {
-            case 1: return 'one';
-            case 2: return 'two';
-            case 3: return 'three';
-            case 4: return 'four';
-            case 5: return 'five';
-            case 6: return 'six';
-            case 7: return 'seven';
-            case 8: return 'eight';
-            case 9: return 'nine';
-            case 0: return 'zero';
-            default: return '';
-        }
-    }
+    public static readonly number_string = [
+        'zero',
+        'one',
+        'two',
+        'three',
+        'four',
+        'five',
+        'six',
+        'seven',
+        'eight',
+        'nine'
+    ];
 
     public static comma(num: number) {
         return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
@@ -56,6 +54,14 @@ export default class Util {
         if (seconds) mess += `**${seconds}** ${seconds > 1 ? 'seconds' : 'second'} `;
 
         return mess;
+    }
+
+    public static shuffle(arr: any[]): any[] {
+        for (let i = arr.length; i; i--) {
+            const j = Math.floor(Math.random() * i);
+            [arr[i - 1], arr[j]] = [arr[j], arr[i - 1]];
+        }
+        return arr;
     }
 
 }
