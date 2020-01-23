@@ -1,5 +1,6 @@
 import { KlasaMessage } from 'klasa';
 import SnakeBot from '../client';
+import Util from '../utils/Util';
 
 export default class TicTacToe {
 
@@ -36,11 +37,11 @@ export default class TicTacToe {
     public async play(msg: KlasaMessage, players: string[]) {
         this.players = players;
         if (this.AI) {
-            const difficulty = await msg.prompt('Select Difficulty:\n1 - Easy\n2 - Medium\n3 - Impossible')
+            const difficulty = await msg.prompt(msg.language.get('COMMAND_TICTACTOE_DIFFICULTY'))
                 .then(r => parseInt(r.content, 10))
                 .catch();
 
-            if (!difficulty || difficulty > 3 || difficulty < 1) return msg.send('Invalid Difficulty Level');
+            if (!difficulty || difficulty > 3 || difficulty < 1) throw msg.language.get('COMMAND_TICTACTOE_INVALID_DIFFICULTY');
             this.difficulty = difficulty;
         }
         const res = await this.move(msg).catch(e => e);
@@ -128,7 +129,7 @@ export default class TicTacToe {
     private emojify(n: number): string {
         if (this.board[n] === 'X') return ':x:';
         else if (this.board[n] === 'O') return ':o:';
-        return `:${this.client.utils.number_string(n + 1)}:`;
+        return `:${Util.number_string[n]}:`;
     }
 
     private get getBoard(): string {
