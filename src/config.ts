@@ -20,8 +20,6 @@ export const mongoOptions = {
     options: {
         useUnifiedTopology: true,
         useNewUrlParser: true,
-        reconnectInterval: 500,
-        reconnectTries: Number.MAX_VALUE,
         poolSize: 5,
         connectTimeoutMS: 10000
     }
