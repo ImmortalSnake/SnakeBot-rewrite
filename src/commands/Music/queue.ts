@@ -21,7 +21,7 @@ export default class extends MusicCommand {
 
         const queueDisplay = new RichDisplay(new MessageEmbed()
             .setColor(msg.member!.displayColor)
-            .setTitle(`Music Queue for ${msg.guild!.name}`)
+            .setTitle(`Music Queue for ${msg.guild!.name} ${player.repeat ? ' [Looping]' : ''}`)
             .addBlankField()
             .addField('Now Playing', `[${player.current.info.title}](${player.current.info.uri}) \`${player.current.requester}\``));
 

@@ -13,7 +13,7 @@ export default class AudioPlayer {
     public tracks: AudioTrack[] = [];
 
     public repeat = false;
-    public volume = 10;
+    public volume = 100;
 
     public constructor(channel: VoiceChannel, player: Player) {
 
