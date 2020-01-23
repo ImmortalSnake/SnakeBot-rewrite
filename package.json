@@ -13,7 +13,7 @@
     "@types/ms": "^0.7.30",
     "@types/node-fetch": "^2.3.7",
     "discord.js": "github:discordjs/discord.js#master",
-    "discord.js-lavalink": "github:MrJacz/discord.js-lavalink",
+    "discord.js-lavalink": "MrJacz/discord.js-lavalink#v3",
     "dotenv": "^8.0.0",
     "klasa": "github:dirigeants/klasa#settings",
     "mongodb": "^3.2.7",

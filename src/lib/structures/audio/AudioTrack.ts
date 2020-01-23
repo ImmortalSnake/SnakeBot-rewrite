@@ -27,11 +27,11 @@ export default class AudioTrack {
         return Util.msToDuration(this.info.length);
     }
 
-    public totalDuration(position: number) {
+    public totalDuration(position = 0) {
         return `${Util.formatDuration(position)} / ${Util.formatDuration(this.info.length)}`;
     }
 
-    public playingForBar(position: number) {
+    public playingForBar(position = 0) {
         const length = 32;
         const part = Math.floor((position / this.info.length) * length);
 

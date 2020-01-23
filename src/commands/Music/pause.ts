@@ -10,7 +10,7 @@ export default class extends MusicCommand {
     }
 
     public async run(msg: KlasaMessage): Promise<KlasaMessage | KlasaMessage[] | null> {
-        msg.guild!.audio!.player.pause();
+        msg.guild!.audio!.pause(true);
         return msg.send(`Paused current playing music`);
     }
 

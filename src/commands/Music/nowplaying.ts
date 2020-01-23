@@ -12,7 +12,7 @@ export default class extends MusicCommand {
     }
 
     public async run(msg: KlasaMessage): Promise<KlasaMessage | KlasaMessage[] | null> {
-        const { current, player } = msg.guild!.audio!;
+        const { current, state } = msg.guild!.audio!;
 
         return msg.send(new SnakeEmbed(msg)
             .setTitle(`Now Playing`)
@@ -20,8 +20,8 @@ export default class extends MusicCommand {
             .setDescription(`
         [${current!.info.title}](${current!.info.uri})
 
-        \`${current!.playingForBar((player.state as any).position)}\`
-        \`${current!.totalDuration((player.state as any).position)}\`
+        \`${current!.playingForBar(state.position)}\`
+        \`${current!.totalDuration(state.position)}\`
 
         **Requested By:** ${current!.requester} 
         `));

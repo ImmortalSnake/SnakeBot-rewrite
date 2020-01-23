@@ -11,7 +11,7 @@ export default class extends MusicCommand {
     }
 
     public async run(msg: KlasaMessage, [position]: [number]): Promise<KlasaMessage | KlasaMessage[] | null> {
-        msg.guild!.audio!.player.seek(position);
+        msg.guild!.audio!.seek(position);
         return msg.send(`Successfully changed the time!`);
     }
 

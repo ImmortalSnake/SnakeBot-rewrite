@@ -1,12 +1,11 @@
 import SnakeBot from '../../client';
 import fetch from 'node-fetch';
-import { PlayerManager } from 'discord.js-lavalink';
+import { PlayerManager, Player } from 'discord.js-lavalink';
 import { LavalinkServer } from '../../../config';
 import { VoiceChannel, Guild, Collection } from 'discord.js';
 import AudioTrack from './AudioTrack';
-// import { KlasaMessage } from 'klasa';
 import AudioPlayer from './AudioPlayer';
-import YoutubeHandler from '../YoutubeHandler';
+import YoutubeHandler from '../apis/YoutubeHandler';
 
 export default class AudioManager {
 
@@ -21,7 +20,8 @@ export default class AudioManager {
         this.youtube = new YoutubeHandler(process.env.YT_KEY as string);
         this.lavalink = new PlayerManager(this.client, LavalinkServer, {
             user: client.id,
-            shards: client.shardCount
+            shards: client.shardCount,
+            Player: AudioPlayer as unknown as Player
         });
 
     }
@@ -30,17 +30,14 @@ export default class AudioManager {
         return this.lavalink.nodes.first()!;
     }
 
-    public async join(channel: VoiceChannel) {
-        const volume = 10;
-        const player = await this.lavalink.join({
+    public join(channel: VoiceChannel) {
+        const player = this.lavalink.join({
             guild: channel.guild.id,
             channel: channel.id,
             host: LavalinkServer[0].host
         }, { selfdeaf: true });
 
-        player.volume(volume);
-
-        return this.players.set(channel.guild.id, new AudioPlayer(channel, player));
+        return this.players.set(channel.guild.id, player as AudioPlayer);
     }
 
     public leave(guild: Guild) {

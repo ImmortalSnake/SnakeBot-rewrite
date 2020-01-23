@@ -21,8 +21,8 @@ export default class extends MusicCommand {
         }
 
         this.resolvePermissions(msg, channel);
-        return this.client.audio.join(channel)
-            .then(() => msg.sendLocale('COMMAND_JOIN_SUCCESS', [channel.toString()]));
+        this.client.audio.join(channel);
+        return msg.sendLocale('COMMAND_JOIN_SUCCESS', [channel.toString()]);
     }
 
     public resolvePermissions(message: KlasaMessage, voiceChannel: VoiceChannel): void {

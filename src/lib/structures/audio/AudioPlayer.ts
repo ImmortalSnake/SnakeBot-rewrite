@@ -1,34 +1,30 @@
-import { Player, PlayerManager } from 'discord.js-lavalink';
+import { Player, PlayerOptions, LavalinkNode } from 'discord.js-lavalink';
 import AudioTrack from './AudioTrack';
 import Util from '../../utils/Util';
 import { KlasaMessage } from 'klasa';
-import { VoiceChannel } from 'discord.js';
 
-export default class AudioPlayer {
+export default class AudioPlayer extends Player {
 
-    public player: Player;
-    public manager: PlayerManager;
-    public channel: VoiceChannel;
     public current: AudioTrack | null = null;
     public tracks: AudioTrack[] = [];
 
     public repeat = false;
-    public volume = 100;
+    public bassboosted = false;
 
-    public constructor(channel: VoiceChannel, player: Player) {
+    private previousVolume: number | null = null;
 
-        this.player = player;
-        this.manager = player.manager;
-        this.channel = channel;
+    public constructor(node: LavalinkNode, options: PlayerOptions) {
+        super(node, options);
 
-        this.player.volume(this.volume);
-        this.player.on('end', data => this.onEnd(data));
+        // this.setVolume(this.volume);
+        this.on('end', data => this.onEnd(data));
     }
-
+    /*
     public setVolume(volume: number) {
         this.volume = volume;
-        return this.player.volume(volume);
+        return super.volume(volume);
     }
+*/
 
     public setRepeat(loop?: boolean) {
         this.repeat = loop || !this.repeat;
@@ -39,12 +35,35 @@ export default class AudioPlayer {
         return this.tracks;
     }
 
+    public removeDupes() {
+        this.tracks = this.tracks.filter(
+            (track, index) => this.tracks.findIndex(t => t.track === track.track) === index
+        );
+
+        return this.tracks;
+    }
+
+    public async bassboost(state?: boolean) {
+        this.bassboosted = state || !this.bassboosted;
+        if (this.bassboosted) {
+            this.previousVolume = this.state.volume;
+            this.volume(150);
+
+            await this.equalizer(Array(6).fill(0).map((_, i) => ({ band: i, gain: i })));
+        } else {
+            if (this.previousVolume) this.volume(this.previousVolume);
+            await this.equalizer(Array(6).fill(0).map((_, i) => ({ band: i, gain: 0 })));
+        }
+
+        return state || !this.bassboosted;
+    }
+
     public handleTrack(msg: KlasaMessage, track: AudioTrack) {
         track.requester = msg.author.tag;
         if (!this.current) {
             this.current = track;
             console.log(track);
-            return this.player.play(track.track);
+            return this.play(track.track);
         }
 
         this.tracks.push(track);
@@ -57,10 +76,10 @@ export default class AudioPlayer {
             if (this.tracks.length) {
                 this.current = this.tracks.shift()!;
 
-                return this.player.play(this.current.track);
+                return this.play(this.current.track);
             }
 
-            return this.manager.leave(this.channel.guild.id);
+            return this.manager.leave(this.id);
         } catch (err) {
             throw err;
         }
