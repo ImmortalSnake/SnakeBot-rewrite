@@ -8,7 +8,7 @@ export default class extends MusicCommand {
     public constructor(store: CommandStore, file: string[], directory: string) {
         super(store, file, directory, {
             aliases: ['connect'],
-            music: ['SNAKE_VC', 'QUEUE_NOT_EMPTY']
+            music: ['QUEUE_NOT_EMPTY']
         });
     }
 

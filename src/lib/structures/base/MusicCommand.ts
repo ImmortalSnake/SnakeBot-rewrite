@@ -13,6 +13,7 @@ export default class extends SnakeCommand {
         super(store, file, directory, options);
 
         this.music = options.music ?? [];
+        if (this.music.includes('SAME_VC')) this.music.push('SNAKE_VC', 'USER_VC');
     }
 
 }
