@@ -42,10 +42,7 @@ export default abstract class Util {
     }
 
     public static msToDuration(duration: number): string {
-        const seconds = Math.floor((duration / Second) % 60);
-        const minutes = Math.floor((duration / Minute) % 60);
-        const hours = Math.floor((duration / Hour) % 24);
-        const days = Math.floor(duration / Day);
+        const { seconds, minutes, hours, days } = this.extractDuration(duration);
 
         let mess = '';
         if (days) mess += `**${days}** ${days > 1 ? 'days' : 'day'} `;
@@ -56,12 +53,31 @@ export default abstract class Util {
         return mess;
     }
 
+    public static formatDuration(duration: number) {
+        const { seconds, minutes, hours } = this.extractDuration(duration);
+
+        return `${(hours < 10) ? `0${hours}` : hours}:${(minutes < 10) ? `0${minutes}` : minutes}:${(seconds < 10) ? `0${seconds}` : seconds}`;
+    }
+
     public static shuffle(arr: any[]): any[] {
         for (let i = arr.length; i; i--) {
             const j = Math.floor(Math.random() * i);
             [arr[i - 1], arr[j]] = [arr[j], arr[i - 1]];
         }
         return arr;
+    }
+
+    public static stripIndents(string: string) {
+        return string.replace(/^(\s+)\gm/, '');
+    }
+
+    private static extractDuration(duration: number) {
+        return {
+            seconds: Math.floor((duration / Second) % 60),
+            minutes: Math.floor((duration / Minute) % 60),
+            hours: Math.floor((duration / Hour) % 24),
+            days: Math.floor(duration / Day)
+        };
     }
 
 }

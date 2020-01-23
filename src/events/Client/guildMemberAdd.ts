@@ -6,8 +6,11 @@ export default class GuildMemberAddEvent extends Event {
     public async run(member: GuildMember) {
         const welcomeChan = member.guild.channels.get(member.guild.settings.get('channel.welcome') as string) as TextChannel;
         if (welcomeChan) {
-            let welcomeMess = member.guild.settings.get('message.welcome') as string || 'Hi {{user}} welcome to {{guild}}';
-            welcomeMess = this.format(welcomeMess, member);
+            const welcomeMess = this.format(
+                member.guild.settings.get('message.welcome') as string || 'Hi {{user}} welcome to {{guild}}',
+                member
+            );
+
             await welcomeChan.send(welcomeMess);
         }
     }

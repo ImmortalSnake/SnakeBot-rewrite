@@ -42,6 +42,8 @@ export default class AudioManager {
 
     public leave(guild: Guild) {
         this.players.delete(guild.id);
+        guild.me?.voice.channel?.leave();
+
         return this.lavalink.leave(guild.id);
     }
 
