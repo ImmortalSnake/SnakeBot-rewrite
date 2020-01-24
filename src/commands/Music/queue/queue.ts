@@ -1,7 +1,7 @@
 import { KlasaMessage, RichDisplay, util, CommandStore } from 'klasa';
 import { MessageEmbed } from 'discord.js';
-import AudioTrack from '../../lib/structures/audio/AudioTrack';
-import MusicCommand from '../../lib/structures/base/MusicCommand';
+import AudioTrack from '../../../lib/structures/audio/AudioTrack';
+import MusicCommand from '../../../lib/structures/base/MusicCommand';
 
 export default class extends MusicCommand {
 

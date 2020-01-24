@@ -1,5 +1,5 @@
 import { KlasaMessage, CommandStore } from 'klasa';
-import MusicCommand from '../../lib/structures/base/MusicCommand';
+import MusicCommand from '../../../lib/structures/base/MusicCommand';
 
 export default class extends MusicCommand {
 
