@@ -4,23 +4,26 @@ import permissionLevel from './structures/permissionLevel';
 import './structures/schemas/guildSchema';
 import MemeHandler from './structures/meme';
 import AudioManager from './structures/audio/Manager';
+import APIWrapperStore from './structures/base/APIWrapperStore';
 
 export default class SnakeBot extends Client {
 
-    public id: string;
-    public shardCount: number;
+    public id = '543796400165748736';
+    public shardCount = 1;
+    public version = 'v0.4.2 - Alpha';
     public meme: MemeHandler;
     public audio: AudioManager;
-    public version = 'v0.4.2 - Alpha';
+    public apis: APIWrapperStore;
 
     public constructor(options: KlasaClientOptions = {}) {
         super(options);
 
-        this.shardCount = 1;
-        this.id = '543796400165748736';
         this.permissionLevels = permissionLevel;
-        this.audio = new AudioManager(this);
         this.meme = new MemeHandler(this);
+        this.apis = new APIWrapperStore(this);
+
+        this.registerStore(this.apis);
+        this.audio = new AudioManager(this);
 
     }
 

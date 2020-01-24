@@ -5,19 +5,17 @@ import { LavalinkServer } from '../../../config';
 import { VoiceChannel, Guild, Collection } from 'discord.js';
 import AudioTrack from './AudioTrack';
 import AudioPlayer from './AudioPlayer';
-import YoutubeHandler from '../apis/YoutubeHandler';
 
 export default class AudioManager {
 
     public client: SnakeBot;
     public lavalink: PlayerManager;
     public players: Collection<string, AudioPlayer>;
-    public youtube: YoutubeHandler;
+    public youtube: YoutubeAPI;
 
     public constructor(client: SnakeBot) {
         this.client = client;
         this.players = new Collection();
-        this.youtube = new YoutubeHandler(process.env.YT_KEY as string);
         this.lavalink = new PlayerManager(this.client, LavalinkServer, {
             user: client.id,
             shards: client.shardCount,

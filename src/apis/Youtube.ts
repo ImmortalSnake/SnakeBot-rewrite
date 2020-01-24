@@ -1,46 +1,43 @@
 import fetch from 'node-fetch';
 import { util } from 'klasa';
+import APIWrapper from '../lib/structures/base/APIWrapper';
+import APIWrapperStore from '../lib/structures/base/APIWrapperStore';
 
-export default class {
+export default class YoutubeAPI extends APIWrapper {
 
-    public readonly apikey: string;
-    private readonly apiURL = 'https://www.googleapis.com/youtube/v3/';
-    public constructor(apikey: string) {
-        this.apikey = apikey;
+    public constructor(store: APIWrapperStore, file: string[], directory: string) {
+        super(store, file, directory, {
+            apiURL: 'https://www.googleapis.com/youtube/v3/',
+            apiKey: process.env.YT_KEY
+        });
+    }
+
+    public defaultParams(q: string, options: DefaultOptions = {}) {
+        return util.mergeDefault({
+            q,
+            part: 'snippet',
+            maxResults: 10,
+            key: this.apiKey
+        }, options);
     }
 
     public async search(query: string, options: YoutubeSearchOptions = {}) {
         if (options.type && !['channel', 'video', 'playlist'].includes(options.type.toLowerCase())) throw `Invalid Search Type`;
-        return fetch(this.getURL('search', util.mergeDefault({
-            q: query,
-            part: 'snippet',
-            maxResults: 10
-        }, options)))
+        return fetch(this.getURL('search', util.mergeDefault(this.defaultParams(query), options)))
             .then(res => res.json())
             .then(body => body as YouTubeResultOk);
     }
 
     public async searchVideos(query: string, options: Record<string, string> = {}) {
-        return fetch(this.getURL('videos', util.mergeDefault({
-            q: query,
-            part: 'snippet',
-            maxResults: 10
-        }, options)))
-            .then(res => res.json())
-            .then(body => body);
+        return fetch(this.getURL('videos', util.mergeDefault(this.defaultParams(query), options)))
+            .then(res => res.json());
     }
 
-    private getURL(type = '', object = {}): string {
-        const url = new URL(`${this.apiURL}${type}`);
+}
 
-        url.searchParams.append('key', this.apikey);
-        for (const [key, val] of Object.entries(object)) {
-            url.searchParams.append(key, val as string);
-        }
-
-        return url.toString();
-    }
-
+interface DefaultOptions {
+    maxResults?: number;
+    part?: string;
 }
 
 export interface YoutubeSearchOptions {

@@ -1,7 +1,7 @@
 import { CommandStore, KlasaMessage, Timestamp } from 'klasa';
 import SnakeCommand from '../../lib/structures/base/SnakeCommand';
 import SnakeEmbed from '../../lib/structures/SnakeEmbed';
-import { YouTubeResultOkItem } from '../../lib/structures/YoutubeHandler';
+import YoutubeAPI, { YouTubeResultOkItem } from '../../apis/Youtube';
 
 export default class extends SnakeCommand {
 
@@ -16,8 +16,9 @@ export default class extends SnakeCommand {
 
     public async run(msg: KlasaMessage, [ytchannel]: [string]): Promise<KlasaMessage | KlasaMessage[]> {
         const type = msg.content.split('--')[1]?.toLowerCase().trim();
+        const youtube = this.client.apis.get('Youtube') as YoutubeAPI;
 
-        return this.client.audio.youtube.search(ytchannel, { maxResults: 1, part: 'snippet', type })
+        return youtube.search(ytchannel, { maxResults: 1, part: 'snippet', type })
             .then(data => {
                 if (!data.items || !data.items.length) throw 'Could not find any youtube channel with that title';
                 const result = data.items[0];
