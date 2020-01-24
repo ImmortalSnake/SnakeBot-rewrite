@@ -12,9 +12,13 @@ export default class SnakeEmbed extends MessageEmbed {
         this.client = msg.client as KlasaClient;
         this.msg = msg;
 
-        this.setColor(msg.guild ? msg.member!.displayColor : COLORS.PRIMARY);
+        this.setColor(this.displayColor);
         this.setAuthor(this.client.user?.tag, this.client.user?.displayAvatarURL());
         this.setFooter(`Requested By: ${msg.author.tag}`);
+    }
+
+    public get displayColor() {
+        return this.msg.guild ? this.msg.member!.displayColor : COLORS.PRIMARY;
     }
 
     public setLocaleDescription(key: string, ...args: any[]) {

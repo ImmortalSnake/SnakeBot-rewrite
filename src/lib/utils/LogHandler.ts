@@ -1,6 +1,6 @@
 import { KlasaMessage } from 'klasa';
 import { MessageEmbed, ClientUser, User, Message, TextChannel, Guild } from 'discord.js';
-const ms = require('ms');
+import Util from './Util';
 
 interface LogHandlerOptions {
     id: number;
@@ -26,6 +26,6 @@ export default async function(msg: KlasaMessage, { id, reason, user, type, moder
         .setFooter('At: ')
         .setTimestamp();
 
-    if (duration) logEmbed.addField('Duration', ms(duration, { 'long': true }), true);
+    if (duration) logEmbed.addField('Duration', Util.msToDuration(duration), true);
     return (chan as TextChannel).send(logEmbed);
 }

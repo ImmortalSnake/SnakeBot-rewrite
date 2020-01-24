@@ -1,8 +1,7 @@
 import { CommandStore, KlasaMessage } from 'klasa';
 import SnakeBot from '../../lib/client';
 import SnakeCommand from '../../lib/structures/base/SnakeCommand';
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const ms = require('ms');
+import Util from '../../lib/utils/Util';
 
 export default class extends SnakeCommand {
 
@@ -32,7 +31,7 @@ export default class extends SnakeCommand {
             .setFooter('At')
             .setTimestamp(Case.time);
 
-        if (Case.duration) embed.addField('Duration', ms(Case.duration, { 'long': true }), true);
+        if (Case.duration) embed.addField('Duration', Util.msToDuration(Case.duration), true);
         return msg.sendEmbed(embed);
     }
 
