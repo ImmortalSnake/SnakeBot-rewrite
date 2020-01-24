@@ -10,7 +10,7 @@ export default class extends MusicCommand {
     }
 
     public async run(msg: KlasaMessage): Promise<KlasaMessage | KlasaMessage[] | null> {
-        this.client.audio.leave(msg.guild!);
+        await this.client.audio.leave(msg.guild!);
         return msg.send(`Left the voice channel`);
     }
 

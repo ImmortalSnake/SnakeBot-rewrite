@@ -13,7 +13,7 @@ export default class extends MusicCommand {
     public async run(msg: KlasaMessage, [volume]: [number?]): Promise<KlasaMessage | KlasaMessage[] | null> {
         if (!volume) return msg.send(`🔊 The volume for this guild is **${msg.guild!.audio!.state.volume}**`);
 
-        msg.guild!.audio!.volume(volume);
+        await msg.guild!.audio!.volume(volume);
         return msg.send(`🔊 Set the volume to **${volume}**`);
     }
 
