@@ -1,8 +1,7 @@
 import { CommandStore, KlasaMessage } from 'klasa';
 import { MessageEmbed } from 'discord.js';
-import { SnakeBotConfig } from '../../config';
 import SnakeCommand from '../../lib/structures/base/SnakeCommand';
-import fetch from 'node-fetch';
+import WeatherAPI from '../../apis/OpenWeather';
 
 export default class extends SnakeCommand {
 
@@ -14,8 +13,8 @@ export default class extends SnakeCommand {
     }
 
     public async run(msg: KlasaMessage, [city]: [string]): Promise<KlasaMessage | KlasaMessage[] | null> {
-        await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&APPID=${SnakeBotConfig.WeatherKey}`)
-            .then(res => res.json())
+        const weather = this.client.apis.get('OpenWeather') as WeatherAPI;
+        return weather.fetch(city)
             .then(data => {
                 if (!data.weather) throw 'Invalid City Name!';
                 const temp = data.main.temp - 273.15;
@@ -38,8 +37,6 @@ export default class extends SnakeCommand {
                 `)
                     .setFooter('Powered by Open Weather'));
             });
-
-        return null;
     }
 
     public celsiusToFarenheit(temp: number) {
