@@ -17,7 +17,9 @@ export default class AudioPlayer extends Player {
         super(node, options);
 
         // this.setVolume(this.volume);
+
         this.on('end', data => this.onEnd(data));
+        this.on('error', err => console.error(err));
     }
     /*
     public setVolume(volume: number) {
@@ -47,15 +49,15 @@ export default class AudioPlayer extends Player {
         this.bassboosted = state || !this.bassboosted;
         if (this.bassboosted) {
             this.previousVolume = this.state.volume;
-            this.volume(150);
+            await this.volume(150);
 
             await this.equalizer(Array(6).fill(0).map((_, i) => ({ band: i, gain: i })));
         } else {
-            if (this.previousVolume) this.volume(this.previousVolume);
+            if (this.previousVolume) await this.volume(this.previousVolume);
             await this.equalizer(Array(6).fill(0).map((_, i) => ({ band: i, gain: 0 })));
         }
 
-        return state || !this.bassboosted;
+        return state || this.bassboosted;
     }
 
     public handleTrack(msg: KlasaMessage, track: AudioTrack) {

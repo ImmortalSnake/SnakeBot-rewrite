@@ -11,7 +11,6 @@ export default class AudioManager {
     public client: SnakeBot;
     public lavalink: PlayerManager;
     public players: Collection<string, AudioPlayer>;
-    public youtube: YoutubeAPI;
 
     public constructor(client: SnakeBot) {
         this.client = client;
