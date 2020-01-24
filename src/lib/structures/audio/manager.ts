@@ -31,7 +31,7 @@ export default class AudioManager {
         const player = this.lavalink.join({
             guild: channel.guild.id,
             channel: channel.id,
-            host: LavalinkServer[0].host
+            host: this.node.tag || this.node.host
         }, { selfdeaf: true });
 
         return this.players.set(channel.guild.id, player as AudioPlayer);

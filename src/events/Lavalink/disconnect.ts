@@ -10,8 +10,8 @@ export default class extends Event {
         });
     }
 
-    public run(node: LavalinkNode, err: Error) {
-        this.client.console.warn(`There was an error at Lavalink Node ${node.tag}:\n${err}`);
+    public run(node: LavalinkNode, code: number, reason: string) {
+        this.client.console.warn(`Disconnected from Lavalink Node ${node.tag}\nCode: ${code}\nReason: ${reason}`);
     }
 
 }

@@ -27,10 +27,11 @@ export const mongoOptions = {
 
 export const LavalinkServer = [
     {
-        name: 'Local Lavalink Server',
+        tag: 'Local Lavalink Server',
         host: 'localhost',
-        auth: 'youshallnotpass',
-        port: 2333
+        password: 'youshallnotpass',
+        port: 2333,
+        reconnectInterval: 30 * 1000
     } /*
     {
         name: 'Repl Lavalink Server',
