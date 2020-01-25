@@ -60,6 +60,16 @@ export default class AudioPlayer extends Player {
         return state || this.bassboosted;
     }
 
+    public totalTime() {
+        let accumulator = 0;
+        for (const track of this.tracks) {
+            if (track.info.isStream) return -1;
+            accumulator += track.info.length;
+        }
+
+        return accumulator;
+    }
+
     public handleTrack(msg: KlasaMessage, track: AudioTrack) {
         track.requester = msg.author.tag;
         if (!this.current) {

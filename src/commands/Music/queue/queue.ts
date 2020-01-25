@@ -2,6 +2,8 @@ import { KlasaMessage, RichDisplay, util, CommandStore } from 'klasa';
 import { MessageEmbed } from 'discord.js';
 import AudioTrack from '../../../lib/structures/audio/AudioTrack';
 import MusicCommand from '../../../lib/structures/base/MusicCommand';
+import { ZWS } from '../../../lib/utils/constants';
+import Util from '../../../lib/utils/Util';
 
 export default class extends MusicCommand {
 
@@ -22,8 +24,9 @@ export default class extends MusicCommand {
         const queueDisplay = new RichDisplay(new MessageEmbed()
             .setColor(msg.member!.displayColor)
             .setTitle(`Music Queue for ${msg.guild!.name} ${player.repeat ? ' [Looping]' : ''}`)
-            .addBlankField()
-            .addField('Now Playing', `[${player.current.info.title}](${player.current.info.uri}) \`${player.current.requester}\``));
+            .addField(ZWS, `**Now Playing**
+            [${player.current.info.title}](${player.current.info.uri}) \`${player.current.requester}\``)
+            .setFooter(`**${player.tracks.length}** song(s) in queue | \`${Util.formatDuration(player.totalTime())}\` Expected length`));
 
         const songFields = player.tracks.map((track, position) => this.generateSongField(msg, position, track));
 
@@ -38,16 +41,6 @@ export default class extends MusicCommand {
     private generateSongField(msg: KlasaMessage, position: number, track: AudioTrack) {
         const { title, uri } = track.info;
         return msg.language.get('COMMAND_QUEUE_LINE', position + 1, track.friendlyDuration, title, uri, track.requester);
-    }
-
-    private calculateTotalDuration(tracks: AudioTrack[]) {
-        let accumulator = 0;
-        for (const track of tracks) {
-            if (track.info.isStream) return -1;
-            accumulator += track.info.length;
-        }
-
-        return accumulator;
     }
 
 }

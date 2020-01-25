@@ -1,4 +1,5 @@
 import Util from '../../utils/Util';
+import { LavalinkTrackLoaded, LavalinkPlaylistInfo } from './Manager';
 
 interface AudioTrackInfo {
     identifier: string;
@@ -17,10 +18,13 @@ export default class AudioTrack {
     public info: AudioTrackInfo;
     public requester = '';
     public skippers: string[] = [];
+    public playlist: LavalinkPlaylistInfo;
 
-    public constructor(data: any) {
+    public constructor(data: LavalinkTrackLoaded, playlistInfo: LavalinkPlaylistInfo) {
         this.track = data.track;
         this.info = data.info;
+
+        this.playlist = playlistInfo;
     }
 
     public get friendlyDuration() {

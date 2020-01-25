@@ -11,8 +11,9 @@ export default class extends Argument {
 
         const { audio } = this.client as SnakeBot;
 
-        arg = this.getFullArgs(message, arg).replace(/^<(.+)>$/g, '$1');
+        arg = this.getFullArgs(message, arg); // .replace(/^<(.+)>$/g, '$1');
         const parsedURL = this.parseURL(arg);
+        console.log(arg, parsedURL);
         let returnAll: boolean;
         let tracks: AudioTrack[];
         let soundcloud = true;
@@ -50,9 +51,7 @@ export default class extends Argument {
         const { usageDelim } = message.command!;
 
         const index = args.indexOf(arg);
-        const rest = args.splice(index, args.length - index).join(usageDelim!);
-        console.log(rest);
-        return rest;
+        return args.splice(index, args.length - index).join(usageDelim!);
     }
 
 }

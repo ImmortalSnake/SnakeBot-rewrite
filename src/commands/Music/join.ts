@@ -2,7 +2,7 @@ import { KlasaMessage, CommandStore } from 'klasa';
 import MusicCommand from '../../lib/structures/base/MusicCommand';
 import { VoiceChannel } from 'discord.js';
 
-export default class extends MusicCommand {
+export default class JoinCommand extends MusicCommand {
 
     public constructor(store: CommandStore, file: string[], directory: string) {
         super(store, file, directory, {
