@@ -23,6 +23,7 @@ export default class SnakeBot extends Client {
         this.apis = new APIWrapperStore(this);
 
         this.registerStore(this.apis);
+
         this.audio = new AudioManager(this);
 
     }
