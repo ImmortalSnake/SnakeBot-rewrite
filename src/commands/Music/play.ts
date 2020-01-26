@@ -1,9 +1,8 @@
-import { CommandStore, KlasaMessage } from 'klasa';
+import { CommandStore, KlasaMessage, Command } from 'klasa';
 import AudioTrack from '../../lib/structures/audio/AudioTrack';
 import { MessageEmbed } from 'discord.js';
 import Util from '../../lib/utils/Util';
 import MusicCommand from '../../lib/structures/base/MusicCommand';
-import JoinCommand from './join';
 // import AudioEmbed from '../../lib/structures/audio/embed';
 
 export default class extends MusicCommand {
@@ -16,10 +15,9 @@ export default class extends MusicCommand {
     }
 
     public async run(msg: KlasaMessage, [tracks]: [AudioTrack[]]): Promise<KlasaMessage | KlasaMessage[] | null> {
-        if (!msg.guild!.audio || !msg.guild!.me!.voice.channelID) await (this.store.get('join')! as unknown as JoinCommand).run(msg);
+        if (!msg.guild!.audio || !msg.guild!.me!.voice.channelID) await (this.store.get('join') as Command)!.run(msg, []);
 
         tracks.forEach(track => msg.guild!.audio!.handleTrack(msg, track));
-
         const { uri, title, length } = tracks[0].info;
 
         const embed = new MessageEmbed()

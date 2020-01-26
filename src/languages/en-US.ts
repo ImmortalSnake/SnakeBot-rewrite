@@ -25,6 +25,7 @@ export default class extends Language {
             ].join('\n'),
 
 
+            COMMAND_AKINATOR_NO_GUESS: 'I don\'t have any guesses. Bravo.',
             COMMAND_TICTACTOE_DIFFICULTY: '**Select Difficulty:**\n**[1]** - `Easy`\n**[2]** - `Medium`\n**[3]** - `Impossible`',
             COMMAND_TICTACTOE_INVALID_DIFFICULTY: ':x: Invalid Difficulty Level',
 
@@ -38,7 +39,14 @@ export default class extends Language {
             COMMAND_JOIN_VOICE_SAME: `:x: Hello! I am already in your voice channel`,
             COMMAND_QUEUE_LINE: (position, duration, title, url, requester) => `**[${position}]** │ ${duration} │ [${title}](${url}) │ Requester: **${requester}**`,
 
-            COMMAND_REMINDER_CREATE: duration => `:white_check_mark: A Reminder was created for ${duration}!`
+            COMMAND_REMINDER_CREATE: duration => `:white_check_mark: A Reminder was created for ${duration}!`,
+
+            /**
+             * Errors
+             */
+
+            TIME_UP: ':x: **Sorry, time is up!**',
+            CHANNEl_MULTIPLE_GAME: ':x: **Only one game may be occuring per channel**'
         };
     }
 

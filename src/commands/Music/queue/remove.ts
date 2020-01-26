@@ -11,9 +11,9 @@ export default class extends MusicCommand {
     }
 
     public async run(msg: KlasaMessage, [index]: [number]): Promise<KlasaMessage | KlasaMessage[] | null> {
-        if (index > msg.guild!.audio!.tracks.length || index < 0) throw 'Invalid number';
+        if (index > msg.guild!.audio!.tracks.length || index < 1) throw 'Invalid number';
 
-        msg.guild!.audio!.tracks.splice(index, 1);
+        msg.guild!.audio!.tracks.splice(index + 1, 1);
         return msg.send(`Resumed current playing music`);
     }
 
