@@ -32,7 +32,7 @@ export default class AudioManager {
     }
 
     public join(channel: VoiceChannel) {
-        if (!this.node?.connected) throw new Error('No lavalink nodes were initialised');
+        if (!this.node?.connected) throw 'No lavalink nodes were initialised';
         const player = this.lavalink.join({
             guild: channel.guild.id,
             channel: channel.id,
@@ -50,7 +50,7 @@ export default class AudioManager {
     }
 
     public async fetchSongs(query: string) {
-        if (!this.node) throw new Error('No lavalink nodes were initialised');
+        if (!this.node?.connected) throw 'No lavalink nodes were initialised';
         const params = new URLSearchParams();
         params.append('identifier', query);
 

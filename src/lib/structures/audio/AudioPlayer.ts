@@ -16,17 +16,9 @@ export default class AudioPlayer extends Player {
     public constructor(node: LavalinkNode, options: PlayerOptions) {
         super(node, options);
 
-        // this.setVolume(this.volume);
-
         this.on('end', data => this.onEnd(data));
-        this.on('error', err => console.error(err));
+        this.on('error', err => this.client.console.error(`An error has occured at ${this.channel}:\n${err}`));
     }
-    /*
-    public setVolume(volume: number) {
-        this.volume = volume;
-        return super.volume(volume);
-    }
-*/
 
     public setRepeat(loop?: boolean) {
         this.repeat = loop || !this.repeat;
@@ -74,7 +66,6 @@ export default class AudioPlayer extends Player {
         track.requester = msg.author.tag;
         if (!this.current) {
             this.current = track;
-            console.log(track);
             return this.play(track.track);
         }
 
