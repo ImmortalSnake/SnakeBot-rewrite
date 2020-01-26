@@ -2,8 +2,7 @@ import { CommandStore, KlasaMessage, util } from 'klasa';
 import fetch from 'node-fetch';
 import { MessageEmbed } from 'discord.js';
 import SnakeCommand from '../../lib/structures/base/SnakeCommand';
-
-const ZWS = '\u200B';
+import { ZWS } from '../../lib/utils/constants';
 
 export default class extends SnakeCommand {
 
