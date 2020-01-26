@@ -21,6 +21,10 @@ export default abstract class Util {
         return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
     }
 
+    public static choice<T>(arr: Array<T>): T {
+        return arr[Math.floor(Math.random() * arr.length)];
+    }
+
     public static formatTime(syncTime: string, asyncTime?: string): string {
         return asyncTime ? `⏱ ${asyncTime}<${syncTime}>` : `⏱ ${syncTime}`;
     }
