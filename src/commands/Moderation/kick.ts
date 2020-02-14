@@ -1,5 +1,5 @@
 import { CommandStore, KlasaMessage } from 'klasa';
-import { Guild, GuildMember, User } from 'discord.js';
+import { GuildMember } from 'discord.js';
 import LogHandler from '../../lib/utils/LogHandler';
 import SnakeCommand from '../../lib/structures/base/SnakeCommand';
 
@@ -14,16 +14,23 @@ export default class extends SnakeCommand {
         });
     }
 
-    public async run(msg: KlasaMessage, [user, reason = 'N/A']: [GuildMember, string]): Promise<KlasaMessage | KlasaMessage[]> {
-        if (user && user.permissions.has('MANAGE_GUILD')) return msg.sendMessage('Cannot kick this user');
+    public async run(msg: KlasaMessage, [member, reason = 'N/A']: [GuildMember, string]): Promise<KlasaMessage | KlasaMessage[]> {
+        if (member.id === msg.author.id) throw ':x: You cannot kicl yourself!';
+        if (member.id === this.client.id) throw ':x: I cannot kick myself';
 
-        await user.send(`You were kicked from ${(msg.guild as Guild).name} for reason:\n${reason}`).catch(() => null);
-        await user.kick(reason);
+        if (member) {
+            if (member.roles.highest.position >= msg.member!.roles.highest.position) throw ':x: You cannot kick this user!';
+            if (!member.kickable) throw ':x: Cannot kick this user!';
+        }
+
+
+        await member.send(`You were kicked from ${msg.guild!.name} for reason:\n${reason}`).catch(() => null);
+        await member.kick(reason);
 
         const data = {
             id: msg.guildSettings.get('modlogs.total') as number,
-            moderator: (msg.author as User).id,
-            user: user.id,
+            moderator: msg.author.id,
+            user: member.id,
             reason,
             time: Date.now(),
             type: 'Kick'
@@ -33,7 +40,7 @@ export default class extends SnakeCommand {
         await msg.guildSettings.update('modlogs.total', (msg.guildSettings.get('modlogs.total') as number) + 1);
         await LogHandler(msg, data);
 
-        return msg.sendMessage(`${user.toString()} was banned for reason **${reason}**`);
+        return msg.sendMessage(`${member.toString()} was kicked for reason **${reason}**`);
     }
 
 }

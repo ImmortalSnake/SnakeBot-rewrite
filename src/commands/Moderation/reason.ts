@@ -1,7 +1,7 @@
 import { CommandStore, KlasaMessage } from 'klasa';
-import SnakeBot from '../../lib/client';
 import SnakeCommand from '../../lib/structures/base/SnakeCommand';
 import Util from '../../lib/utils/Util';
+import SnakeEmbed from '../../lib/structures/SnakeEmbed';
 
 export default class extends SnakeCommand {
 
@@ -25,10 +25,9 @@ export default class extends SnakeCommand {
         const mod = await this.client.users.fetch(Case.moderator);
         const user = await this.client.users.fetch(Case.user);
 
-        const embed = (this.client as SnakeBot).embed(msg, {
-            description: `Reason: \`${Case.reason}\``,
-            title: `${Case.type} Case #${Case.id}`
-        })
+        const embed = new SnakeEmbed(msg)
+            .setDescription(`Reason: \`${Case.reason}\``)
+            .setTitle(`${Case.type} Case #${Case.id}`)
             .addField('Moderator', mod ? mod.tag : Case.moderator, true)
             .addField('Punished User', user ? user.tag : Case.user, true)
             .setFooter('At')

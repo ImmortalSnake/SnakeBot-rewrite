@@ -1,5 +1,5 @@
 import { CommandStore, KlasaMessage } from 'klasa';
-import { Guild, GuildMember, User } from 'discord.js';
+import { GuildMember, User } from 'discord.js';
 import LogHandler from '../../lib/utils/LogHandler';
 import SnakeCommand from '../../lib/structures/base/SnakeCommand';
 
@@ -14,8 +14,8 @@ export default class extends SnakeCommand {
     }
 
     public async run(msg: KlasaMessage, [user, reason = 'N/A']: [GuildMember, string]): Promise<KlasaMessage | KlasaMessage[]> {
-        // eslint-disable-next-line @typescript-eslint/no-empty-function
-        await user.send(`You were warned in ${(msg.guild as Guild).name} for: ${reason}`).catch(() => null);
+        if (user.roles.highest.position >= msg.member!.roles.highest.position) throw ':x: You cannot warn this user!';
+        await user.send(`You were warned in ${msg.guild!.name} for: ${reason}`).catch(() => null);
 
         const data = {
             id: msg.guildSettings.get('modlogs.total') as number,

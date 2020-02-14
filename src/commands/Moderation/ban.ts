@@ -1,5 +1,5 @@
 import { CommandStore, KlasaMessage } from 'klasa';
-import { Guild, User } from 'discord.js';
+import { User } from 'discord.js';
 import LogHandler from '../../lib/utils/LogHandler';
 import SnakeCommand from '../../lib/structures/base/SnakeCommand';
 
@@ -9,20 +9,27 @@ export default class extends SnakeCommand {
         super(store, file, directory, {
             usage: '<user:user> [reason:...str]',
             requiredPermissions: ['BAN_MEMBERS'],
-            permissionLevel: 5
+            permissionLevel: 5,
+            description: lang => lang.get('COMMAND_BAN_DESCRIPTION')
         });
     }
 
     public async run(msg: KlasaMessage, [user, reason = 'N/A']: [User, string]): Promise<KlasaMessage | KlasaMessage[]> {
-        const member = (msg.guild as Guild).members.get(user.id);
-        if (member && member.permissions.has('MANAGE_GUILD')) return msg.sendMessage('Cannot ban this user');
+        if (user.id === msg.author.id) throw ':x: You cannot ban yourself!';
+        if (user.id === this.client.id) throw ':x: I cannot ban myself';
 
-        await user.send(`You were banned from ${(msg.guild as Guild).name} for reason:\n${reason}`).catch(() => null);
-        await (msg.guild as Guild).members.ban(user.id, { reason });
+        const member = msg.guild!.members.get(user.id);
+        if (member) {
+            if (member.roles.highest.position >= msg.member!.roles.highest.position) throw ':x: You cannot ban this user!';
+            if (!member.bannable) throw ':x: Cannot ban this user!';
+        }
+
+        await user.send(`You were banned from **${msg.guild!.name}** for reason:\n**${reason}**`).catch(() => null);
+        await msg.guild!.members.ban(user.id, { reason });
 
         const data = {
             id: msg.guildSettings.get('modlogs.total') as number,
-            moderator: (msg.author as User).id,
+            moderator: msg.author!.id,
             user: user.id,
             reason,
             time: Date.now(),

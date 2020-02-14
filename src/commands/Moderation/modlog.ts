@@ -1,5 +1,5 @@
-import { CommandStore, KlasaMessage, KlasaGuild, KlasaUser, RichDisplay } from 'klasa';
-import { MessageEmbed, ClientUser, User } from 'discord.js';
+import { CommandStore, KlasaMessage, KlasaUser, RichDisplay } from 'klasa';
+import { MessageEmbed, User } from 'discord.js';
 import SnakeCommand from '../../lib/structures/base/SnakeCommand';
 
 export default class extends SnakeCommand {
@@ -20,9 +20,9 @@ export default class extends SnakeCommand {
         if (cases.length === 0) throw `No cases were found for this ${user ? 'user' : 'guild'}`;
 
         const display = new RichDisplay(new MessageEmbed()
-            .setTitle(`Modlogs for ${user ? user.tag : (msg.guild as KlasaGuild).name}`)
+            .setTitle(`Modlogs for ${user ? user.tag : msg.guild!.name}`)
             .setColor('#2f62b5')
-            .setAuthor((this.client.user as ClientUser).username, (this.client.user as ClientUser).displayAvatarURL()));
+            .setAuthor(this.client.user!.username, this.client.user!.displayAvatarURL()));
 
         for (let i = 0; i < cases.length; i++) {
             if (i % 10 === 0) {

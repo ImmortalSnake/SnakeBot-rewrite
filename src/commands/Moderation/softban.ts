@@ -1,5 +1,5 @@
 import { CommandStore, KlasaMessage } from 'klasa';
-import { Guild, User } from 'discord.js';
+import { User } from 'discord.js';
 import LogHandler from '../../lib/utils/LogHandler';
 import SnakeCommand from '../../lib/structures/base/SnakeCommand';
 
@@ -14,19 +14,19 @@ export default class extends SnakeCommand {
     }
 
     public async run(msg: KlasaMessage, [user, days = 7, reason = 'N/A']: [User, number, string]): Promise<KlasaMessage | KlasaMessage[]> {
-        const member = (msg.guild as Guild).members.get(user.id);
+        const member = msg.guild!.members.get(user.id);
         if (member) {
             if (member.permissions.has('MANAGE_GUILD')) throw 'You cannot ban this user';
             else if (!member.bannable) throw 'Could not ban this user';
         }
 
-        await user.send(`You were banned from ${(msg.guild as Guild).name} for reason:\n${reason}`).catch(() => null);
-        await (msg.guild as Guild).members.ban(user.id, { reason, days });
-        await (msg.guild as Guild).members.unban(user.id, `Softban Released`);
+        await user.send(`You were banned from ${msg.guild!.name} for reason:\n${reason}`).catch(() => null);
+        await msg.guild!.members.ban(user.id, { reason, days });
+        await msg.guild!.members.unban(user.id, `Softban Released`);
 
         const data = {
             id: msg.guildSettings.get('modlogs.total') as number,
-            moderator: (msg.author as User).id,
+            moderator: msg.author.id,
             user: user.id,
             reason,
             time: Date.now(),

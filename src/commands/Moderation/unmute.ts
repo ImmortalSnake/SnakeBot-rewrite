@@ -1,5 +1,5 @@
 import { CommandStore, KlasaMessage } from 'klasa';
-import { Guild, GuildMember, User } from 'discord.js';
+import { GuildMember, Role } from 'discord.js';
 import LogHandler from '../../lib/utils/LogHandler';
 import SnakeCommand from '../../lib/structures/base/SnakeCommand';
 
@@ -15,7 +15,7 @@ export default class extends SnakeCommand {
     }
 
     public async run(msg: KlasaMessage, [member, reason = 'N/A']: [GuildMember, string]): Promise<KlasaMessage | KlasaMessage[]> {
-        const muteRole = msg.guild!.roles.get(msg.guildSettings.get('roles.muted') as string) || (msg.guild as Guild).roles.find(r => r.name.toLowerCase() === 'muted');
+        const [muteRole] = await msg.guildSettings.resolve('roles.mute') as [Role];
 
         if (!muteRole) throw `A mute role was not found for this guild`;
         if (!member.roles.has(muteRole.id)) throw 'The member is not muted';
@@ -24,7 +24,7 @@ export default class extends SnakeCommand {
 
         const data = {
             id: msg.guildSettings.get('modlogs.total') as number,
-            moderator: (msg.author as User).id,
+            moderator: msg.author.id,
             user: member.id,
             reason,
             time: Date.now(),
