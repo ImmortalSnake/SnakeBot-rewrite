@@ -101,8 +101,8 @@ export default class extends Command {
         }
     }
 
-    private timedEval(msg: KlasaMessage, code: string, flagTime: number): any {
-        if (flagTime === Infinity || flagTime === 0) return this.eval(msg, code);
+    private timedEval(msg: KlasaMessage, code: string, flagTime: number) {
+        if (flagTime === Infinity || flagTime === 0) return this.eval(msg, Util.removeCodeBlock(code)?.shift() || code);
         return Promise.race([
             util.sleep(flagTime).then(() => ({
                 success: false,

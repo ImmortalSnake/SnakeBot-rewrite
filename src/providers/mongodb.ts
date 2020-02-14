@@ -26,6 +26,7 @@ function parseEngineInput(updated: any) {
 export default class extends Provider {
 
     public db: any;
+    public enabled = false;
     public async init(): Promise<void> {
         const mongoClient = await MongoClient.connect(mongoOptions.uri,
             util.mergeObjects(mongoOptions.options, { useNewUrlParser: true }));

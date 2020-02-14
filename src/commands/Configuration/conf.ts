@@ -6,6 +6,7 @@ export default class extends SnakeCommand {
     public constructor(store: CommandStore, file: string[], directory: string) {
         super(store, file, directory, {
             permissionLevel: 6,
+            aliases: ['config'],
             guarded: true,
             subcommands: true,
             description: language => language.get('COMMAND_CONF_SERVER_DESCRIPTION'),
