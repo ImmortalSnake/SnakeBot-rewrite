@@ -31,7 +31,7 @@ export const LavalinkServer = [
         host: 'localhost',
         password: 'youshallnotpass',
         port: 2333,
-        reconnectInterval: 30 * 1000
+        reconnectInterval: 30 * 1000 * 10000
     } /*
     {
         name: 'Repl Lavalink Server',
@@ -43,5 +43,6 @@ export const LavalinkServer = [
 ];
 
 export const SnakeBotConfig = {
-    WeatherKey: process.env.WEATHER_KEY as string
+    WeatherKey: process.env.WEATHER_KEY as string,
+    Lavalink: true
 };

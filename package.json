@@ -4,7 +4,11 @@
   "description": "Rewrite of the original SnakeBot in typescript and using the klasa library",
   "main": "dist/index.js",
   "scripts": {
-    "start": "tsc"
+    "start": "node dist/index.js",
+    "lint": "eslint --ext ts src --fix",
+    "test": "eslint --ext ts src",
+    "build": "tsc -p .",
+    "watch": "tsc -p . -w"
   },
   "author": "ImmortalSnake",
   "license": "MIT",
@@ -13,14 +17,16 @@
     "@types/mongodb": "^3.1.28",
     "@types/node-fetch": "^2.3.7",
     "cheerio": "^1.0.0-rc.3",
-    "discord.js": "github:discordjs/discord.js#master",
+    "discord.js": "github:discordjs/discord.js#fe7df708e44e0280dfaf0f8e457b154781bb5140",
     "discord.js-lavalink": "github:MrJacz/discord.js-lavalink#v3",
     "dotenv": "^8.0.0",
     "klasa": "github:dirigeants/klasa#settings",
+    "klasa-giveaway": "github:immortalsnake/klasa-giveaway#settings",
     "mongodb": "^3.2.7"
   },
   "devDependencies": {
     "@types/node": "^13.5.0",
+    "@types/ws": "^7.2.1",
     "@typescript-eslint/eslint-plugin": "^2.15.0",
     "@typescript-eslint/parser": "^2.15.0",
     "eslint": "^6.8.0",
