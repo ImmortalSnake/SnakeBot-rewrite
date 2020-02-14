@@ -49,10 +49,10 @@ export default abstract class Util {
         const { seconds, minutes, hours, days } = this.extractDuration(duration);
 
         let mess = '';
-        if (days) mess += `**${days}** ${days > 1 ? 'days' : 'day'} `;
-        if (hours) mess += `**${hours}** ${hours > 1 ? 'hours' : 'hour'} `;
-        if (minutes) mess += `**${minutes}** ${minutes > 1 ? 'minutes' : 'minute'} `;
-        if (seconds) mess += `**${seconds}** ${seconds > 1 ? 'seconds' : 'second'} `;
+        if (days) mess += `**${days}** day${days > 1 ? 's' : ''} `;
+        if (hours) mess += `**${hours}** hour${hours > 1 ? 's' : ''} `;
+        if (minutes) mess += `**${minutes}** minute${minutes > 1 ? 's' : ''} `;
+        if (seconds) mess += `**${seconds}** second${seconds > 1 ? 's' : ''} `;
 
         return mess;
     }
@@ -73,6 +73,11 @@ export default abstract class Util {
 
     public static stripIndents(string: string) {
         return string.replace(/^(\s+)\gm/, '');
+    }
+
+    public static removeCodeBlock(str: string) {
+        const regex = /^```(.*)\n((?:\n|.)*)```$/;
+        return regex.test(str) ? str.match(regex)?.slice(1) : null;
     }
 
     private static extractDuration(duration: number) {

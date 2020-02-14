@@ -1,4 +1,5 @@
 import { Language, LanguageStore } from 'klasa';
+import Util from '../lib/utils/Util';
 
 export default class extends Language {
 
@@ -40,15 +41,283 @@ export default class extends Language {
             COMMAND_QUEUE_LINE: (position, duration, title, url, requester) => `**[${position}]** │ ${duration} │ [${title}](${url}) │ Requester: **${requester}**`,
 
             COMMAND_REMINDER_CREATE: duration => `:white_check_mark: A Reminder was created for ${duration}!`,
+            COMMAND_AFK_CREATE: (user, reason) => `${user} has been set to AFK for reason: **${reason}**`,
+
+            COMMAND_EVAL_SENDHASTE: (time, url, footer) => `Output was too long... sent the result in **hastebin**:\n${url}\n**TYPE**\n${footer}\n${time}`,
+
+            COMMAND_YOUTUBE_NO_SEARCH: 'Could not find any youtube result with that title',
+            /**
+             * Giveaway command locales
+             */
+
+            ENDS_AT: 'Ends At:',
+            ENDED_AT: 'Ended At:',
+            GIVEAWAY_NOT_FOUND: 'Could not find that giveaway! Try again!',
+            MAX_GIVEAWAYS: max => `You can have only upto ${max} giveaways in a guild! Remove a giveaway and try again!`,
+            GIVEAWAY_RUNNING: 'This giveaway is running right now. Wait for it to end or use the `end` command to stop it now!',
+            NO_RUNNING_GIVEAWAY: prefix => `There are no running giveaways in this server. Create one using the \`${prefix}gcreate\` command!`,
+            NO_FINISHED_GIVEAWAY: prefix => `No giveaways were completed in this server. Use \`${prefix}gcreate\` to create one and \`${prefix}gend\` to end it`,
+
+            COMMAND_CREATE_DESCRIPTION: 'Creates a giveaway in the specified channel!',
+            COMMAND_CREATE_EXTENDED: `You must specify the channel, duration, amount of winners and title of the giveaway
+            The bot then sends a message to the channel and reacts with 🎉, members of your server must react with the same emoji in order to participate.
+            Once the timer is up, the bot will pick a few winners and send a message stating the same`,
+
+            COMMAND_DELETE_DESCRIPTION: 'Deletes a giveaway!',
+            COMMAND_DELETE_EXTENDED: `Accidently created a giveaway? No problem!
+            If you do not provide the message id, it will delete the most recent running giveaway
+            Deleting the giveaway message will also work`,
+
+            COMMAND_END_DESCRIPTION: 'Ends a giveaway immediately',
+            COMMAND_END_EXTENDED: `Can't wait for the timer to finish? This command ends your giveaway immediately and picks the winners
+            If you do not provide a message id, it will end the most recent running giveaway`,
+
+            COMMAND_LIST_DESCRIPTION: 'Lists all running giveaways in the server',
+            COMMAND_LIST_EXTENDED: `Quickly see all giveaways and their details running in your server with this command`,
+
+            COMMAND_REROLL_DESCRIPTION: 'Rerolls a previously finished giveaway.',
+            COMMAND_REROLL_EXTENDED: `This command choses new winners for a previously finished giveaway
+            If you do not provide a message id, it will reroll the most recently finished giveaway`,
+
+            COMMAND_START_DESCRIPTION: 'Immediately starts a giveaway in the current channel',
+            COMMAND_START_EXTENDED: `Same as the create command, except you dont need to specify the channel as the current channel will be used`,
+
+            GIVEAWAY_CREATE: ':tada: **GIVEAWAY** :tada:',
+            GIVEAWAY_END: ':tada: **GIVEAWAY ENDED** :tada:',
+            GIVEAWAY_DELETE: id => `Successfully deleted the giveaway with the id: \`${id}\``,
+            GIVEAWAY_WON: (winners, title) => `:tada: Congratulations ${winners}! You won **${title}**`,
+            GIVEAWAY_CREATE_SUCCESS: chan => `A giveaway was started in ${chan}!`,
+            NOT_ENOUGH_REACTIONS: count =>
+                `The Giveaway has ended, not enough people voted.
+				**Votes Required:** \`${count}\``,
+            GIVEAWAY_DESCRIPTION: (winners, tleft, author) =>
+                `**React with :tada: to enter**
+
+				**Winner Count:** \`${winners}\`
+				**Time Left:** ${tleft}
+				**Hosted By:** <@${author}>`,
+
+            GIVEWAY_LIST_TITLE: name => `Active giveaways on **${name}**`,
+            GIVEAWAY_LIST_BODY: (i, message, channel, wCount, time, title) =>
+                `\n**${i}]** \`${message}\` → <#${channel}> | \`${wCount}\` **Winner(s)** | **Ends At:** ${Util.msToDuration(time - Date.now())} | **Title:** \`${title}\``,
+
+            /**
+             * Configuration
+             */
+
+            COMMAND_PREFIX_DESCRIPTION: '',
+            COMMAND_PREFIX_EXTENDED: '',
+
+            /**
+             * Fun
+             */
+
+            COMMAND_8BALL_DESCRIPTION: 'Ask any question and the holy 8ball shall answer',
+            COMMAND_8BALL_EXTENDED: 'Gives you random answers based on your questions',
+
+            COMMAND_AUTOMEME_DESCRIPTION: '',
+            COMMAND_AUTOMEME_EXTENDED: '',
+
+            COMMAND_CUBES_DESCRIPTION: '',
+            COMMAND_CUBES_EXTENDED: '',
+
+            COMMAND_FLIPTEXT_DESCRIPTION: 'Flips your text',
+            COMMAND_FLIPTEXT_EXTENDED: '',
+
+            COMMAND_INSULT_DESCRIPTION: '',
+            COMMAND_INSULT_EXTENDED: '',
+
+            COMMAND_MEME_DESCRIPTION: '',
+            COMMAND_MEME_EXTENDED: '',
+
+            COMMAND_PUN_DESCRIPTION: '',
+            COMMAND_PUN_EXTENDED: '',
+            COMMAND_QUOTE_DESCRIPTION: '',
+            COMMAND_QUOTE_EXTENDED: '',
+            COMMAND_RATE_DESCRIPTION: '',
+            COMMAND_RATE_EXTENDED: '',
+            COMMAND_SAY_DESCRIPTION: '',
+            COMMAND_SAY_EXTENDED: '',
+            COMMAND_SLAP_DESCRIPTION: '',
+            COMMAND_SLAP_EXTENDED: '',
+            COMMAND_VAPORWAVE_DESCRIPTION: '',
+            COMMAND_VAPORWAVE_EXTENDED: '',
+
+            COMMAND_YOUTUBE_DESCRIPTION: 'Searches youtube for a channel, comment or video',
+            COMMAND_YOUTUBE_EXTENDED: 'Fetches details of a particular youtube channel, command or video',
+
+            COMMAND_ZALGO_DESCRIPTION: '',
+            COMMAND_ZALGO_EXTENDED: '',
+            COMMAND_AKINATOR_DESCRIPTION: '',
+            COMMAND_AKINATOR_EXTENDED: '',
+
+            COMMAND_CONNECT4_DESCRIPTION: 'Play a game of connect4 with me or someone else',
+            COMMAND_CONNECT4_EXTENDED: `Connect Four (also known as Four Up, Plot Four, Find Four, Four in a Row, Four in a Line, Drop Four,
+                and Gravitrips) is a two-player connection game in which the players first choose a color and then take turns dropping one 
+                colored disc from the top into a seven-column, six-row vertically suspended grid. 
+                The pieces fall straight down, occupying the lowest available space within the column. 
+                The objective of the game is to be the first to form a horizontal, vertical, or diagonal line of four of one's own discs.`,
+
+            COMMAND_RPS_DESCRIPTION: '',
+            COMMAND_RPS_EXTENDED: '',
+            COMMAND_SLOTS_DESCRIPTION: '',
+            COMMAND_SLOTS_EXTENDED: '',
+
+            COMMAND_TICTACTOE_DESCRIPTION: 'Play a game of tic-tac-toe with me or someone else',
+            COMMAND_TICTACTOE_EXTENDED: `Tic-tac-toe, noughts and crosses, or Xs and Os is a paper-and-pencil game for two players, X and O, who take turns marking the spaces in a 3×3 grid.
+            The player who succeeds in placing three of their marks in a horizontal, vertical, or diagonal row is the winner.`,
+
+            COMMAND_STATS_DESCRIPTION: 'Shows some statistics regarding the bot',
+            COMMAND_STATS_EXTENDED: '',
+
+            COMMAND_HITLER_DESCRIPTION: '',
+            COMMAND_HITLER_EXTENDED: '',
+            COMMAND_MAGIK_DESCRIPTION: '',
+            COMMAND_MAGIK_EXTENDED: '',
+            COMMAND_TRIGGER_DESCRIPTION: '',
+            COMMAND_TRIGGER_EXTENDED: '',
+            COMMAND_TWEET_DESCRIPTION: '',
+            COMMAND_TWEET_EXTENDED: '',
+            COMMAND_WANTED_DESCRIPTION: '',
+            COMMAND_WANTED_EXTENDED: '',
+            COMMAND_YTCOMMENT_DESCRIPTION: '',
+            COMMAND_YTCOMMENT_EXTENDED: '',
+
+            COMMAND_BAN_DESCRIPTION: 'Ban a user/member from your guild',
+            COMMAND_BAN_EXTENDED: `This command requires me to have the \`BAN_MEMBERS\` permission.
+            Only members with a lower role hierarchy than you and me can be banned.`,
+
+            COMMAND_CASE_DESCRIPTION: 'View details of a moderation log case',
+            COMMAND_CASE_EXTENDED: `Shows you information of a certain activity that has taken place in your server (ban, kick, mute, ...) using the case id`,
+
+            COMMAND_KICK_DESCRIPTION: 'Kick a member from your guild',
+            COMMAND_KICK_EXTENDED: `This command requires me to have the \`KICK_MEMBERS\` permission.
+            Only members with a lower role hierarchy than you and me can be kicked.`,
+
+            COMMAND_MODLOG_DESCRIPTION: '',
+            COMMAND_MODLOG_EXTENDED: '',
+            COMMAND_MUTE_DESCRIPTION: '',
+            COMMAND_MUTE_EXTENDED: '',
+            COMMAND_PURGE_DESCRIPTION: '',
+            COMMAND_PURGE_EXTENDED: '',
+
+            COMMAND_REASON_DESCRIPTION: 'View or edit the reason of a moderation log case',
+            COMMAND_REASON_EXTENDED: '',
+
+            COMMAND_REPORT_DESCRIPTION: '',
+            COMMAND_REPORT_EXTENDED: '',
+
+            COMMAND_SOFTBAN_DESCRIPTION: 'Bans a member from your guild and immediately unbans them',
+            COMMAND_SOFTBAN_EXTENDED: `This command requires me to have the \`BAN_MEMBERS\` permission.
+            Only members with a lower role hierarchy than you and me can be banned.
+            Softbans are similar to a kick while also pruning all messages sent by them in the last few days`,
+
+            COMMAND_UNBAN_DESCRIPTION: 'Unbans a user from your guild',
+            COMMAND_UNBAN_EXTENDED: `This command requires me to have the \`BAN_MEMBERS\` permission
+            Removes the ban that they previously had, allowing them to join your guild`,
+
+            COMMAND_UNMUTE_DESCRIPTION: '',
+            COMMAND_UNMUTE_EXTENDED: '',
+
+            COMMAND_WARN_DESCRIPTION: '',
+            COMMAND_WARN_EXTENDED: '',
+
+            COMMAND_BASSBOOST_DESCRIPTION: '',
+            COMMAND_BASSBOOST_EXTENDED: '',
+
+            COMMAND_JOIN_DESCRIPTION: 'Joins your voice channel',
+            COMMAND_JOIN_EXTENDED: '',
+
+            COMMAND_LEAVE_DESCRIPTION: 'Leaves the current voice channel',
+            COMMAND_LEAVE_EXTENDED: '',
+
+            COMMAND_LOOP_DESCRIPTION: 'Toggles looping for the queue',
+            COMMAND_LOOP_EXTENDED: '',
+
+            COMMAND_LYRICS_DESCRIPTION: 'Check out the lyrics of a song',
+            COMMAND_LYRICS_EXTENDED: `Searches lyrics for the specified song or the current playing song using the **Genius** API`,
+
+            COMMAND_NOWPLAYING_DESCRIPTION: '',
+            COMMAND_NOWPLAYING_EXTENDED: '',
+            COMMAND_PAUSE_DESCRIPTION: '',
+            COMMAND_PAUSE_EXTENDED: '',
+            COMMAND_PLAY_DESCRIPTION: '',
+            COMMAND_PLAY_EXTENDED: '',
+            COMMAND_RESUME_DESCRIPTION: '',
+            COMMAND_RESUME_EXTENDED: '',
+            COMMAND_SEEK_DESCRIPTION: '',
+            COMMAND_SEEK_EXTENDED: '',
+            COMMAND_SKIP_DESCRIPTION: '',
+            COMMAND_SKIP_EXTENDED: '',
+            COMMAND_VOLUME_DESCRIPTION: '',
+            COMMAND_VOLUME_EXTENDED: '',
+            COMMAND_CAT_DESCRIPTION: '',
+            COMMAND_CAT_EXTENDED: '',
+            COMMAND_DOG_DESCRIPTION: '',
+            COMMAND_DOG_EXTENDED: '',
+
+            COMMAND_MOVIE_DESCRIPTION: 'Searches TheMovieDatabase for any movie',
+            COMMAND_MOVIE_EXTENDED: `This command retrieves information of a movie from **TheMovieDatabase** API`,
+
+            COMMAND_SHOWS_DESCRIPTION: 'Searches TheMovieDatabase for any show',
+            COMMAND_SHOWS_EXTENDED: `This command retrieves information of a tv show from **TheMovieDatabase** API`,
+
+            COMMAND_URBAN_DESCRIPTION: 'Check the definition of some word on UrbanDictionary.',
+            COMMAND_URBAN_EXTENDED: 'This command can be used in **nsfw** channels only',
+
+            COMMAND_WEATHER_DESCRIPTION: 'Check the weather details of any city',
+            COMMAND_WEATHER_EXTENDED: '',
+
+            COMMAND_WIKIPEDIA_DESCRIPTION: 'Searches wikipedia for your query',
+            COMMAND_WIKIPEDIA_EXTENDED: '',
+
+            COMMAND_AFK_DESCRIPTION: '',
+            COMMAND_AFK_EXTENDED: '',
+            COMMAND_AVATAR_DESCRIPTION: '',
+            COMMAND_AVATAR_EXTENDED: '',
+            COMMAND_DISCRIMINATOR_DESCRIPTION: '',
+            COMMAND_DISCRIMINATOR_EXTENDED: '',
+
+            COMMAND_DOCS_DESCRIPTION: 'Searches discord.js documentation',
+            COMMAND_DOCS_EXTENDED: '',
+
+            COMMAND_POLL_DESCRIPTION: '',
+            COMMAND_POLL_EXTENDED: '',
+
+            COMMAND_REMINDER_DESCRIPTION: '',
+            COMMAND_REMINDER_EXTENDED: '',
+
+            COMMAND_SERVER_DESCRIPTION: '',
+            COMMAND_SERVER_EXTENDED: '',
+
+            COMMAND_TOPINVITES_DESCRIPTION: '',
+            COMMAND_TOPINVITES_EXTENDED: '',
+
+            COMMAND_USER_DESCRIPTION: 'Provides information of a specified user',
+            COMMAND_USER_EXTENDED: '',
+
+            COMMAND_CLEAR_DESCRIPTION: '',
+            COMMAND_CLEAR_EXTENDED: '',
+            COMMAND_MOVE_DESCRIPTION: '',
+            COMMAND_MOVE_EXTENDED: '',
+
+            COMMAND_QUEUE_DESCRIPTION: '',
+            COMMAND_QUEUE_EXTENDED: '',
+            COMMAND_REMOVE_DESCRIPTION: '',
+            COMMAND_REMOVE_EXTENDED: '',
+            COMMAND_REMOVEDUPES_DESCRIPTION: '',
+            COMMAND_REMOVEDUPES_EXTENDED: '',
+            COMMAND_SHUFFLE_DESCRIPTION: '',
+            COMMAND_SHUFFLE_EXTENDED: '',
 
             /**
              * Errors
              */
 
             TIME_UP: ':x: **Sorry, time is up!**',
-            CHANNEl_MULTIPLE_GAME: ':x: **Only one game may be occuring per channel**'
+            CHANNEl_MULTIPLE_GAME: ':x: **Only one game may be occuring per channel**',
+            CHALLENGE_REJECTED: 'Challenge was rejected'
         };
     }
-
 
 }

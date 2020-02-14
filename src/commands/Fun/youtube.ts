@@ -9,18 +9,20 @@ export default class extends SnakeCommand {
 
     public constructor(store: CommandStore, file: string[], directory: string) {
         super(store, file, directory, {
-            usage: '<ytchannel:...str>',
-            aliases: ['yt', 'ytsearch']
+            usage: '<query:...str>',
+            aliases: ['yt', 'ytsearch'],
+            description: lang => lang.get('COMMAND_YOUTUBE_EXTENDED'),
+            extendedHelp: lang => lang.get('COMMAND_YOUTUBE_EXTENDED')
         });
     }
 
-    public async run(msg: KlasaMessage, [ytchannel]: [string]): Promise<KlasaMessage | KlasaMessage[]> {
+    public async run(msg: KlasaMessage, [query]: [string]): Promise<KlasaMessage | KlasaMessage[]> {
         const type = msg.content.split('--')[1]?.toLowerCase().trim();
         const youtube = this.client.apis.get('Youtube') as YoutubeAPI;
 
-        return youtube.search(ytchannel, { maxResults: 1, part: 'snippet', type })
+        return youtube.search(query, { maxResults: 1, part: 'snippet', type })
             .then(data => {
-                if (!data.items || !data.items.length) throw 'Could not find any youtube channel with that title';
+                if (!data.items || !data.items.length) throw msg.language.get('COMMAND_YOUTUBE_NO_SEARCH');
                 const result = data.items[0];
 
                 const embed = new SnakeEmbed(msg)
@@ -44,7 +46,7 @@ export default class extends SnakeCommand {
             case 'youtube#video':
                 return `https://youtube.com/${data.id.videoId}`;
             default:
-                throw `Unknown Result! Please try again later`;
+                return '';
         }
     }
 

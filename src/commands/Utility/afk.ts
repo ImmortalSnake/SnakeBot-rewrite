@@ -1,4 +1,4 @@
-import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
+import { CommandStore, KlasaMessage } from 'klasa';
 import SnakeCommand from '../../lib/structures/base/SnakeCommand';
 
 export default class extends SnakeCommand {
@@ -12,12 +12,11 @@ export default class extends SnakeCommand {
     }
 
     public async run(msg: KlasaMessage, [reason]: [string]): Promise<KlasaMessage | KlasaMessage[]> {
-        await msg.guildSettings.update('afkusers', {
+        return msg.guildSettings.update('afkusers', {
             id: msg.author!.id,
             reason
-        });
-
-        return msg.sendMessage(`${(msg.author as KlasaUser).toString()} has  been set to AFK for reason: **${reason}**`);
+        })
+            .then(() => msg.sendLocale('COMMAND_AFK_CREATE', [msg.author.toString(), reason]));
     }
 
 }

@@ -1,6 +1,6 @@
 import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
-import SnakeBot from '../../lib/client';
 import SnakeCommand from '../../lib/structures/base/SnakeCommand';
+import SnakeEmbed from '../../lib/structures/SnakeEmbed';
 
 export default class extends SnakeCommand {
 
@@ -11,13 +11,11 @@ export default class extends SnakeCommand {
     }
 
     public async run(msg: KlasaMessage, [user]: [KlasaUser]): Promise<KlasaMessage | KlasaMessage[]> {
-        if (!user) user = msg.author as KlasaUser;
-        const Embed = (this.client as SnakeBot).embed(msg, {
-            image: user.displayAvatarURL(),
-            title: `**${user.username}**`
-        });
-
-        return msg.sendEmbed(Embed);
+        if (!user) user = msg.author;
+        return msg.send(new SnakeEmbed(msg)
+            .setImage(user.displayAvatarURL())
+            .setTitle(`**${user.username}**`)
+            .init());
     }
 
 }
