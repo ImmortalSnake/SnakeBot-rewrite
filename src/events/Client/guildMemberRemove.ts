@@ -4,17 +4,15 @@ import { GuildMember, TextChannel } from 'discord.js';
 export default class GuildMemberAddEvent extends Event {
 
     public async run(member: GuildMember) {
-        const [welcomeChan] = await member.guild.settings.resolve('channels.welcome') as [TextChannel];
-        const welcomeRoles = member.guild.settings.get('roles.auto') as string[];
+        const [welcomeChan] = await member.guild.settings.resolve('channels.leave') as [TextChannel];
         if (welcomeChan && welcomeChan.postable) {
             const welcomeMess = this.format(
-                member.guild.settings.get('message.welcome') as string,
+                member.guild.settings.get('message.leave') as string,
                 member
             );
 
             await welcomeChan.send(welcomeMess).catch();
         }
-        if (welcomeRoles.length && member.guild.me?.hasPermission('MANAGE_ROLES')) await member.roles.add(welcomeRoles);
     }
 
     private regex = (type: string) => new RegExp(`\{([${type}]+)\}`, 'igm');

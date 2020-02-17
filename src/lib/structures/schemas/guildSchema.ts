@@ -8,25 +8,30 @@ export default Client.defaultGuildSchema
 
     .add('afkusers', 'any', { array: true })
     .add('message', (folder: SchemaFolder) => folder
-        .add('welcome', 'string', { max: 2000 })
-        .add('leave', 'string', { max: 2000 }))
+        .add('welcome', 'string', { 'max': 2000, 'default': 'Hi {user}, welcome to {guild}' })
+        .add('leave', 'string', { 'max': 2000, 'default': '{username} has left, it was nice knowing you' }))
 
     .add('channels', (folder: SchemaFolder) => folder
-        .add('log', 'textchannel', { configurable: true })
-        .add('welcome', 'textchannel', { configurable: true })
-        .add('reports', 'textchannel'))
+        .add('log', 'textchannel')
+        .add('welcome', 'textchannel')
+        .add('reports', 'textchannel')
+        .add('leave', 'textchannel'))
 
     .add('roles', (folder: SchemaFolder) => folder
-        .add('mute', 'Role', { configurable: true })
-        .add('auto', 'Role', { configurable: true })
-        .add('dj', 'Role', { configurable: true }))
+        .add('mute', 'Role')
+        .add('auto', 'Role', { array: true })
+        .add('dj', 'Role', { array: true }))
 
-    .add('modlogs', (folder: SchemaFolder) => folder
-        .add('total', 'number', { 'configurable': false, 'default': 0 })
-        .add('cases', 'any', { array: true, configurable: false }))
+    .add('modlogs', 'any', { array: true, configurable: false })
+
+    .add('starboard', folder => folder
+        .add('required', 'Number', { 'min': 1, 'default': 5 })
+        .add('emoji', 'string', { 'default': '⭐' })
+        .add('channel', 'textchannel')
+        .add('messages', 'string', { 'array': true, 'default': [], 'configurable': false }))
 
     .add('music', folder => folder
-        .add('default-volume', 'Number', { 'min': 0, 'max': 200, 'default': 100 })
-        .add('maximum-duration', 'Number', { 'min': 0, 'max': Hour * 4, 'default': Hour * 2 })
-        .add('maximum-entries-per-user', 'Number', { 'min': 1, 'max': 100, 'default': 25 })
-        .add('allow-streams', 'Boolean', { 'default': true }));
+        .add('volume', 'Number', { 'min': 0, 'max': 200, 'default': 100 })
+        .add('maxduration', 'Number', { 'min': 0, 'max': Hour * 4, 'default': Hour * 2 })
+        .add('maxentries', 'Number', { 'min': 1, 'max': 100, 'default': 25 })
+        .add('allowstreams', 'Boolean', { 'default': true }));
