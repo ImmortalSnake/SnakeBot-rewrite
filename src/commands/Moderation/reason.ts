@@ -1,7 +1,6 @@
 import { CommandStore, KlasaMessage } from 'klasa';
 import SnakeCommand from '../../lib/structures/base/SnakeCommand';
-import Util from '../../lib/utils/Util';
-import SnakeEmbed from '../../lib/structures/SnakeEmbed';
+import ModLog, { ModLogData } from '../../lib/structures/ModLog';
 
 export default class extends SnakeCommand {
 
@@ -13,28 +12,16 @@ export default class extends SnakeCommand {
         });
     }
 
-    public async run(msg: KlasaMessage, [ID, reason = 'N/A']: [number, string]): Promise<KlasaMessage | KlasaMessage[]> {
-        const cases = msg.guildSettings.get('modlogs.cases') as any[];
-        const Case = cases.find((c: any) => c.id === ID);
-        if (!Case) throw 'Could not find a case with that ID';
+    public async run(msg: KlasaMessage, [ID, reason]: [number, string]): Promise<KlasaMessage | KlasaMessage[]> {
+        const cases = msg.guildSettings.get('modlogs') as ModLogData[];
+        const log = cases.find(c => c.id === ID);
+        if (!log) throw 'Could not find a case with that ID';
 
-        await msg.guildSettings.update('modlogs.cases', Case, { arrayAction: 'remove' });
-        Case.reason = reason;
-        await msg.guildSettings.update('modlogs.cases', Case, { arrayAction: 'add' });
+        await msg.guildSettings.update('modlogs', log, { arrayAction: 'remove' });
+        log.reason = reason;
+        await msg.guildSettings.update('modlogs.cases', log, { arrayAction: 'add' });
 
-        const mod = await this.client.users.fetch(Case.moderator);
-        const user = await this.client.users.fetch(Case.user);
-
-        const embed = new SnakeEmbed(msg)
-            .setDescription(`Reason: \`${Case.reason}\``)
-            .setTitle(`${Case.type} Case #${Case.id}`)
-            .addField('Moderator', mod ? mod.tag : Case.moderator, true)
-            .addField('Punished User', user ? user.tag : Case.user, true)
-            .setFooter('At')
-            .setTimestamp(Case.time);
-
-        if (Case.duration) embed.addField('Duration', Util.msToDuration(Case.duration), true);
-        return msg.sendEmbed(embed);
+        return msg.send(ModLog.renderRawEmbed(msg, log));
     }
 
 }

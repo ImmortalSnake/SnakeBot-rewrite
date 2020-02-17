@@ -1,7 +1,8 @@
 import { CommandStore, KlasaMessage } from 'klasa';
 import { User } from 'discord.js';
-import LogHandler from '../../lib/utils/LogHandler';
 import SnakeCommand from '../../lib/structures/base/SnakeCommand';
+import ModLog from '../../lib/structures/ModLog';
+import { Hour } from '../../lib/utils/constants';
 
 export default class extends SnakeCommand {
 
@@ -9,11 +10,12 @@ export default class extends SnakeCommand {
         super(store, file, directory, {
             usage: '<user:user> [days:int{1,7}] [reason:...str]',
             requiredPermissions: ['BAN_MEMBERS'],
-            permissionLevel: 5
+            permissionLevel: 5,
+            enabled: false
         });
     }
 
-    public async run(msg: KlasaMessage, [user, days = 7, reason = 'N/A']: [User, number, string]): Promise<KlasaMessage | KlasaMessage[]> {
+    public async run(msg: KlasaMessage, [user, days = 0, reason]: [User, number, string?]): Promise<KlasaMessage | KlasaMessage[]> {
         const member = msg.guild!.members.get(user.id);
         if (member) {
             if (member.permissions.has('MANAGE_GUILD')) throw 'You cannot ban this user';
@@ -24,21 +26,12 @@ export default class extends SnakeCommand {
         await msg.guild!.members.ban(user.id, { reason, days });
         await msg.guild!.members.unban(user.id, `Softban Released`);
 
-        const data = {
-            id: msg.guildSettings.get('modlogs.total') as number,
-            moderator: msg.author.id,
-            user: user.id,
-            reason,
-            time: Date.now(),
-            type: 'Softban',
-            duration: days * 86400000
-        };
-
-        await msg.guildSettings.update('modlogs.cases', data, { arrayAction: 'add' });
-        await msg.guildSettings.update('modlogs.total', (msg.guildSettings.get('modlogs.total') as number) + 1);
-        await LogHandler(msg, data);
-
-        return msg.sendMessage(`${user.toString()} was softbanned for reason **${reason}**`);
+        return new ModLog(msg, 'Ban')
+            .setUser(user)
+            .setReason(reason)
+            .setDuration(days * 24 * Hour)
+            .save()
+            .then(() => msg.sendMessage(`${user.toString()} was softbanned for reason **${reason}**`));
     }
 
 }

@@ -1,6 +1,7 @@
-import { CommandStore, KlasaMessage, KlasaUser, RichDisplay } from 'klasa';
-import { MessageEmbed, User } from 'discord.js';
+import { CommandStore, KlasaMessage, KlasaUser, RichDisplay, util } from 'klasa';
+import { MessageEmbed } from 'discord.js';
 import SnakeCommand from '../../lib/structures/base/SnakeCommand';
+import { ModLogData } from '../../lib/structures/ModLog';
 
 export default class extends SnakeCommand {
 
@@ -14,24 +15,19 @@ export default class extends SnakeCommand {
     }
 
     public async run(msg: KlasaMessage, [user]: [KlasaUser]): Promise<KlasaMessage | KlasaMessage[] | null> {
-        const cases = msg.guildSettings.get('modlogs.cases') as any[];
-        if (user) cases.filter((c: any) => c.user === user.id);
+        const cases = msg.guildSettings.get('modlogs') as ModLogData[];
+        if (user) cases.filter(c => c.user?.id === user.id);
 
-        if (cases.length === 0) throw `No cases were found for this ${user ? 'user' : 'guild'}`;
+        if (cases.length === 0) throw `No cases were found for ${user?.tag || msg.guild!.name}`;
 
         const display = new RichDisplay(new MessageEmbed()
             .setTitle(`Modlogs for ${user ? user.tag : msg.guild!.name}`)
             .setColor('#2f62b5')
-            .setAuthor(this.client.user!.username, this.client.user!.displayAvatarURL()));
+            .setAuthor(this.client.user!.tag, this.client.user!.displayAvatarURL()));
 
-        for (let i = 0; i < cases.length; i++) {
-            if (i % 10 === 0) {
-                const lst = cases.slice(i).slice(0, 10);
-                display.addPage((template: MessageEmbed) => {
-                    lst.forEach((c: any) => template.addField(`${c.type} Case #${c.id}`, `${this.client.users.has(c.user) ? `${(this.client.users.get(c.user) as User).tag} ` : ''}\`${c.reason.slice(0, 200)}\``));
-                    return template;
-                });
-            }
+        for (const lst of util.chunk(cases, 10)) {
+            const description = lst.map(c => `**Case ${c.id}: ${c.action}** ${`(${c.user?.tag})` || ''} *${c.reason}*`);
+            display.addPage((template: MessageEmbed) => template.setDescription(description));
         }
 
         await display.run(await msg.send('Loading modlogs...') as KlasaMessage);

@@ -13,7 +13,7 @@ export default class extends SnakeCommand {
     }
 
     public async run(msg: KlasaMessage, [user, reason = 'N/A']: [GuildMember, string]): Promise<KlasaMessage | KlasaMessage[] | null> {
-        const reportschan = msg.guildSettings.get('channels.reports') as TextChannel;
+        const reportschan = msg.guildSettings.get('channels.report') as TextChannel;
         if (!reportschan) throw `Could not find a reports channel for this server`;
 
         await reportschan.send(new SnakeEmbed(msg)
