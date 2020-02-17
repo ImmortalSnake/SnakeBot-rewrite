@@ -13,6 +13,7 @@ export default Client.defaultGuildSchema
 
     .add('channels', (folder: SchemaFolder) => folder
         .add('log', 'textchannel')
+        .add('modlog', 'textchannel')
         .add('welcome', 'textchannel')
         .add('reports', 'textchannel')
         .add('leave', 'textchannel'))

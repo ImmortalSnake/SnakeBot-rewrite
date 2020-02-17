@@ -40,7 +40,7 @@ export default class extends Event {
                     .then(() => message.guildSettings.update('starboard.messages', `${message.id}-${msg.id}`, { arrayAction: 'remove' }));
             }
 
-            return msg.edit(text, embed).then(m => m.guild!.starboardCache.set(message.id, m));
+            return msg.edit(text, embed);
         }
     }
 

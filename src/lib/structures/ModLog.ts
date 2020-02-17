@@ -84,7 +84,7 @@ export default class ModLog {
     }
 
     public async send() {
-        const [modlogChan] = await this.message.guildSettings.resolve('channels.log') as [TextChannel];
+        const [modlogChan] = await this.message.guildSettings.resolve('channels.modlog') as [TextChannel];
         if (modlogChan) return modlogChan.send(this.renderEmbed);
         return null;
     }
