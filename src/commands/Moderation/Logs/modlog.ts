@@ -1,7 +1,7 @@
 import { CommandStore, KlasaMessage, KlasaUser, RichDisplay, util } from 'klasa';
 import { MessageEmbed } from 'discord.js';
-import SnakeCommand from '../../lib/structures/base/SnakeCommand';
-import { ModLogData } from '../../lib/structures/ModLog';
+import SnakeCommand from '../../../lib/structures/base/SnakeCommand';
+import { ModLogData } from '../../../lib/structures/ModLog';
 
 export default class extends SnakeCommand {
 

@@ -1,6 +1,6 @@
 import { CommandStore, KlasaMessage } from 'klasa';
-import SnakeCommand from '../../lib/structures/base/SnakeCommand';
-import ModLog, { ModLogData } from '../../lib/structures/ModLog';
+import SnakeCommand from '../../../lib/structures/base/SnakeCommand';
+import ModLog, { ModLogData } from '../../../lib/structures/ModLog';
 
 export default class extends SnakeCommand {
 
