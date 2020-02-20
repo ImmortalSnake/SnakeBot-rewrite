@@ -1,3 +1,7 @@
+import { join } from 'path';
+
+export const rootFolder = join(__dirname, '..', '..', '..');
+export const assetFolder = join(rootFolder, 'assets');
 export const COLORS = {
     PRIMARY: '',
     STARBOARD: 'GOLD',

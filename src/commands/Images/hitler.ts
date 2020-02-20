@@ -1,9 +1,14 @@
 import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
-import ImageHandler from '../../lib/utils/ImageHandler';
 import SnakeCommand from '../../lib/structures/base/SnakeCommand';
+import { Canvas } from 'canvas-constructor';
+import { readFile } from 'fs-nextra';
+import { join } from 'path';
+import { assetFolder } from '../../lib/utils/constants';
+import Util from '../../lib/utils/Util';
 
 export default class extends SnakeCommand {
 
+    public template?: Buffer;
     public constructor(store: CommandStore, file: string[], directory: string) {
         super(store, file, directory, {
             cooldown: 10,
@@ -12,15 +17,19 @@ export default class extends SnakeCommand {
     }
 
     public async run(msg: KlasaMessage, [user]: [KlasaUser]): Promise<KlasaMessage | KlasaMessage[]> {
-        return new ImageHandler()
-            .hitlerImage(msg, user || msg.author).then(res => msg.send({
-                files: [{
-                    attachment: res.body,
-                    name: 'hitler.png'
-                }]
-            }).catch(() => {
-                throw 'An error Occured! Try again later';
-            }));
+        const image = await Util.getImage(msg, { user });
+        return msg.channel.sendFile(await this.generate(image), 'hitler.png');
+    }
+
+    public async generate(image: Buffer) {
+        return new Canvas(480, 360)
+            .addImage(this.template!, 0, 0)
+            .addBeveledImage(image, 45, 35, 140, 160)
+            .toBufferAsync();
+    }
+
+    public async init() {
+        this.template = await readFile(join(assetFolder, 'images', 'hitler.png'));
     }
 
 }

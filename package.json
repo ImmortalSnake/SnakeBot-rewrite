@@ -13,24 +13,32 @@
   "author": "ImmortalSnake",
   "license": "MIT",
   "dependencies": {
-    "@types/cheerio": "^0.22.15",
-    "@types/mongodb": "^3.1.28",
-    "@types/node-fetch": "^2.3.7",
+    "canvas": "^2.6.1",
+    "canvas-constructor": "^3.1.0",
     "cheerio": "^1.0.0-rc.3",
     "discord.js": "github:discordjs/discord.js#fe7df708e44e0280dfaf0f8e457b154781bb5140",
     "discord.js-lavalink": "github:MrJacz/discord.js-lavalink#v3",
     "dotenv": "^8.0.0",
     "klasa": "github:dirigeants/klasa#settings",
     "klasa-giveaway": "github:immortalsnake/klasa-giveaway#settings",
+    "moment": "^2.24.0",
     "mongodb": "^3.2.7"
   },
   "devDependencies": {
+    "@types/cheerio": "^0.22.16",
+    "@types/mongodb": "^3.3.16",
     "@types/node": "^13.5.0",
+    "@types/node-fetch": "^2.5.4",
     "@types/ws": "^7.2.1",
     "@typescript-eslint/eslint-plugin": "^2.15.0",
     "@typescript-eslint/parser": "^2.15.0",
     "eslint": "^6.8.0",
     "eslint-config-bamboo": "^3.0.0",
     "typescript": "^3.7.4"
-  }
+  },
+  "files": [
+      "assets",
+      "dist/",
+      "LICENSE"
+  ]
 }

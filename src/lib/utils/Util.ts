@@ -1,5 +1,7 @@
 import { Minute, Second, Hour, Day } from './constants';
 import fetch from 'node-fetch';
+import { KlasaMessage, KlasaUser } from 'klasa';
+import { ImageSize } from 'discord.js';
 
 // eslint-disable-next-line @typescript-eslint/no-extraneous-class
 export default abstract class Util {
@@ -30,7 +32,6 @@ export default abstract class Util {
     }
 
     public static async getHaste(evalResult: string, language: string): Promise<string> {
-        // eslint-disable-next-line no-undef
         const key = await fetch('https://hasteb.in/documents', { method: 'POST', body: evalResult })
             .then(response => response.json())
             .then(body => body.key);
@@ -63,7 +64,7 @@ export default abstract class Util {
         return `${(hours < 10) ? `0${hours}` : hours}:${(minutes < 10) ? `0${minutes}` : minutes}:${(seconds < 10) ? `0${seconds}` : seconds}`;
     }
 
-    public static shuffle(arr: any[]): any[] {
+    public static shuffle<T>(arr: T[]): T[] {
         for (let i = arr.length; i; i--) {
             const j = Math.floor(Math.random() * i);
             [arr[i - 1], arr[j]] = [arr[j], arr[i - 1]];
@@ -80,6 +81,26 @@ export default abstract class Util {
         return regex.test(str) ? str.match(regex)?.slice(1) : null;
     }
 
+    public static async getImage(msg: KlasaMessage, { user, size = 512 }: ImageOptions = {}): Promise<Buffer> {
+        if (user) return user.fetchAvatar(size);
+        const messages = await msg.channel.messages.fetch();
+
+        const attachments = messages.filter(m => m.attachments.size > 0)
+            .sort((a, b) => b.createdTimestamp - a.createdTimestamp)
+            .map(m => m.attachments.first()!);
+
+        let image: Buffer | null = null;
+        for (const att of attachments) {
+            const img = await fetch(att.url).then(res => res.buffer()).catch();
+            if (img) {
+                image = img;
+                break;
+            }
+        }
+
+        return image || msg.author.fetchAvatar(size);
+    }
+
     private static extractDuration(duration: number) {
         return {
             seconds: Math.floor((duration / Second) % 60),
@@ -89,4 +110,10 @@ export default abstract class Util {
         };
     }
 
+}
+
+
+export interface ImageOptions {
+    user?: KlasaUser;
+    size?: ImageSize;
 }
