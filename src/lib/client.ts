@@ -4,14 +4,15 @@ import permissionLevel from './structures/permissionLevel';
 import MemeHandler from './structures/meme';
 import AudioManager from './structures/audio/Manager';
 import APIWrapperStore from './structures/base/APIWrapperStore';
-import { GiveawayClient } from 'klasa-giveaway';
+// import { GiveawayClient } from 'klasa-giveaway';
 
+import './Setup/Canvas';
 import './extensions/SnakeGuild';
 import './structures/schemas/GuildSchema';
 import './structures/schemas/ClientSchema';
 
 
-KlasaClient.use(GiveawayClient);
+// KlasaClient.use(GiveawayClient);
 
 export default class SnakeBot extends KlasaClient {
 

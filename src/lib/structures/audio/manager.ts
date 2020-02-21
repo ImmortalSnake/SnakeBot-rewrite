@@ -9,36 +9,39 @@ import AudioPlayer from './AudioPlayer';
 export default class AudioManager {
 
     public client: SnakeBot;
-    public lavalink: PlayerManager;
+    public lavalink: PlayerManager | null = null;
     public players: Collection<string, AudioPlayer>;
 
     public constructor(client: SnakeBot) {
         this.client = client;
         this.players = new Collection();
+    }
+
+    public get node() {
+        return this.lavalink!.nodes.first();
+    }
+
+    public init() {
         this.lavalink = new PlayerManager(this.client, LavalinkServer, {
-            user: client.id,
-            shards: client.shardCount,
+            user: this.client.user!.id,
+            shards: this.client.shard?.count,
             Player: AudioPlayer as unknown as Player
         })
             .on('ready', node => this.client.console.log(`Successfully initialised Lavalink node: ${node.tag}`))
             .on('reconnecting', node => this.client.console.log(`Attempting to reconnect to Lavalink Node ${node.tag}`))
             .on('error', (node, err) => this.client.console.warn(`There was an error at Lavalink Node ${node.tag}:\n${err}`))
             .on('disconnect', (node, code, reason) => this.client.console.warn(`Disconnected from Lavalink Node ${node.tag}\nCode: ${code}\nReason: ${reason}`));
-
     }
 
-    public get node() {
-        return this.lavalink.nodes.first();
-    }
-
-    public join(channel: VoiceChannel) {
+    public async join(channel: VoiceChannel) {
         if (!this.node?.connected) throw 'No lavalink nodes were initialised';
-        const player = this.lavalink.join({
+        const player = this.lavalink!.join({
             guild: channel.guild.id,
             channel: channel.id,
             host: this.node.tag || this.node.host
         }, { selfdeaf: true });
 
+        await player.volume(channel.guild.settings.get('music.volume') as number);
         return this.players.set(channel.guild.id, player as AudioPlayer);
     }
 
@@ -46,7 +49,7 @@ export default class AudioManager {
         this.players.delete(guild.id);
         guild.me?.voice.channel?.leave();
 
-        return this.lavalink.leave(guild.id);
+        return this.lavalink!.leave(guild.id);
     }
 
     public async fetchSongs(query: string) {
