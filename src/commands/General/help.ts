@@ -1,19 +1,21 @@
-import { Command, RichDisplay, util, CommandStore, KlasaMessage } from 'klasa';
-import { MessageEmbed, Permissions, TextChannel, ClientUser, User, GuildMember } from 'discord.js';
+import { Command, RichDisplay, util, CommandStore, KlasaMessage, ReactionHandler } from 'klasa';
+import { MessageEmbed, Permissions, TextChannel, Collection } from 'discord.js';
 import SnakeCommand from '../../lib/structures/base/SnakeCommand';
+import SnakeEmbed from '../../lib/structures/SnakeEmbed';
 
 const PERMISSIONS_RICHDISPLAY = new Permissions([Permissions.FLAGS.MANAGE_MESSAGES, Permissions.FLAGS.ADD_REACTIONS]);
 const time = 1000 * 60 * 3;
 
 export default class extends SnakeCommand {
 
-    public handlers: Map<any, any>;
+    public handlers: Map<string, ReactionHandler>;
     public constructor(store: CommandStore, file: string[], directory: string) {
         super(store, file, directory, {
             aliases: ['commands', 'cmd', 'cmds'],
             guarded: true,
             description: language => language.get('COMMAND_HELP_DESCRIPTION'),
-            usage: '(Command:command)'
+            usage: '(Command:command|Category:category|page:integer)',
+            examples: ['', 'ping', 'music', '2']
         });
 
         this.createCustomResolver('command', (arg, possible, message) => {
@@ -21,38 +23,56 @@ export default class extends SnakeCommand {
             return this.client.arguments.get('command')!.run(arg, possible, message);
         });
 
+        this.createCustomResolver('category', async (arg, __, msg) => {
+            if (!arg) return undefined;
+            arg = arg.toLowerCase();
+            const commandsByCategory = await this._fetchCommands(msg);
+
+            for (const [page, category] of commandsByCategory.keyArray().entries()) {
+                if (category.toLowerCase() === arg) return page + 1;
+            }
+            return undefined;
+        });
+
         // Cache the handlers
         this.handlers = new Map();
     }
 
-    public async run(message: KlasaMessage, [command]: [Command]): Promise<KlasaMessage | KlasaMessage[] | null> {
-        if (command) {
-            return message.sendMessage([
-                `= ${command.name} = `,
-                util.isFunction(command.description) ? command.description(message.language) : command.description,
-                message.language.get('COMMAND_HELP_USAGE', command.usage.fullUsage(message)),
-                message.language.get('COMMAND_HELP_EXTENDED'),
-                util.isFunction(command.extendedHelp) ? command.extendedHelp(message.language) : command.extendedHelp
-            ], { code: 'asciidoc' });
+    public async run(msg: KlasaMessage, [input]: [Command | number | undefined]): Promise<KlasaMessage | KlasaMessage[] | null> {
+        const prefix = msg.guildSettings.get('prefix') as string;
+        if (input instanceof Command) {
+            return msg.send(new SnakeEmbed(msg)
+                .setTitle(`Command Help - ${util.toTitleCase(input.name)}`)
+                .setDescription(`
+                **${util.isFunction(input.description) ? input.description(msg.language) : input.description}**
+
+                ${msg.language.get('COMMAND_HELP_USAGE', input.usage.fullUsage(msg))}
+
+                ${msg.language.get('COMMAND_HELP_EXTENDED')}
+                ${util.isFunction(input.extendedHelp) ? input.extendedHelp(msg.language) : input.extendedHelp}
+
+                ${input instanceof SnakeCommand ? `💬 | **Examples**\n${input.displayExamples(prefix)}` : ''}`)
+                .init());
         }
 
-        if (!('all' in message.flags) && message.guild && ((message.channel as TextChannel).permissionsFor(this.client.user as ClientUser) as Permissions).has(PERMISSIONS_RICHDISPLAY)) {
+        if (!('all' in msg.flagArgs) && msg.guild && (msg.channel as TextChannel).permissionsFor(this.client.user!)!.has(PERMISSIONS_RICHDISPLAY)) {
             // Finish the previous handler
-            const previousHandler = this.handlers.get((message.author as User).id);
+            const previousHandler = this.handlers.get(msg.author.id);
             if (previousHandler) previousHandler.stop();
 
-            const handler = await (await this.buildDisplay(message)).run(await message.send('Loading Commands...') as KlasaMessage, {
-                filter: (reaction, user) => user.id === (message.author as User).id,
+            const handler = await (await this.buildDisplay(msg)).run(await msg.send('Loading Commands...') as KlasaMessage, {
+                filter: (_, user) => user.id === msg.author.id,
+                startPage: input,
                 time
             });
-            handler.on('end', () => this.handlers.delete((message.author as User).id));
-            this.handlers.set(message.author!.id, handler);
+            handler.on('end', () => this.handlers.delete(msg.author.id));
+            this.handlers.set(msg.author!.id, handler);
             return null;
         }
 
-        message.author.send(await this.buildHelp(message), { split: { 'char': '\n' } })
-            .then(() => { if (message.channel.type !== 'dm') return message.sendLocale('COMMAND_HELP_DM'); })
-            .catch(() => { if (message.channel.type !== 'dm') return message.sendLocale('COMMAND_HELP_NODM'); });
+        msg.author.send(await this.buildHelp(msg), { split: { 'char': '\n' } })
+            .then(() => { if (msg.channel.type !== 'dm') return msg.sendLocale('COMMAND_HELP_DM'); })
+            .catch(() => { if (msg.channel.type !== 'dm') return msg.sendLocale('COMMAND_HELP_NODM'); });
 
         return null;
     }
@@ -72,8 +92,14 @@ export default class extends SnakeCommand {
     public async buildDisplay(message: KlasaMessage) {
         const commands = await this._fetchCommands(message);
         const prefix = message.guildSettings.get('prefix') as string;
-        const display = new RichDisplay();
-        const color = (message.member as GuildMember).displayColor;
+        const color = message.member!.displayColor;
+        const startEmbed = new SnakeEmbed(message)
+            .setTitle('Help')
+            .init();
+
+        commands.forEach((_, category) => startEmbed.addField(`**${category}**`, `\`${prefix}${this.name} ${category}\``, true));
+        const display = new RichDisplay().addPage(startEmbed);
+
         for (const [category, list] of commands) {
             display.addPage(new MessageEmbed()
                 .setTitle(`${category} Commands`)
@@ -86,12 +112,12 @@ export default class extends SnakeCommand {
 
     private formatCommand(message: KlasaMessage, prefix: string, richDisplay: boolean, command: Command) {
         const description = util.isFunction(command.description) ? command.description(message.language) : command.description;
-        return richDisplay ? `• ${prefix}${command.name} → ${description}` : `• **${prefix}${command.name}** → ${description}`;
+        return richDisplay ? `• **${prefix}${command.name}** → ${description}` : `• **${prefix}${command.name}** → ${description}`;
     }
 
     private async _fetchCommands(message: KlasaMessage) {
         const run = this.client.inhibitors.run.bind(this.client.inhibitors, message);
-        const commands = new Map();
+        const commands: Collection<string, Command[]> = new Collection();
         await Promise.all(this.client.commands.map(command => run(command, true)
             .then(() => {
                 const category = commands.get(command.category);

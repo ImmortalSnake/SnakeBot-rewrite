@@ -75,10 +75,11 @@ export default class TicTacToe {
             .then(mess => parseInt(mess.content, 10))
             .catch(e => { throw e; });
 
-        if (!m || m > 9 || m < 0 || !this.validMove(m)) {
+        if (!m || m > 9 || m < 1 || !this.validMove(m)) {
             await msg.send('Invalid Move');
             return this.playerMove(msg, player);
         }
+
         return m - 1;
     }
 
@@ -98,11 +99,11 @@ export default class TicTacToe {
     }
 
     private minimax(state: string[], depth: number, pnum: number): number[] {
-        const p = (this.pval as string[])[pnum];
+        const p = this.pval![pnum];
         let best = [-1, Infinity];
         if (p === this.comp) best = [-1, -Infinity];
 
-        if (depth === 0 || this.verifyWin(state, this.comp as string) || this.verifyWin(state, this.player1)) return [-1, this.evaluate(state)];
+        if (depth === 0 || this.verifyWin(state, this.comp!) || this.verifyWin(state, this.player1)) return [-1, this.evaluate(state)];
 
         for (let i = 0; i < 9; i++) {
             if (state[i] === 'X' || state[i] === 'O') continue;

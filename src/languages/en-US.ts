@@ -8,32 +8,36 @@ export default class extends Language {
 
         this.language = {
 
+            COMMAND_CONF_GET: (key, value) => `The value for the key **${key}** is: \`${value}\``,
+            COMMAND_HELP_USAGE: usage => `📜 | **Command Usage**\n\`${usage}\``,
+            COMMAND_HELP_EXTENDED: `🔎 | **Extended Help**`,
+
             COMMAND_STATS_GENERAL: (version, guilds, channels, users, shard, uptime, ping) => [
-                `• Version :: ${version}`,
-                `• Guilds :: ${guilds}`,
+                `• Version  :: ${version}`,
+                `• Guilds   :: ${guilds}`,
                 `• Channels :: ${channels}`,
-                `• Users :: ${users}`,
-                `• Shard :: ${shard}`,
-                `• Uptime :: ${uptime}`,
-                `• Ping :: ${ping} ms`
+                `• Users    :: ${users}`,
+                `• Shard    :: ${shard}`,
+                `• Uptime   :: ${uptime}`,
+                `• Ping     :: ${ping} ms`
             ].join('\n'),
             COMMAND_STATS_SYSTEM: (os, cpu, usage, nodeVersion, discordVersion) => [
-                `• Operating System :: ${os} `,
-                `• Processor :: ${cpu}`,
-                `• Memory Usage :: ${usage} MB`,
-                `• Node Version :: ${nodeVersion}`,
+                `• Operating System  :: ${os} `,
+                `• Processor         :: ${cpu}`,
+                `• Memory Usage      :: ${usage} MB`,
+                `• Node Version      :: ${nodeVersion}`,
                 `• DiscordJS Version :: ${discordVersion}`
             ].join('\n'),
 
 
             COMMAND_AKINATOR_NO_GUESS: 'I don\'t have any guesses. Bravo.',
             COMMAND_TICTACTOE_DIFFICULTY: '**Select Difficulty:**\n**[1]** - `Easy`\n**[2]** - `Medium`\n**[3]** - `Impossible`',
-            COMMAND_TICTACTOE_INVALID_DIFFICULTY: ':x: Invalid Difficulty Level',
+            COMMAND_TICTACTOE_INVALID_DIFFICULTY: '❌ Invalid Difficulty Level',
 
-            COMMAND_JOIN_NO_MEMBER: `:x: I am sorry, but Discord did not tell me the information I need, so I do not know what voice channel are you connected to...`,
-            COMMAND_JOIN_NO_VOICECHANNEL: `:x: You are not connected in a voice channel.`,
+            COMMAND_JOIN_NO_MEMBER: `❌ I am sorry, but Discord did not tell me the information I need, so I do not know what voice channel are you connected to...`,
+            COMMAND_JOIN_NO_VOICECHANNEL: `❌ You are not connected in a voice channel.`,
             COMMAND_JOIN_SUCCESS: channel => `:white_check_mark: Successfully joined the voice channel ${channel}`,
-            COMMAND_JOIN_VOICE_DIFFERENT: `:x: Sorry, I am already in a different voice channel`,
+            COMMAND_JOIN_VOICE_DIFFERENT: `❌ Sorry, I am already in a different voice channel`,
             COMMAND_JOIN_VOICE_FULL: `:x: I cannot join your voice channel, it's full... kick somebody or make room for me!`,
             COMMAND_JOIN_VOICE_NO_CONNECT: `:x: I do not have enough permissions to connect to your voice channel. I am missing the **CONNECT** permission.`,
             COMMAND_JOIN_VOICE_NO_SPEAK: `:x: I can connect... but not speak. Please turn on this permission so I can play some music.`,
@@ -152,11 +156,12 @@ export default class extends Language {
             COMMAND_AKINATOR_EXTENDED: '',
 
             COMMAND_CONNECT4_DESCRIPTION: 'Play a game of connect4 with me or someone else',
-            COMMAND_CONNECT4_EXTENDED: `Connect Four (also known as Four Up, Plot Four, Find Four, Four in a Row, Four in a Line, Drop Four,
-                and Gravitrips) is a two-player connection game in which the players first choose a color and then take turns dropping one 
-                colored disc from the top into a seven-column, six-row vertically suspended grid. 
-                The pieces fall straight down, occupying the lowest available space within the column. 
-                The objective of the game is to be the first to form a horizontal, vertical, or diagonal line of four of one's own discs.`,
+            COMMAND_CONNECT4_EXTENDED: [
+                `Connect Four (also known as Four Up, Plot Four, Find Four, Four in a Row, Drop Four and Gravitrips\
+                is a two-player connection game in which the players first choose a color and then take turns dropping one colored disc from the top into a 7x6 grid. `,
+                'The pieces fall straight down, occupying the lowest available space within the column.',
+                'The objective of the game is to be the first to form a horizontal, vertical, or diagonal line of four of one\s own discs.'
+            ].join('\n'),
 
             COMMAND_RPS_DESCRIPTION: '',
             COMMAND_RPS_EXTENDED: '',
@@ -316,7 +321,9 @@ export default class extends Language {
 
             TIME_UP: ':x: **Sorry, time is up!**',
             CHANNEl_MULTIPLE_GAME: ':x: **Only one game may be occuring per channel**',
-            CHALLENGE_REJECTED: 'Challenge was rejected'
+            CHALLENGE_REJECTED: 'Challenge was rejected',
+            MODERATION_SELF: action => `:x: You cannot ${action} yourself!`,
+            MODERATION_ME: action => `:x: I cannot ${action} myself.. xD`
         };
     }
 

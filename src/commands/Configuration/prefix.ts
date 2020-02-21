@@ -11,8 +11,8 @@ export default class extends SnakeCommand {
     }
 
     public async run(msg: KlasaMessage, [prefix]: [string]): Promise<KlasaMessage | KlasaMessage[]> {
-        if (prefix) return msg.guildSettings.update('prefix', prefix).then();
-        return msg.send(`Prefix for this guild is ${msg.guildSettings.get('prefix')}`);
+        if (prefix) return msg.guildSettings.update('prefix', prefix).then(() => msg.send(`Updated the prefix to \`${prefix}\``));
+        return msg.send(`Prefix for this guild is \`${msg.guildSettings.get('prefix')}\``);
     }
 
 }

@@ -10,13 +10,16 @@ export default class extends SnakeCommand {
             runIn: ['text'],
             usage: '<user:member> [reason:...str]',
             requiredPermissions: ['KICK_MEMBERS'],
-            permissionLevel: 5
+            permissionLevel: 5,
+            description: lang => lang.get('COMMAND_KICK_DESCRIPTION'),
+            extendedHelp: lang => lang.get('COMMAND_KICK_EXTENDED'),
+            examples: ['@Jeff ']
         });
     }
 
     public async run(msg: KlasaMessage, [member, reason]: [GuildMember, string]): Promise<KlasaMessage | KlasaMessage[]> {
-        if (member.id === msg.author.id) throw ':x: You cannot kick yourself!';
-        if (member.id === this.client.user!.id) throw ':x: I cannot kick myself';
+        if (member.id === msg.author.id) throw msg.language.get('MODERATION_SELF', 'kick');
+        if (member.id === this.client.user!.id) throw msg.language.get('MODERATION_ME', 'kick');
 
         if (member) {
             if (member.roles.highest.position >= msg.member!.roles.highest.position) throw ':x: You cannot kick this user!';

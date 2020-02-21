@@ -1,4 +1,4 @@
-import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
+import { CommandStore, KlasaMessage } from 'klasa';
 import connect4 from '../../lib/Games/connect4';
 import { GuildMember, Message } from 'discord.js';
 import SnakeCommand from '../../lib/structures/base/SnakeCommand';
@@ -9,16 +9,18 @@ export default class extends SnakeCommand {
         super(store, file, directory, {
             usage: '[opponent:member]',
             cooldown: 60,
-            cooldownLevel: 'channel'
+            cooldownLevel: 'channel',
+            description: lang => lang.get('COMMAND_CONNECT4_DESCRIPTION'),
+            extendedHelp: lang => lang.get('COMMAND_CONNECT4_EXTENDED')
         });
     }
 
     public async run(msg: KlasaMessage, [opp]: [GuildMember]): Promise<KlasaMessage | KlasaMessage[] | null> {
-        // if (opp && opp.id === (msg.author as KlasaUser).id) return msg.sendMessage('You cant play against yourself');
-        let players = [] as string[];
+        if (opp && opp.id === msg.author.id) return msg.sendMessage('You cant play against yourself');
+        let players: string[] = [];
 
         if (opp) {
-            players = [(msg.author as KlasaUser).id, opp.id];
+            players = [msg.author.id, opp.id];
             await msg.channel.send(`${opp.toString()}, Do you confirm to play? (y/n)`);
             const responses = await msg.channel.awaitMessages(m => m.author.id === opp.id, { time: 30000, max: 1 });
 

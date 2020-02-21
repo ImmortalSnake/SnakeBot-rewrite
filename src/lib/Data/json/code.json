@@ -1,0 +1,90 @@
+[
+    {
+        "identifier": "plaintext",
+        "name": ["", "txt"]
+    },
+    {
+        "identifier": "clang",
+        "name": ["c"]
+    },
+    {
+        "identifier": "clangcpp",
+        "name": ["cpp", "c++"]
+    },
+    {
+        "identifier": "netcore",
+        "name": ["csharp"]
+    },
+    {
+        "identifier": "gc",
+        "name": ["go"]
+    },
+    {
+        "identifier": "ghc",
+        "name": ["haskell"]
+    },
+    {
+        "identifier": "html",
+        "name": ["html"]
+    },
+    {
+        "identifier": "openjdk11",
+        "name": ["java"]
+    },
+    {
+        "identifier": "nodejs",
+        "name": ["js"]
+    },
+    {
+        "identifier": "jinja2",
+        "name": ["jinja2"]
+    },
+    {
+        "identifier": "jsx",
+        "name": ["jsx"]
+    },
+    {
+        "identifier": "markdown",
+        "name": ["markdown", "md"]
+    },
+    {
+        "identifier": "perl",
+        "name": ["perl"]
+    },
+    {
+        "identifier": "php",
+        "name": ["php"]
+    },
+    {
+        "identifier": "postgresql",
+        "name": ["postgresql", "pgsql"]
+    },
+    {
+        "identifier": "cpython",
+        "name": ["python", "py"]
+    },
+    {
+        "identifier": "rakudo",
+        "name": ["perl"]
+    },
+    {
+        "identifier": "rustc-stable",
+        "name": ["rust"]
+    },
+    {
+        "identifier": "sh",
+        "name": ["sh", "bash"]
+    },
+    {
+        "identifier": "sql",
+        "name": ["sql"]
+    },
+    {
+        "identifier": "sqlite",
+        "name": ["sqlite", "sql"]
+    },
+    {
+        "identifier": "typescript-nodejs",
+        "name": ["typeScript", "ts"]
+    }
+]

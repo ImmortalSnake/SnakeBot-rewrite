@@ -1,5 +1,6 @@
 import { util, CommandStore, KlasaMessage, SettingsFolderUpdateResult, SchemaEntry, SchemaFolder, Schema } from 'klasa';
 import SnakeCommand from '../../lib/structures/base/SnakeCommand';
+import SnakeEmbed from '../../lib/structures/SnakeEmbed';
 
 export default class extends SnakeCommand {
 
@@ -10,7 +11,8 @@ export default class extends SnakeCommand {
             guarded: true,
             subcommands: true,
             description: language => language.get('COMMAND_CONF_SERVER_DESCRIPTION'),
-            usage: '<set|show|remove|reset> (key:key) (value:value)'
+            usage: '<set|remove|reset|show:default> (key:key) (value:value)',
+            examples: ['', 'prefix', 'set prefix s!', 'music/volume']
         });
 
         this
@@ -26,13 +28,15 @@ export default class extends SnakeCommand {
     }
 
     public async show(msg: KlasaMessage, [key]: [string]): Promise<KlasaMessage | KlasaMessage[]> {
-        const entry = this.getPath(key);
-        if (!entry || (entry.type === 'Folder' ? !entry.configurableKeys.length : !(entry as Schema).configurableKeys.length)) return msg.sendLocale('COMMAND_CONF_GET_NOEXT', [key]);
+        const entry = this.getPath(key.toLowerCase().replace('/', '.'));
+
+        if (!entry || (entry.type === 'Folder' ? !(entry as SchemaFolder).configurableKeys.length : !(entry as SchemaEntry).configurable)) return msg.sendLocale('COMMAND_CONF_GET_NOEXT', [key]);
+
         if (entry.type === 'Folder') {
-            return msg.sendLocale('COMMAND_CONF_SERVER', [
-                key ? `: ${key.split('.').map(x => util.toTitleCase(x)).join('/')}` : '',
-                util.codeBlock('asciidoc', msg.guild!.settings.display(msg, entry))
-            ]);
+            return msg.send(`**Guild Settings ${key ? `: ${key.split('.').map(x => util.toTitleCase(x)).join('/')}` : ''}**`,
+                new SnakeEmbed(msg)
+                    .setDescription(util.codeBlock('asciidoc', msg.guild!.settings.display(msg, entry)))
+                    .init());
         }
         return msg.sendLocale('COMMAND_CONF_GET', [entry.path, msg.guild!.settings.display(msg, entry)]);
     }
@@ -58,7 +62,7 @@ export default class extends SnakeCommand {
         return updated[0].entry;
     }
 
-    private getPath(key: string): SchemaFolder | Schema | undefined {
+    private getPath(key?: string): SchemaFolder | Schema | SchemaEntry | undefined {
         const { schema } = this.client.gateways.get('guilds')!;
         if (!key) return schema;
         try {

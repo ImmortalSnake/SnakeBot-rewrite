@@ -53,7 +53,7 @@ export default class Connect4 {
         this.author = message.author as User;
         this.difficulty = 1; // can be 1, 5, 10
         this.turn = this.player1;
-        this.AI = players.includes(this.client.id);
+        this.AI = players.includes(this.client.user!.id);
         this.over = false;
         this.state = '';
     }
@@ -198,7 +198,7 @@ export default class Connect4 {
         if (depth === 0 || this.isBoardFull(board)) return potentialMoves;
 
         const opponent = player.val === this.p2 ? this.player1 : this.player2;
-        const m = player.id === this.client.id ? 1 : -1;
+        const m = this.isClient(player) ? 1 : -1;
 
         for (let i = 0; i < 7; i++) {
             if (!this.isValidMove(board, i + 1)) continue;
@@ -229,7 +229,7 @@ export default class Connect4 {
     }
 
     private isClient(player: Player): boolean {
-        return player.id === this.client.id;
+        return player.id === this.client.user!.id;
     }
 
     private isBoardFull(board: number[][]): boolean {

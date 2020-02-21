@@ -11,6 +11,7 @@ export default class extends SnakeCommand {
             requiredPermissions: ['BAN_MEMBERS'],
             permissionLevel: 5,
             description: lang => lang.get('COMMAND_BAN_DESCRIPTION'),
+            extendedHelp: lang => lang.get('COMMAND_BAN_EXTENDED'),
             examples: ['@Jeff Mention Spam', '@Jeff Inappropriate Content --days=2 --duration="5 Hours"']
         });
     }
