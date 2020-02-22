@@ -10,6 +10,7 @@ export default class extends SnakeCommand {
             usage: '<query:str> [page:int]',
             usageDelim: '-',
             cooldown: 10,
+            description: lang => lang.get('COMMAND_SHOWS_DESCRIPTION'),
             examples: ['friends']
         });
     }

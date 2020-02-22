@@ -6,8 +6,9 @@ export default class extends SnakeCommand {
     public constructor(store: CommandStore, file: string[], directory: string) {
         super(store, file, directory, {
             usage: '<reason:...str>',
-            requiredPermissions: ['MANAGE_NICKNAMES', 'MANAGE_MESSAGES'],
-            cooldown: 10
+            requiredPermissions: ['MANAGE_MESSAGES'],
+            cooldown: 10,
+            examples: ['having dinner']
         });
     }
 

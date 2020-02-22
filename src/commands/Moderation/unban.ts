@@ -10,7 +10,8 @@ export default class extends SnakeCommand {
             runIn: ['text'],
             usage: '<user:user> [reason:...str]',
             requiredPermissions: ['BAN_MEMBERS'],
-            permissionLevel: 5
+            permissionLevel: 5,
+            examples: ['@Jeff he should be good now']
         });
     }
 

@@ -8,7 +8,8 @@ export default class extends SnakeCommand {
     public constructor(store: CommandStore, file: string[], directory: string) {
         super(store, file, directory, {
             usage: '<text:...str{0,220}>',
-            aliases: ['wiki']
+            aliases: ['wiki'],
+            examples: ['snakes']
         });
     }
 

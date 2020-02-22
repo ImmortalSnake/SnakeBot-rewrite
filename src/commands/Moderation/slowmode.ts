@@ -12,7 +12,8 @@ export default class extends SnakeCommand {
             cooldownLevel: 'channel',
             permissionLevel: 5,
             requiredPermissions: ['MANAGE_CHANNELS'],
-            usage: '<reset|off|seconds:int|cooldown:timespan>'
+            usage: '<reset|off|seconds:int|cooldown:timespan>',
+            examples: ['2h']
         });
 
         this.createCustomResolver('cooldown', (arg, possible, message) => this.client.arguments.get('timespan')!.run(arg, possible, message) / 1000);

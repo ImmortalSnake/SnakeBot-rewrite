@@ -10,7 +10,8 @@ export default class extends MusicCommand {
     public constructor(store: CommandStore, file: string[], directory: string) {
         super(store, file, directory, {
             usage: '<track:song>',
-            music: ['USER_VC']
+            music: ['USER_VC'],
+            examples: ['see you again']
         });
     }
 

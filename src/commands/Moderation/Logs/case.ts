@@ -8,7 +8,8 @@ export default class extends SnakeCommand {
         super(store, file, directory, {
             usage: '<id:int>',
             requiredPermissions: ['MANAGE_GUILD'],
-            permissionLevel: 5
+            permissionLevel: 5,
+            examples: ['12']
         });
     }
 

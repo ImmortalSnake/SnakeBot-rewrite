@@ -27,8 +27,8 @@ export default class extends SnakeCommand {
             });
     }
 
-    public async show(msg: KlasaMessage, [key]: [string]): Promise<KlasaMessage | KlasaMessage[]> {
-        const entry = this.getPath(key.toLowerCase().replace('/', '.'));
+    public async show(msg: KlasaMessage, [key]: [string?]): Promise<KlasaMessage | KlasaMessage[]> {
+        const entry = this.getPath(key?.toLowerCase().replace('/', '.'));
 
         if (!entry || (entry.type === 'Folder' ? !(entry as SchemaFolder).configurableKeys.length : !(entry as SchemaEntry).configurable)) return msg.sendLocale('COMMAND_CONF_GET_NOEXT', [key]);
 
@@ -38,6 +38,7 @@ export default class extends SnakeCommand {
                     .setDescription(util.codeBlock('asciidoc', msg.guild!.settings.display(msg, entry)))
                     .init());
         }
+
         return msg.sendLocale('COMMAND_CONF_GET', [entry.path, msg.guild!.settings.display(msg, entry)]);
     }
 

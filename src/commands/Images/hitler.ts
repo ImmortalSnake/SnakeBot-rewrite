@@ -12,7 +12,8 @@ export default class extends SnakeCommand {
     public constructor(store: CommandStore, file: string[], directory: string) {
         super(store, file, directory, {
             cooldown: 10,
-            usage: '[user:user]'
+            usage: '[user:user]',
+            examples: ['', '@Jeff']
         });
     }
 

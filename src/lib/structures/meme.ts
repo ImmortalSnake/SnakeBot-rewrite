@@ -48,7 +48,7 @@ export default class MemeHandler {
         return chan.send(await this.search_reddit(this.random));
     }
 
-    private search_reddit(url: string): Promise<MessageEmbed | string> {
+    private async search_reddit(url: string): Promise<MessageEmbed | string> {
         return fetch(url)
             .then(data => data.json())
             .then((meme: any) => {

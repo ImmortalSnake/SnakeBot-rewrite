@@ -7,7 +7,8 @@ export default class extends SnakeCommand {
 
     public constructor(store: CommandStore, file: string[], directory: string) {
         super(store, file, directory, {
-            usage: '<search:...str>'
+            usage: '<search:...str>',
+            examples: ['Guild']
         });
     }
 

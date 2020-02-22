@@ -8,13 +8,12 @@ export default class extends SnakeCommand {
             requiredPermissions: ['EMBED_LINKS'],
             usage: '[query:string]',
             enabled: false,
-            cooldown: 10,
-            enabled: false
+            cooldown: 10
         });
     }
 
     public async run(msg: KlasaMessage, [query]: [string]): Promise<KlasaMessage | KlasaMessage[]> {
-        return msg.send('no');
+        return msg.send(query);
     }
 
 }

@@ -6,7 +6,8 @@ export default class extends MusicCommand {
     public constructor(store: CommandStore, file: string[], directory: string) {
         super(store, file, directory, {
             usage: '[volume:int{0,200}]',
-            music: ['DJ_REQUIRED', 'SAME_VC']
+            music: ['DJ_REQUIRED', 'SAME_VC'],
+            examples: ['', '50']
         });
     }
 

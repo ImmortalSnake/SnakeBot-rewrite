@@ -11,7 +11,8 @@ export default class extends SnakeCommand {
             hidden: true,
             guarded: true,
             permissionLevel: 10,
-            usage: '<expression:...str>'
+            usage: '<expression:...str>',
+            examples: ['node -v']
         });
     }
 

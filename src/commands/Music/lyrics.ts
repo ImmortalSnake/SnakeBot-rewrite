@@ -9,7 +9,8 @@ export default class extends SnakeCommand {
     public constructor(store: CommandStore, file: string[], directory: string) {
         super(store, file, directory, {
             usage: '<query:...string>',
-            cooldown: 10
+            cooldown: 10,
+            examples: ['happy now']
         });
     }
 

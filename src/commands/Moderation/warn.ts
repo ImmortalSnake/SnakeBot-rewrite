@@ -9,7 +9,8 @@ export default class extends SnakeCommand {
         super(store, file, directory, {
             usage: '<user:member> [reason:...str]',
             requiredPermissions: ['MANAGE_GUILD'],
-            permissionLevel: 5
+            permissionLevel: 5,
+            examples: ['@Jeff pinged mods for no reason']
         });
     }
 

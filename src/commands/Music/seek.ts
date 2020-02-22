@@ -6,7 +6,8 @@ export default class extends MusicCommand {
     public constructor(store: CommandStore, file: string[], directory: string) {
         super(store, file, directory, {
             usage: '<position:timespan>',
-            music: ['VOICE_PLAYING', 'SAME_VC']
+            music: ['VOICE_PLAYING', 'SAME_VC'],
+            examples: ['1m 20s']
         });
     }
 

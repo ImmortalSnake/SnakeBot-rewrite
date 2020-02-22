@@ -11,7 +11,8 @@ export default class extends SnakeCommand {
             cooldown: 60,
             cooldownLevel: 'channel',
             description: lang => lang.get('COMMAND_CONNECT4_DESCRIPTION'),
-            extendedHelp: lang => lang.get('COMMAND_CONNECT4_EXTENDED')
+            extendedHelp: lang => lang.get('COMMAND_CONNECT4_EXTENDED'),
+            examples: ['', '@Jeff']
         });
     }
 

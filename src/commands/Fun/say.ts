@@ -7,7 +7,8 @@ export default class extends SnakeCommand {
         super(store, file, directory, {
             usage: '<text:...str>',
             requiredPermissions: ['MANAGE_MESSAGES'],
-            permissionLevel: 4
+            permissionLevel: 4,
+            examples: ['hello, i am alive']
         });
     }
 

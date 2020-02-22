@@ -11,7 +11,8 @@ export default class extends SnakeCommand {
             aliases: ['ud', 'urbandictionary'],
             requiredPermissions: ['EMBED_LINKS'],
             usage: '<query:...string{0,240}>',
-            nsfw: true
+            nsfw: true,
+            examples: ['~']
         });
     }
 

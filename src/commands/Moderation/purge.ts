@@ -9,7 +9,8 @@ export default class extends SnakeCommand {
         super(store, file, directory, {
             usage: '<limit:int{1,99}> [link|invite|bots|you|me|upload|user:user]',
             requiredPermissions: ['MANAGE_MESSAGES'],
-            permissionLevel: 4
+            permissionLevel: 4,
+            examples: ['25 link', '100 @Jeff']
         });
     }
 

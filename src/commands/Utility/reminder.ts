@@ -6,7 +6,8 @@ export default class extends SnakeCommand {
 
     public constructor(store: CommandStore, file: string[], directory: string) {
         super(store, file, directory, {
-            usage: '<duration:time> <text:...str>'
+            usage: '<duration:time> <text:...str>',
+            examples: ['2h do homework']
         });
     }
 

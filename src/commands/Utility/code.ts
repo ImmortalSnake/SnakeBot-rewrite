@@ -8,7 +8,8 @@ export default class extends SnakeCommand {
 
     public constructor(store: CommandStore, file: string[], directory: string) {
         super(store, file, directory, {
-            usage: '<code:...str>'
+            usage: '<code:...str>',
+            examples: ['``py\nprint(2+2)\n``']
         });
     }
 

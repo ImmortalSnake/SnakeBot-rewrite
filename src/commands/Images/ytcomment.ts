@@ -13,7 +13,8 @@ export default class extends SnakeCommand {
     public constructor(store: CommandStore, file: string[], directory: string) {
         super(store, file, directory, {
             cooldown: 10,
-            usage: '<text:...str{1,90}>'
+            usage: '<text:...str{1,90}>',
+            examples: ['This is a short youtube comment']
         });
     }
 

@@ -1,6 +1,7 @@
-import { Command, CommandStore, KlasaMessage, util, Stopwatch, Type } from 'klasa';
+import { CommandStore, KlasaMessage, util, Stopwatch, Type } from 'klasa';
 import { inspect } from 'util';
 import Util from '../../lib/utils/Util';
+import SnakeCommand from '../../lib/structures/base/SnakeCommand';
 
 interface IEvalResult {
     success: boolean;
@@ -17,11 +18,16 @@ interface IHandleMessageOptions {
     language: string;
 }
 
+interface IHandleMessageData {
+    sendAs: string | null;
+    url: string | null;
+    hastebinUnavailable: boolean;
+}
 
-export default class extends Command {
+
+export default class extends SnakeCommand {
 
     private timeout = 3000;
-
     public constructor(store: CommandStore, file: string[], directory: string) {
         super(store, file, directory, {
             hidden: true,
@@ -31,7 +37,8 @@ export default class extends Command {
             usage: '<expression:...str>',
             runIn: ['text', 'dm'],
             description: language => language.get('COMMAND_EVAL_DESCRIPTION'),
-            extendedHelp: language => language.get('COMMAND_EVAL_EXTENDEDHELP')
+            extendedHelp: language => language.get('COMMAND_EVAL_EXTENDEDHELP'),
+            examples: ['msg.author']
         });
     }
 
@@ -51,7 +58,7 @@ export default class extends Command {
     }
 
 
-    public async handleMessage(msg: KlasaMessage, options: any, { success, result, time, footer, language }: IHandleMessageOptions): Promise<KlasaMessage | KlasaMessage[] | null> {
+    public async handleMessage(msg: KlasaMessage, options: IHandleMessageData, { success, result, time, footer, language }: IHandleMessageOptions): Promise<KlasaMessage | KlasaMessage[] | null> {
         switch (options.sendAs) {
             case 'file': {
                 if (msg.channel.attachable) return msg.channel.sendFile(Buffer.from(result), 'output.txt', msg.language.get('COMMAND_EVAL_SENDFILE', time, footer));
@@ -86,7 +93,7 @@ export default class extends Command {
         }
     }
 
-    public async getTypeOutput(msg: KlasaMessage, options: { hastebinUnavailable: boolean; sendAs: string }): Promise<void> {
+    public async getTypeOutput(msg: KlasaMessage, options: IHandleMessageData): Promise<void> {
         const _options = ['log'];
         if (msg.channel.attachable) _options.push('file');
         if (!options.hastebinUnavailable) _options.push('hastebin');
@@ -117,7 +124,7 @@ export default class extends Command {
     // Eval the input
     private async eval(msg: KlasaMessage, code: string): Promise<IEvalResult> {
         const stopwatch = new Stopwatch();
-        let success;
+        let success = false;
         let syncTime;
         let asyncTime;
         let result;
@@ -141,7 +148,6 @@ export default class extends Command {
             if (thenable && !asyncTime) asyncTime = stopwatch.toString();
             if (!type) type = new Type(error);
             result = error.message;
-            success = false;
         }
 
         stopwatch.stop();

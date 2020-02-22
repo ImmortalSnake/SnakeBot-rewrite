@@ -10,7 +10,8 @@ export default class extends SnakeCommand {
             aliases: ['modlogs'],
             usage: '[user:user]',
             requiredPermissions: ['MANAGE_GUILD'],
-            permissionLevel: 5
+            permissionLevel: 5,
+            examples: ['', '@Jeff']
         });
     }
 

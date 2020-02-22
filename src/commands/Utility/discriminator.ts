@@ -6,7 +6,8 @@ export default class extends SnakeCommand {
     public constructor(store: CommandStore, file: string[], directory: string) {
         super(store, file, directory, {
             aliases: ['discrim'],
-            usage: '[discriminator:regex/\\d{4}/]'
+            usage: '[discriminator:regex/\\d{4}/]',
+            examples: ['', '0001']
         });
     }
 

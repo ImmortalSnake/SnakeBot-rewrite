@@ -18,6 +18,10 @@ export default class SnakeEmbed extends MessageEmbed {
         return this.msg.guild ? this.msg.member!.displayColor : COLORS.PRIMARY;
     }
 
+    public get language() {
+        return this.msg.language;
+    }
+
     public init() {
         return this.setColor(this.displayColor)
             .setAuthor(this.client.user?.tag, this.client.user?.displayAvatarURL())
@@ -25,7 +29,11 @@ export default class SnakeEmbed extends MessageEmbed {
     }
 
     public setLocaleDescription(key: string, ...args: any[]) {
-        return this.setDescription(this.msg.language.get(key, ...args));
+        return this.setDescription(this.language.get(key, ...args));
+    }
+
+    public setLocaleTitle(key: string, ...args: any[]) {
+        return this.setTitle(this.language.get(key, ...args));
     }
 
 }

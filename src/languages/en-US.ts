@@ -157,8 +157,8 @@ export default class extends Language {
 
             COMMAND_CONNECT4_DESCRIPTION: 'Play a game of connect4 with me or someone else',
             COMMAND_CONNECT4_EXTENDED: [
-                `Connect Four (also known as Four Up, Plot Four, Find Four, Four in a Row, Drop Four and Gravitrips\
-                is a two-player connection game in which the players first choose a color and then take turns dropping one colored disc from the top into a 7x6 grid. `,
+                `**Connect Four** *(also known as Four Up, Plot Four, Find Four, Four in a Row, Drop Four and Gravitrips)*\
+                is a two-player connection game in which the players first choose a color and then take turns dropping one colored disc from the top into a 7x6 grid.`,
                 'The pieces fall straight down, occupying the lowest available space within the column.',
                 'The objective of the game is to be the first to form a horizontal, vertical, or diagonal line of four of one\s own discs.'
             ].join('\n'),
@@ -318,6 +318,8 @@ export default class extends Language {
             /**
              * Errors
              */
+
+            COMMAND_ERROR: 'Uh oh! An error has occured... Please try again later!',
 
             TIME_UP: ':x: **Sorry, time is up!**',
             CHANNEl_MULTIPLE_GAME: ':x: **Only one game may be occuring per channel**',
