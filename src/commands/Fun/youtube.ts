@@ -45,7 +45,7 @@ export default class extends SnakeCommand {
             case 'youtube#playlist':
                 return `https://youtube.com/channel/${data.id.playlistId}`;
             case 'youtube#video':
-                return `https://youtube.com/${data.id.videoId}`;
+                return `https://youtube.com/watch?v=${data.id.videoId}`;
             default:
                 return '';
         }

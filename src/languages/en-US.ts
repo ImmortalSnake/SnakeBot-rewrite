@@ -8,18 +8,23 @@ export default class extends Language {
 
         this.language = {
 
-            COMMAND_CONF_GET: (key, value) => `The value for the key **${key}** is: \`${value}\``,
+            COMMAND_CONF_GET: (prefix, key, value) => `
+            **Current Value**: \`${value}\`
+            **Update**: \`${prefix}conf set ${key} <value>\`
+            **Reset**: \`${prefix}conf reset ${key}\``,
+
             COMMAND_HELP_USAGE: usage => `📜 | **Command Usage**\n\`${usage}\``,
             COMMAND_HELP_EXTENDED: `🔎 | **Extended Help**`,
 
-            COMMAND_STATS_GENERAL: (version, guilds, channels, users, shard, uptime, ping) => [
-                `• Version  :: ${version}`,
-                `• Guilds   :: ${guilds}`,
-                `• Channels :: ${channels}`,
-                `• Users    :: ${users}`,
-                `• Shard    :: ${shard}`,
-                `• Uptime   :: ${uptime}`,
-                `• Ping     :: ${ping} ms`
+            COMMAND_STATS_GENERAL: (version, guilds, channels, users, shard, uptime, ping, uses) => [
+                `• Version      :: ${version}`,
+                `• Guilds       :: ${guilds}`,
+                `• Channels     :: ${channels}`,
+                `• Users        :: ${users}`,
+                `• Shard        :: ${shard}`,
+                `• Uptime       :: ${uptime}`,
+                `• Ping         :: ${ping} ms`,
+                `• Command Uses :: ${uses}`
             ].join('\n'),
             COMMAND_STATS_SYSTEM: (os, cpu, usage, nodeVersion, discordVersion) => [
                 `• Operating System  :: ${os} `,
@@ -31,8 +36,8 @@ export default class extends Language {
 
 
             COMMAND_AKINATOR_NO_GUESS: 'I don\'t have any guesses. Bravo.',
-            COMMAND_TICTACTOE_DIFFICULTY: '**Select Difficulty:**\n**[1]** - `Easy`\n**[2]** - `Medium`\n**[3]** - `Impossible`',
-            COMMAND_TICTACTOE_INVALID_DIFFICULTY: '❌ Invalid Difficulty Level',
+            GAME_DIFFICULTY: '**Select Difficulty:**\n**[1]** - `Easy`\n**[2]** - `Medium`\n**[3]** - `Impossible`',
+            GAME_INVALID_DIFFICULTY: '❌ Invalid Difficulty Level',
 
             COMMAND_JOIN_NO_MEMBER: `❌ I am sorry, but Discord did not tell me the information I need, so I do not know what voice channel are you connected to...`,
             COMMAND_JOIN_NO_VOICECHANNEL: `❌ You are not connected in a voice channel.`,
@@ -105,11 +110,24 @@ export default class extends Language {
             GIVEAWAY_LIST_BODY: (i, message, channel, wCount, time, title) =>
                 `\n**${i}]** \`${message}\` → <#${channel}> | \`${wCount}\` **Winner(s)** | **Ends At:** ${Util.msToDuration(time - Date.now())} | **Title:** \`${title}\``,
 
+
+            COMMAND_EXEC_DESCRIPTION: '',
+            COMMAND_EXEC_EXTENDED: '',
+
+            COMMAND_EVAL_EXTENDED: [
+                'The eval command evaluates code as-in, any error thrown from it will be handled.',
+                'It also uses the flags feature. Write **--silent**, **--depth=number** or **--async** to customize the output.',
+                'The **--silent** flag will make it output nothing.',
+                'The **--depth** flag accepts a number, for example, **--depth=2**, to customize util.inspect\s depth.',
+                'The **--async** flag will wrap the code into an async function where you can enjoy the use of await, however, if you want to return something, you will need the **return** keyword.',
+                'The **--showHidden** flag will enable the showHidden option in util.inspect.',
+                'If the output is too large, it\ll send the output as a file, or in the console if the bot does not have the `ATTACH_FILES` permission.'
+            ].join('\n'),
             /**
              * Configuration
              */
 
-            COMMAND_PREFIX_DESCRIPTION: '',
+            COMMAND_PREFIX_DESCRIPTION: 'View or set the prefix for your server',
             COMMAND_PREFIX_EXTENDED: '',
 
             /**
@@ -122,35 +140,53 @@ export default class extends Language {
             COMMAND_AUTOMEME_DESCRIPTION: '',
             COMMAND_AUTOMEME_EXTENDED: '',
 
-            COMMAND_CUBES_DESCRIPTION: '',
-            COMMAND_CUBES_EXTENDED: '',
+            COMMAND_CUBES_DESCRIPTION: 'Cubify your text!',
+            COMMAND_CUBES_EXTENDED: [
+                'This is a unique fun command that generates cubes from your input.\nHere is an example',
+                '```',
+                '      S N A K E S',
+                '    / N       / N',
+                '  /   A     /   A',
+                'S N A K E S     K',
+                'N     A   N     E',
+                'A     S N A K E S',
+                'K   /     K   /',
+                'E /       E /',
+                'S N A K E S',
+                '```'
+            ].join('\n'),
 
             COMMAND_FLIPTEXT_DESCRIPTION: 'Flips your text',
-            COMMAND_FLIPTEXT_EXTENDED: '',
+            COMMAND_FLIPTEXT_EXTENDED: 'sᴉɥʇ pɐǝɹ noʎ uɐɔ',
 
-            COMMAND_INSULT_DESCRIPTION: '',
-            COMMAND_INSULT_EXTENDED: '',
+            COMMAND_INSULT_DESCRIPTION: 'Insult a user.. Hahaha!',
+            COMMAND_INSULT_EXTENDED: 'If no user is provided, it insults you! Try it',
 
-            COMMAND_MEME_DESCRIPTION: '',
-            COMMAND_MEME_EXTENDED: '',
+            COMMAND_MEME_DESCRIPTION: 'Memes to keep you healthy',
+            COMMAND_MEME_EXTENDED: '**NOTE** All memes displayed are taken from reddit, please do give credit to their creators',
 
             COMMAND_PUN_DESCRIPTION: '',
             COMMAND_PUN_EXTENDED: '',
+
             COMMAND_QUOTE_DESCRIPTION: '',
             COMMAND_QUOTE_EXTENDED: '',
-            COMMAND_RATE_DESCRIPTION: '',
+
+            COMMAND_RATE_DESCRIPTION: 'Rate something out of 10',
             COMMAND_RATE_EXTENDED: '',
-            COMMAND_SAY_DESCRIPTION: '',
-            COMMAND_SAY_EXTENDED: '',
-            COMMAND_SLAP_DESCRIPTION: '',
+
+            COMMAND_SAY_DESCRIPTION: 'Make the bot say something for you!',
+            COMMAND_SAY_EXTENDED: '**Note** This command requires me and you to have the \`MANAGE_MESSAGES\` permission',
+
+            COMMAND_SLAP_DESCRIPTION: 'Slap someone',
             COMMAND_SLAP_EXTENDED: '',
-            COMMAND_VAPORWAVE_DESCRIPTION: '',
+
+            COMMAND_VAPORWAVE_DESCRIPTION: 'Vaporize your text',
             COMMAND_VAPORWAVE_EXTENDED: '',
 
             COMMAND_YOUTUBE_DESCRIPTION: 'Searches youtube for a channel, comment or video',
             COMMAND_YOUTUBE_EXTENDED: 'Fetches details of a particular youtube channel, command or video',
 
-            COMMAND_ZALGO_DESCRIPTION: '',
+            COMMAND_ZALGO_DESCRIPTION: 'zalgoify your text',
             COMMAND_ZALGO_EXTENDED: '',
             COMMAND_AKINATOR_DESCRIPTION: '',
             COMMAND_AKINATOR_EXTENDED: '',
@@ -175,16 +211,15 @@ export default class extends Language {
             COMMAND_STATS_DESCRIPTION: 'Shows some statistics regarding the bot',
             COMMAND_STATS_EXTENDED: '',
 
-            COMMAND_HITLER_DESCRIPTION: '',
+            COMMAND_HITLER_DESCRIPTION: 'Generates a hitler meme',
             COMMAND_HITLER_EXTENDED: '',
-            COMMAND_MAGIK_DESCRIPTION: '',
-            COMMAND_MAGIK_EXTENDED: '',
-            COMMAND_TRIGGER_DESCRIPTION: '',
-            COMMAND_TRIGGER_EXTENDED: '',
-            COMMAND_TWEET_DESCRIPTION: '',
+
+            COMMAND_TWEET_DESCRIPTION: 'Generates a tweet image',
             COMMAND_TWEET_EXTENDED: '',
+
             COMMAND_WANTED_DESCRIPTION: '',
             COMMAND_WANTED_EXTENDED: '',
+
             COMMAND_YTCOMMENT_DESCRIPTION: '',
             COMMAND_YTCOMMENT_EXTENDED: '',
 
@@ -199,10 +234,15 @@ export default class extends Language {
             COMMAND_KICK_EXTENDED: `This command requires me to have the \`KICK_MEMBERS\` permission.
             Only members with a lower role hierarchy than you and me can be kicked.`,
 
+            COMMAND_LOCKDOWN_DESCRIPTION: '',
+            COMMAND_LOCKDOWN_EXTENDED: '',
+
             COMMAND_MODLOG_DESCRIPTION: '',
             COMMAND_MODLOG_EXTENDED: '',
+
             COMMAND_MUTE_DESCRIPTION: '',
             COMMAND_MUTE_EXTENDED: '',
+
             COMMAND_PURGE_DESCRIPTION: '',
             COMMAND_PURGE_EXTENDED: '',
 
@@ -211,6 +251,9 @@ export default class extends Language {
 
             COMMAND_REPORT_DESCRIPTION: '',
             COMMAND_REPORT_EXTENDED: '',
+
+            COMMAND_SLOWMODE_DESCRIPTION: '',
+            COMMAND_SLOWMODE_EXTENDED: '',
 
             COMMAND_SOFTBAN_DESCRIPTION: 'Bans a member from your guild and immediately unbans them',
             COMMAND_SOFTBAN_EXTENDED: `This command requires me to have the \`BAN_MEMBERS\` permission.
@@ -250,6 +293,10 @@ export default class extends Language {
             COMMAND_PLAY_EXTENDED: '',
             COMMAND_RESUME_DESCRIPTION: '',
             COMMAND_RESUME_EXTENDED: '',
+
+            COMMAND_SEARCH_DESCRIPTION: '',
+            COMMAND_SEARCH_EXTENDED: '',
+
             COMMAND_SEEK_DESCRIPTION: '',
             COMMAND_SEEK_EXTENDED: '',
             COMMAND_SKIP_DESCRIPTION: '',
@@ -278,13 +325,21 @@ export default class extends Language {
 
             COMMAND_AFK_DESCRIPTION: '',
             COMMAND_AFK_EXTENDED: '',
+
             COMMAND_AVATAR_DESCRIPTION: '',
             COMMAND_AVATAR_EXTENDED: '',
+
+            COMMAND_CODE_DESCRIPTION: 'Evaluate code in any language!',
+            COMMAND_CODE_EXTENDED: '',
+
             COMMAND_DISCRIMINATOR_DESCRIPTION: '',
             COMMAND_DISCRIMINATOR_EXTENDED: '',
 
             COMMAND_DOCS_DESCRIPTION: 'Searches discord.js documentation',
             COMMAND_DOCS_EXTENDED: '',
+
+            COMMAND_EMOTES_DESCRIPTION: '',
+            COMMAND_EMOTES_EXTENDED: '',
 
             COMMAND_POLL_DESCRIPTION: '',
             COMMAND_POLL_EXTENDED: '',
@@ -301,18 +356,21 @@ export default class extends Language {
             COMMAND_USER_DESCRIPTION: 'Provides information of a specified user',
             COMMAND_USER_EXTENDED: '',
 
-            COMMAND_CLEAR_DESCRIPTION: '',
+            COMMAND_CLEAR_DESCRIPTION: 'Clears the queue ',
             COMMAND_CLEAR_EXTENDED: '',
             COMMAND_MOVE_DESCRIPTION: '',
             COMMAND_MOVE_EXTENDED: '',
 
             COMMAND_QUEUE_DESCRIPTION: '',
             COMMAND_QUEUE_EXTENDED: '',
+
             COMMAND_REMOVE_DESCRIPTION: '',
             COMMAND_REMOVE_EXTENDED: '',
-            COMMAND_REMOVEDUPES_DESCRIPTION: '',
+
+            COMMAND_REMOVEDUPES_DESCRIPTION: 'Removes all duplicate entries from the queue',
             COMMAND_REMOVEDUPES_EXTENDED: '',
-            COMMAND_SHUFFLE_DESCRIPTION: '',
+
+            COMMAND_SHUFFLE_DESCRIPTION: 'Shuffle the queue',
             COMMAND_SHUFFLE_EXTENDED: '',
 
             /**

@@ -52,10 +52,9 @@ export default class AudioManager {
         return this.lavalink!.leave(guild.id);
     }
 
-    public async fetchSongs(query: string) {
+    public async fetchSongs(query: string): Promise<AudioTrack[]> {
         if (!this.node?.connected) throw 'No lavalink nodes were initialised';
-        const params = new URLSearchParams();
-        params.append('identifier', query);
+        const params = new URLSearchParams({ identifier: query });
 
         return fetch(`http://${this.node.host}:${this.node.port}/loadtracks?${params.toString()}`, {
             headers: { Authorization: this.node.password! }

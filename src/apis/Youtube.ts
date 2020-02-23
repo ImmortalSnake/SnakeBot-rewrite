@@ -7,7 +7,7 @@ export default class YoutubeAPI extends APIWrapper {
 
     public constructor(store: APIWrapperStore, file: string[], directory: string) {
         super(store, file, directory, {
-            apiURL: 'https://www.googleapis.com/youtube/v3/',
+            apiURL: 'https://www.googleapis.com/youtube/v3',
             apiKey: process.env.YT_KEY
         });
     }
