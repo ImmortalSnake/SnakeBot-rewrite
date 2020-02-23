@@ -39,13 +39,13 @@ export default class Connect4 {
         this.player1 = {
             id: players[0],
             val: this.p1,
-            name: (this.client.users.get(players[0]) as User).username
+            name: this.client.users.get(players[0])!.username
         };
 
         this.player2 = {
             id: players[1],
             val: this.p2,
-            name: (this.client.users.get(players[1]) as User).username
+            name: this.client.users.get(players[1])!.username
         };
 
         this.message = message;
@@ -63,22 +63,22 @@ export default class Connect4 {
 
     public async run() {
         if (this.AI) {
-            const difficulty = await this.message.prompt('Select Difficulty\n1 - Easy\n2 - Medium\n3 - Impossible')
+            const difficulty = await this.message.prompt(this.message.language.get('GAME_DIFFICULTY'))
                 .then(mess => parseInt(mess.content, 10))
                 .catch();
 
-            if (!difficulty || difficulty > 3 || difficulty < 1) return this.message.channel.send('Invalid Difficulty');
+            if (!difficulty || difficulty > 3 || difficulty < 1) throw this.message.language.get('GAME_INVALID_DIFFICULTY');
             this.difficulty += difficulty ** 2;
         }
 
         while (!this.over) {
-            await this.message.channel.send(this.display(this.board));
             if (this.isClient(this.turn)) {
                 await this.computerMove(this.board, this.turn);
                 if (this.checkWin(this.board, this.turn.val)) {
                     return this.message.channel.send(`${this.display(this.board)}\nSorry, you lost`);
                 }
             } else {
+                await this.message.channel.send(this.display(this.board));
                 await this.humanMove(this.board, this.turn);
                 if (this.checkWin(this.board, this.turn.val)) {
                     return this.message.channel.send(`${this.display(this.board)}\n<@${this.turn.id}> has won!!`);

@@ -11,14 +11,14 @@ export default Client.defaultGuildSchema
         .add('welcome', 'string', { 'max': 2000, 'default': 'Hi {user}, welcome to {guild}' })
         .add('leave', 'string', { 'max': 2000, 'default': '{username} has left, it was nice knowing you' }))
 
-    .add('channels', (folder: SchemaFolder) => folder
+    .add('channels', folder => folder
         .add('log', 'textchannel')
         .add('modlog', 'textchannel')
         .add('welcome', 'textchannel')
         .add('reports', 'textchannel')
         .add('leave', 'textchannel'))
 
-    .add('roles', (folder: SchemaFolder) => folder
+    .add('roles', folder => folder
         .add('mute', 'Role')
         .add('auto', 'Role', { array: true })
         .add('dj', 'Role', { array: true }))

@@ -37,7 +37,7 @@ export default class extends SnakeCommand {
             usage: '<expression:...str>',
             runIn: ['text', 'dm'],
             description: language => language.get('COMMAND_EVAL_DESCRIPTION'),
-            extendedHelp: language => language.get('COMMAND_EVAL_EXTENDEDHELP'),
+            extendedHelp: language => language.get('COMMAND_EVAL_EXTENDED'),
             examples: ['msg.author']
         });
     }

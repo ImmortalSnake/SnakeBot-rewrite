@@ -37,11 +37,11 @@ export default class TicTacToe {
     public async play(msg: KlasaMessage, players: string[]) {
         this.players = players;
         if (this.AI) {
-            const difficulty = await msg.prompt(msg.language.get('COMMAND_TICTACTOE_DIFFICULTY'))
+            const difficulty = await msg.prompt(msg.language.get('GAME_DIFFICULTY'))
                 .then(r => parseInt(r.content, 10))
                 .catch();
 
-            if (!difficulty || difficulty > 3 || difficulty < 1) throw msg.language.get('COMMAND_TICTACTOE_INVALID_DIFFICULTY');
+            if (!difficulty || difficulty > 3 || difficulty < 1) throw msg.language.get('GAME_INVALID_DIFFICULTY');
             this.difficulty = difficulty;
         }
         const res = await this.move(msg).catch(e => e);
@@ -135,9 +135,9 @@ export default class TicTacToe {
 
     private get getBoard(): string {
         return `
-${this.emojify(0)} ${this.emojify(1)} ${this.emojify(2)}
-${this.emojify(3)} ${this.emojify(4)} ${this.emojify(5)}
-${this.emojify(6)} ${this.emojify(7)} ${this.emojify(8)}
+${this.emojify(1)} ${this.emojify(2)} ${this.emojify(3)}
+${this.emojify(4)} ${this.emojify(5)} ${this.emojify(6)}
+${this.emojify(7)} ${this.emojify(8)} ${this.emojify(9)}
 `;
     }
 

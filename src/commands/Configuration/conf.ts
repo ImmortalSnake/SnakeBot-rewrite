@@ -12,7 +12,7 @@ export default class extends SnakeCommand {
             subcommands: true,
             description: language => language.get('COMMAND_CONF_SERVER_DESCRIPTION'),
             usage: '<set|remove|reset|show:default> (key:key) (value:value)',
-            examples: ['', 'prefix', 'set prefix s!', 'music/volume']
+            examples: ['', 'prefix', 'set prefix s!', 'music.volume']
         });
 
         this
@@ -29,17 +29,22 @@ export default class extends SnakeCommand {
 
     public async show(msg: KlasaMessage, [key]: [string?]): Promise<KlasaMessage | KlasaMessage[]> {
         const entry = this.getPath(key?.toLowerCase().replace('/', '.'));
+        const prefix = msg.guildSettings.get('prefix');
 
         if (!entry || (entry.type === 'Folder' ? !(entry as SchemaFolder).configurableKeys.length : !(entry as SchemaEntry).configurable)) return msg.sendLocale('COMMAND_CONF_GET_NOEXT', [key]);
 
         if (entry.type === 'Folder') {
             return msg.send(`**Guild Settings ${key ? `: ${key.split('.').map(x => util.toTitleCase(x)).join('/')}` : ''}**`,
                 new SnakeEmbed(msg)
-                    .setDescription(util.codeBlock('asciidoc', msg.guild!.settings.display(msg, entry)))
+                    .setDescription(`Use \`${prefix}conf ${key ? `${entry.path}.` : ''}<entry>\` to view an entry\n
+                    ${util.codeBlock('asciidoc', msg.guild!.settings.display(msg, entry))}`)
                     .init());
         }
 
-        return msg.sendLocale('COMMAND_CONF_GET', [entry.path, msg.guild!.settings.display(msg, entry)]);
+        return msg.send(new SnakeEmbed(msg)
+            .setTitle(entry.path)
+            .setLocaleDescription('COMMAND_CONF_GET', prefix, entry.path, msg.guild!.settings.display(msg, entry))
+            .init());
     }
 
     public async set(msg: KlasaMessage, [key, valueToSet]: [string, string]): Promise<KlasaMessage | KlasaMessage[]> {

@@ -16,7 +16,7 @@ export default class extends MusicCommand {
 
     public async run(msg: KlasaMessage): Promise<KlasaMessage | KlasaMessage[] | null> {
 
-        const player = msg.guild!.audio!;
+        const player = msg.guild!.audio;
         if (!player || !player.current) throw `I am not playing anything`;
 
         const response = await msg.send('Loading...');
@@ -25,8 +25,10 @@ export default class extends MusicCommand {
             .setColor(msg.member!.displayColor)
             .setTitle(`Music Queue for ${msg.guild!.name} ${player.repeat ? ' [Looping]' : ''}`)
             .addField(ZWS, `**Now Playing**
-            [${player.current.info.title}](${player.current.info.uri}) \`${player.current.requester}\``))
-            .setFooterSuffix(`| **${player.tracks.length}** song(s) in queue | \`${Util.formatDuration(player.totalTime())}\` Expected length`);
+            [${player.current.info.title}](${player.current.info.uri}) \`${player.current.requester}\`
+
+            **${player.tracks.length}** song(s) in queue | \`${Util.formatDuration(player.totalTime())}\` Expected length
+            `));
 
         const songFields = player.tracks.map((track, position) => this.generateSongField(msg, position, track));
 

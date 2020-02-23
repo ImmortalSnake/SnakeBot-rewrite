@@ -6,6 +6,8 @@ export interface MessagePromptOptions {
     time?: number;
     max?: number;
     delete?: boolean;
+    filter?: (message: Message) => boolean;
+    embed?: MessageEmbed;
 }
 
 export interface MessageAskOptions {
@@ -25,8 +27,8 @@ export default class extends Extendable {
     }
 
     public async prompt(this: Message, content: string | MessageEmbed, options: MessagePromptOptions = {}): Promise<Message> {
-        const mess = await this.channel.send(content);
-        const collected = await this.channel.awaitMessages(m => m.author.id === (options.user ? options.user : this.author.id), {
+        const mess = await this.channel.send(content, options.embed);
+        const collected = await this.channel.awaitMessages(m => m.author.id === (options.user ? options.user : this.author.id) && (!options.filter || options.filter(m)), {
             time: options.time ?? 60000,
             max: options.max ?? 1
         });
