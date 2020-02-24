@@ -1,6 +1,6 @@
 import { CommandStore, KlasaMessage } from 'klasa';
-import SnakeBot from '../../lib/client';
 import SnakeCommand from '../../lib/structures/base/SnakeCommand';
+import SnakeEmbed from '../../lib/structures/SnakeEmbed';
 
 export default class extends SnakeCommand {
 
@@ -11,11 +11,10 @@ export default class extends SnakeCommand {
     }
 
     public async run(msg: KlasaMessage, [title]: [string]): Promise<KlasaMessage | KlasaMessage[]> {
-        const embed = (this.client as SnakeBot).embed(msg, {
-            title,
-            description: 'React Below!'
-        });
-        const m = await msg.sendEmbed(embed) as KlasaMessage;
+        const m = await msg.sendEmbed(new SnakeEmbed(msg)
+            .setTitle(title)
+            .setDescription('React Below!'));
+
         await m.react('👍');
         await m.react('👎');
 

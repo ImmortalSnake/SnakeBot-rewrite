@@ -26,7 +26,7 @@ export default class extends SnakeCommand {
             await channel.updateOverwrite(channel.guild.id, { SEND_MESSAGES: false });
             await channel.send(`This channel has been locked ${duration ? `for ${Util.msToDuration(duration)} ` : ''}by ${msg.author.tag}`)
                 .catch(() => msg.send(`${channel.toString()} has been locked`));
-            if (duration) await this.client.schedule.create('unlock', duration, { data: { channelID: channel.id } });
+            if (duration) await this.client.schedule.create('lockdown', duration, { data: { channelID: channel.id } });
         } else {
             await channel.updateOverwrite(channel.guild.id, { SEND_MESSAGES: true });
             await msg.send(`Lockdown for ${channel.toString()} has been lifted`);

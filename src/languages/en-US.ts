@@ -137,7 +137,7 @@ export default class extends Language {
             COMMAND_8BALL_DESCRIPTION: 'Ask any question and the holy 8ball shall answer',
             COMMAND_8BALL_EXTENDED: 'Gives you random answers based on your questions',
 
-            COMMAND_AUTOMEME_DESCRIPTION: '',
+            COMMAND_AUTOMEME_DESCRIPTION: 'Sends memes every X minutes!',
             COMMAND_AUTOMEME_EXTENDED: '',
 
             COMMAND_CUBES_DESCRIPTION: 'Cubify your text!',
@@ -181,13 +181,14 @@ export default class extends Language {
             COMMAND_SLAP_EXTENDED: '',
 
             COMMAND_VAPORWAVE_DESCRIPTION: 'Vaporize your text',
-            COMMAND_VAPORWAVE_EXTENDED: '',
+            COMMAND_VAPORWAVE_EXTENDED: 'ｈｏｗ ｉｓ ｔｈｉｓ ｌｏｏｋｉｎｇ',
 
             COMMAND_YOUTUBE_DESCRIPTION: 'Searches youtube for a channel, comment or video',
             COMMAND_YOUTUBE_EXTENDED: 'Fetches details of a particular youtube channel, command or video',
 
             COMMAND_ZALGO_DESCRIPTION: 'zalgoify your text',
             COMMAND_ZALGO_EXTENDED: '',
+
             COMMAND_AKINATOR_DESCRIPTION: '',
             COMMAND_AKINATOR_EXTENDED: '',
 
@@ -199,8 +200,9 @@ export default class extends Language {
                 'The objective of the game is to be the first to form a horizontal, vertical, or diagonal line of four of one\s own discs.'
             ].join('\n'),
 
-            COMMAND_RPS_DESCRIPTION: '',
+            COMMAND_RPS_DESCRIPTION: 'Play Rock Paper Scissors!',
             COMMAND_RPS_EXTENDED: '',
+
             COMMAND_SLOTS_DESCRIPTION: '',
             COMMAND_SLOTS_EXTENDED: '',
 
@@ -283,12 +285,14 @@ export default class extends Language {
             COMMAND_LOOP_EXTENDED: '',
 
             COMMAND_LYRICS_DESCRIPTION: 'Check out the lyrics of a song',
-            COMMAND_LYRICS_EXTENDED: `Searches lyrics for the specified song or the current playing song using the **Genius** API`,
+            COMMAND_LYRICS_EXTENDED: `Searches lyrics for the specified song using the **Genius** API`,
 
-            COMMAND_NOWPLAYING_DESCRIPTION: '',
+            COMMAND_NOWPLAYING_DESCRIPTION: 'View the current playing song',
             COMMAND_NOWPLAYING_EXTENDED: '',
+
             COMMAND_PAUSE_DESCRIPTION: '',
             COMMAND_PAUSE_EXTENDED: '',
+
             COMMAND_PLAY_DESCRIPTION: '',
             COMMAND_PLAY_EXTENDED: '',
             COMMAND_RESUME_DESCRIPTION: '',
@@ -338,25 +342,25 @@ export default class extends Language {
             COMMAND_DOCS_DESCRIPTION: 'Searches discord.js documentation',
             COMMAND_DOCS_EXTENDED: '',
 
-            COMMAND_EMOTES_DESCRIPTION: '',
+            COMMAND_EMOTES_DESCRIPTION: 'View all emotes available on this server',
             COMMAND_EMOTES_EXTENDED: '',
 
             COMMAND_POLL_DESCRIPTION: '',
             COMMAND_POLL_EXTENDED: '',
 
-            COMMAND_REMINDER_DESCRIPTION: '',
+            COMMAND_REMINDER_DESCRIPTION: 'Set a reminder for X minutes',
             COMMAND_REMINDER_EXTENDED: '',
 
-            COMMAND_SERVER_DESCRIPTION: '',
+            COMMAND_SERVER_DESCRIPTION: 'View some details of this server',
             COMMAND_SERVER_EXTENDED: '',
 
-            COMMAND_TOPINVITES_DESCRIPTION: '',
+            COMMAND_TOPINVITES_DESCRIPTION: 'See the guilds top inviters',
             COMMAND_TOPINVITES_EXTENDED: '',
 
             COMMAND_USER_DESCRIPTION: 'Provides information of a specified user',
             COMMAND_USER_EXTENDED: '',
 
-            COMMAND_CLEAR_DESCRIPTION: 'Clears the queue ',
+            COMMAND_CLEAR_DESCRIPTION: 'Clears the queue',
             COMMAND_CLEAR_EXTENDED: '',
             COMMAND_MOVE_DESCRIPTION: '',
             COMMAND_MOVE_EXTENDED: '',

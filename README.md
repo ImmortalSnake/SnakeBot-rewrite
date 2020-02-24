@@ -11,4 +11,5 @@ Another multi-purpose discord bot made using typescript and klasa
 5. Play high quality **Music** in your server
 6. **Fun commands**, like memes, puns, quotes and more
 7. **Search** for various information such as weather, wikipedia, movies
-8. And lots more!
+8. Manipulate **Images**
+9. And lots more!

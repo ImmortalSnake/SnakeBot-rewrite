@@ -1,5 +1,4 @@
 import { KlasaClient, KlasaClientOptions } from 'klasa';
-import Embed from './utils/RichEmbedHandler';
 import permissionLevel from './structures/permissionLevel';
 import MemeHandler from './structures/meme';
 import AudioManager from './structures/audio/Manager';
@@ -16,7 +15,7 @@ import './structures/schemas/ClientSchema';
 
 export default class SnakeBot extends KlasaClient {
 
-    public version = 'v0.4.2 - Alpha';
+    public version = 'v0.5.2 - Alpha';
     public meme: MemeHandler;
     public audio: AudioManager;
     public apis: APIWrapperStore;
@@ -31,10 +30,6 @@ export default class SnakeBot extends KlasaClient {
         this.registerStore(this.apis);
         this.audio = new AudioManager(this);
 
-    }
-
-    public get embed() {
-        return Embed;
     }
 
 }
