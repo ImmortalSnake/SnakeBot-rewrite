@@ -1,6 +1,23 @@
-import { CommandStore, KlasaMessage, Timestamp } from 'klasa';
+import { CommandStore, KlasaMessage, Timestamp, KlasaGuild } from 'klasa';
 import SnakeCommand from '../../lib/structures/base/SnakeCommand';
 import SnakeEmbed from '../../lib/structures/SnakeEmbed';
+
+const verification = ['None', 'Low', 'Medium', '(╯°□°）╯︵ ┻━┻', '┻━┻ ﾐヽ(ಠ益ಠ)ノ彡┻━┻'];
+const regions: Record<string, string> = {
+    'brazil': ' :flag_br:',
+    'europe': ':flag_eu:',
+    'hongkong': ':flag_hk:',
+    'india': ':flag_in:',
+    'japan': ':flag_jp:',
+    'russia': ':flag_ru:',
+    'singapore': ':flag_sg:',
+    'southafrica': ':flag_za:',
+    'sydney': ':flag_au:',
+    'us-central': ':flag_us:',
+    'us-east': ':flag_us:',
+    'us-south': ':flag_us:',
+    'us-west': ':flag_us:'
+};
 
 export default class extends SnakeCommand {
 
@@ -12,18 +29,39 @@ export default class extends SnakeCommand {
     }
 
     public async run(msg: KlasaMessage): Promise<KlasaMessage | KlasaMessage[]> {
+        const { channels, bots, total } = this.stats(msg.guild!);
+
         return msg.sendEmbed(new SnakeEmbed(msg)
-            .setDescription('**Server Information**')
             .setThumbnail(msg.guild!.iconURL() ?? '')
-            .addField('❯ Server Name', msg.guild!.name, true)
-            .addField('❯ Total Members', msg.guild!.memberCount, true)
-            .addField('❯ Region', msg.guild!.region, true)
-            .addField('❯ Owner', msg.guild!.owner!.toString(), true)
-            .addField('❯ Channels', msg.guild!.channels.size, true)
-            .addField('❯ Emojis', msg.guild!.emojis.size, true)
-            .addField('❯ Created At', this.timestamp.display(msg.guild!.createdAt), true)
-            .addField(`❯ Roles (${msg.guild!.roles.size})`, Object.values(msg.guild!.roles).join(' ').slice(0, 1024))
+            .addField('Server Information', `
+            **❯ Server Name**   : \`${msg.guild!.name}\`
+            **❯ Server ID**     : \`${msg.guild!.id}\`
+            **❯ Server Owner**  : ${msg.guild!.owner}
+            **❯ Server Region** : ${msg.guild!.region} ${regions[msg.guild!.region] || ''}
+            **❯ Verification**  : **${verification[msg.guild!.verificationLevel]}**
+            **❯ Created At**    : ${this.timestamp.display(msg.guild!.createdAt)}
+            `)
+            .addField('Statistics', `
+            **❯ Member Count**  : **${total}** Total | **${total - bots}** Users | **${bots}** Bots 
+            **❯ Channels**      : **${msg.guild!.channels.size}** Total | **${channels.text}** Text | **${channels.voice}** Voice | **${channels.categories}** Categories
+            **❯ Emojis**        : **${msg.guild!.emojis.size}** Total
+            **❯ Roles**         : **${msg.guild!.roles.size}** Total`)
             .init());
+    }
+
+    private stats(guild: KlasaGuild) {
+        const channels = { voice: 0, text: 0, categories: 0 };
+        for (const chan of guild.channels.values()) {
+            if (chan.type === 'voice') channels.voice++;
+            else if (chan.type === 'text') channels.text++;
+            else channels.categories++;
+        }
+
+        return {
+            total: guild.memberCount,
+            bots: guild.members.filter(m => m.user.bot).size,
+            channels
+        };
     }
 
 }

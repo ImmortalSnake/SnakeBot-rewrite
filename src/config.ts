@@ -3,9 +3,15 @@ import { KlasaClientOptions } from 'klasa';
 export default {
     ownerID: '410806297580011520',
     mentionPrefix: true,
-    prefix: '+',
+    prefix: 'sb!',
     preserveSettings: false,
     noPrefixDM: true,
+    presence: {
+        activity: {
+            name: 'sb!help',
+            type: 'LISTENING'
+        }
+    },
     pieceDefaults: {
         commands: {
             quotedStringSupport: true,
@@ -43,6 +49,8 @@ export const LavalinkServer = [
 ];
 
 export const SnakeBotConfig = {
-    WeatherKey: process.env.WEATHER_KEY as string,
+    WebhookID: process.env.WEBHOOK_ID!,
+    WebhookToken: process.env.WEBHOOK_TOKEN!,
+    WeatherKey: process.env.WEATHER_KEY!,
     Lavalink: true
 };

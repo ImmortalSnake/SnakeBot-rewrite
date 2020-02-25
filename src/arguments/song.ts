@@ -5,33 +5,28 @@ import AudioTrack from '../lib/structures/audio/AudioTrack';
 export default class extends Argument {
 
     public async run(arg: string, _: Possible, message: KlasaMessage) {
-        if (!arg) throw 'Please specify a song name or provide a valid url';
+        if (!arg) throw ':x: Please specify a song name or provide a valid url';
         if (!message.guild) return null;
-        if (!message.member?.voice.channel) return null;
 
         const { audio } = this.client as SnakeBot;
 
-        arg = this.getFullArgs(message, arg); // .replace(/^<(.+)>$/g, '$1');
+        const query = this.getFullArgs(message, arg);
         const parsedURL = this.parseURL(arg);
-        console.log(arg, parsedURL);
-        let returnAll: boolean;
+
+        const returnAll = parsedURL?.playlist;
+        const soundcloud = 'sc' in message.flagArgs || 'soundcloud' in message.flagArgs;
+
         let tracks: AudioTrack[];
-        let soundcloud = true;
-        if (parsedURL) {
-            tracks = await audio.fetchSongs(arg);
-            returnAll = parsedURL.playlist;
-        } else if (('sc' in message.flagArgs) || ('soundcloud' in message.flagArgs)) {
-            tracks = await audio.fetchSongs(`scsearch: ${arg}`);
-            returnAll = false;
-            soundcloud = false;
-        } else {
-            tracks = await audio.fetchSongs(`ytsearch: ${arg}`);
-            returnAll = false;
-        }
+
+        if (parsedURL) tracks = await audio.fetchSongs(arg);
+        else if (soundcloud) tracks = await audio.fetchSongs(`scsearch: ${query}`);
+        else tracks = await audio.fetchSongs(`ytsearch: ${query}`);
+
         if (!tracks.length) {
-            if (soundcloud) tracks.push(...await audio.fetchSongs(`scsearch: ${arg}`));
-            if (!tracks.length) throw 'Could not get any search results!';
+            if (!soundcloud) tracks.push(...await audio.fetchSongs(`scsearch: ${query}`));
+            if (!tracks.length) throw ':x: Could not get any search results!';
         }
+
         return returnAll ? tracks : [tracks[0]];
     }
 
