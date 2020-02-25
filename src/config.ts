@@ -52,5 +52,6 @@ export const SnakeBotConfig = {
     WebhookID: process.env.WEBHOOK_ID!,
     WebhookToken: process.env.WEBHOOK_TOKEN!,
     WeatherKey: process.env.WEATHER_KEY!,
+    FortniteKey: process.env.FORTNITE_KEY!,
     Lavalink: true
 };

@@ -51,6 +51,7 @@ export default class extends Language {
 
             COMMAND_REMINDER_CREATE: duration => `:white_check_mark: A Reminder was created for ${duration}!`,
             COMMAND_AFK_CREATE: (user, reason) => `${user} has been set to AFK for reason: **${reason}**`,
+            COMMAND_SUGGESTION_REPLY: 'Successfully sent the suggestion. Thank you for taking your time to make this bot better!',
 
             COMMAND_EVAL_SENDHASTE: (time, url, footer) => `Output was too long... sent the result in **hastebin**:\n${url}\n**TYPE**\n${footer}\n${time}`,
 
