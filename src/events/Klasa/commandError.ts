@@ -12,8 +12,8 @@ export default class extends Event {
                 .setColor('RED')
                 .setTitle('An Error has Occured')
                 .addField('Message', message.content.slice(0, 1000))
-                .addField('Guild', message.guild?.name || 'DMs', true)
-                .addField('Language', message.language.name, true)
+                .addField('Guild', `**${message.guild?.name || 'DMs'}**`, true)
+                .addField('Language', `**${message.language.name}**`, true)
                 .setDescription(`
                 **Command**: \`${command.name}\`
                 **Error**: ${util.codeBlock('js', (error.stack || error.message).slice(0, 2000))}

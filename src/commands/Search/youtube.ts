@@ -33,6 +33,7 @@ export default class extends SnakeCommand {
                     .setThumbnail(result.snippet.thumbnails.default.url)
                     .addField('Channel', result.snippet.channelTitle)
                     .addField('Created At:', new Date(result.snippet.publishedAt).toUTCString())
+                    .setFooter('Youtube', 'https://i.imgur.com/kKHJg9Q.png')
                     .setURL(this.getLink(result));
                 return msg.send(embed);
             });
