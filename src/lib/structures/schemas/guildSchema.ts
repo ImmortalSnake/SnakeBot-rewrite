@@ -6,7 +6,6 @@ export default Client.defaultGuildSchema
         .add('limit', 'number', { configurable: false })
         .add('channel', 'channel', { configurable: false }))
 
-    .add('afkusers', 'any', { array: true })
     .add('message', (folder: SchemaFolder) => folder
         .add('welcome', 'string', { 'max': 2000, 'default': 'Hi {user}, welcome to {guild}' })
         .add('leave', 'string', { 'max': 2000, 'default': '{username} has left, it was nice knowing you' }))

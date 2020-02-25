@@ -11,6 +11,7 @@ import './Setup/Canvas';
 import './extensions/SnakeGuild';
 import './structures/schemas/GuildSchema';
 import './structures/schemas/ClientSchema';
+import './structures/schemas/UserSchema';
 
 const { WebhookID, WebhookToken } = SnakeBotConfig;
 

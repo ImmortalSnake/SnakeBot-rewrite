@@ -50,7 +50,7 @@ export default class extends Language {
             COMMAND_QUEUE_LINE: (position, duration, title, url, requester) => `**[${position}]** │ ${duration} │ [${title}](${url}) │ Requester: **${requester}**`,
 
             COMMAND_REMINDER_CREATE: duration => `:white_check_mark: A Reminder was created for ${duration}!`,
-            COMMAND_AFK_CREATE: (user, reason) => `${user} has been set to AFK for reason: **${reason}**`,
+            COMMAND_AFK_CREATE: (user, reason) => `${user} has been set to **AFK** for reason: **${reason}**`,
             COMMAND_SUGGESTION_REPLY: 'Successfully sent the suggestion. Thank you for taking your time to make this bot better!',
 
             COMMAND_EVAL_SENDHASTE: (time, url, footer) => `Output was too long... sent the result in **hastebin**:\n${url}\n**TYPE**\n${footer}\n${time}`,
@@ -377,6 +377,9 @@ export default class extends Language {
 
             COMMAND_SHUFFLE_DESCRIPTION: 'Shuffle the queue',
             COMMAND_SHUFFLE_EXTENDED: '',
+
+            MONITOR_AFK_REMOVE: user => `Welcome back ${user}! I have removed your AFK status`,
+            MONITOR_AFK_USER: (user, since, reason) => `**${user}** is currently AFK for reason: \`${reason}\`, ${since} ago`,
 
             /**
              * Errors
