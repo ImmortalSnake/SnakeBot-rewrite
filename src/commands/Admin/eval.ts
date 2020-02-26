@@ -109,7 +109,8 @@ export default class extends SnakeCommand {
     }
 
     private timedEval(msg: KlasaMessage, code: string, flagTime: number) {
-        if (flagTime === Infinity || flagTime === 0) return this.eval(msg, Util.removeCodeBlock(code)?.shift() || code);
+        const parsed = Util.removeCodeBlock(code)?.slice(1).shift() || code;
+        if (flagTime === Infinity || flagTime === 0) return this.eval(msg, parsed);
         return Promise.race([
             util.sleep(flagTime).then(() => ({
                 success: false,
@@ -117,7 +118,7 @@ export default class extends SnakeCommand {
                 time: '⏱ ...',
                 type: 'EvalTimeoutError'
             })),
-            this.eval(msg, code)
+            this.eval(msg, parsed)
         ]);
     }
 

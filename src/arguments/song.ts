@@ -4,17 +4,20 @@ import AudioTrack from '../lib/structures/audio/AudioTrack';
 
 export default class extends Argument {
 
-    public async run(arg: string, _: Possible, message: KlasaMessage) {
+    public async run(arg: string, _: Possible, msg: KlasaMessage) {
         if (!arg) throw ':x: Please specify a song name or provide a valid url';
-        if (!message.guild) return null;
+        if (!msg.guild) return null;
+
+        const remainingEntries = this.getRemainingEntries(msg);
+        if (remainingEntries <= 0) throw ':x: You have already reached the maximum number of entries per user';
 
         const { audio } = this.client as SnakeBot;
 
-        const query = this.getFullArgs(message, arg);
+        const query = this.getFullArgs(msg, arg);
         const parsedURL = this.parseURL(arg);
 
         const returnAll = parsedURL?.playlist;
-        const soundcloud = 'sc' in message.flagArgs || 'soundcloud' in message.flagArgs;
+        const soundcloud = 'sc' in msg.flagArgs || 'soundcloud' in msg.flagArgs;
 
         let tracks: AudioTrack[];
 
@@ -22,11 +25,10 @@ export default class extends Argument {
         else if (soundcloud) tracks = await audio.fetchSongs(`scsearch: ${query}`);
         else tracks = await audio.fetchSongs(`ytsearch: ${query}`);
 
-        if (!tracks.length) {
-            if (!soundcloud) tracks.push(...await audio.fetchSongs(`scsearch: ${query}`));
-            if (!tracks.length) throw ':x: Could not get any search results!';
-        }
+        if (!tracks.length && !soundcloud) tracks.push(...await audio.fetchSongs(`scsearch: ${query}`));
+        tracks = this.filter(msg, tracks).slice(0, remainingEntries);
 
+        if (!tracks.length) throw ':x: Could not get any search results!';
         return returnAll ? tracks : [tracks[0]];
     }
 
@@ -41,12 +43,28 @@ export default class extends Argument {
         }
     }
 
-    private getFullArgs(message: KlasaMessage, arg: string) {
-        const { args } = message;
-        const { usageDelim } = message.command!;
+    public getRemainingEntries(msg: KlasaMessage) {
+        const maxEntries = msg.guildSettings.get('music.maxentries') as number;
+        const entries = msg.guild!.audio?.tracks.filter(t => t.requester === msg.author.id).length || 0;
+
+        return maxEntries - entries;
+    }
+
+    private getFullArgs(msg: KlasaMessage, arg: string) {
+        const { args } = msg;
+        const { usageDelim } = msg.command!;
 
         const index = args.indexOf(arg);
         return args.splice(index, args.length - index).join(usageDelim!);
+    }
+
+    private filter(msg: KlasaMessage, tracks: AudioTrack[]) {
+        if (msg.member!.isDJ) return tracks;
+
+        const allowStreams = msg.guildSettings.get('music.allowstreams');
+        const maxduration = msg.guildSettings.get('music.maxduration') as number;
+
+        return tracks.filter(t => (allowStreams || !t.info.isStream) && t.info.length < maxduration);
     }
 
 }

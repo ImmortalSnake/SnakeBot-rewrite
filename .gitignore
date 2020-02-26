@@ -1,4 +1,19 @@
+# ignore node_modules
 node_modules/
+
+# ignore env files
 .env
-.vscode
+
+# ignore development folders
+.vscode/
+.idea/
+.dev/
+
+# ignore built folders
 dist/
+
+# ignore logs
+*.log
+
+# ignore package-lock
+package-lock.json

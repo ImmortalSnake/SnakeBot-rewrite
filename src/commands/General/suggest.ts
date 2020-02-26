@@ -12,12 +12,13 @@ export default class extends SnakeCommand {
     }
 
     public async run(msg: KlasaMessage, [suggestion]: [string]): Promise<KlasaMessage | KlasaMessage[]> {
-        await this.client.webhook.send(new SnakeEmbed(msg)
-            .setDescription(suggestion)
-            .setTitle('User Suggestion')
-            .init(), {
+        await this.client.webhook.send({
             username: msg.author.username,
-            avatarURL: msg.author.displayAvatarURL()
+            avatarURL: msg.author.displayAvatarURL(),
+            embeds: [new SnakeEmbed(msg)
+                .setDescription(suggestion)
+                .setTitle('User Suggestion')
+                .init()]
         });
 
         return msg.sendLocale('COMMAND_SUGGESTION_REPLY');
