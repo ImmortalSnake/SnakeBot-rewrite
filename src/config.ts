@@ -4,8 +4,13 @@ export default {
     ownerID: '410806297580011520',
     mentionPrefix: true,
     prefix: 'sb!',
+    regexPrefix: /^(?:hey |ok |hi )?(?:snake|snakebot)(?: |,|!)/ig,
+    prefixCaseInsensitive: true,
     preserveSettings: false,
     noPrefixDM: true,
+    commandEditing: true,
+    commandMessageLifetime: 120,
+    disableEveryone: true,
     presence: {
         activity: {
             name: 'sb!help',
@@ -38,14 +43,7 @@ export const LavalinkServer = [
         password: 'youshallnotpass',
         port: 2333,
         reconnectInterval: 30 * 1000 * 10000
-    } /*
-    {
-        name: 'Repl Lavalink Server',
-        host: process.env.HOST as string,
-        auth: 'youshallnotpass',
-        port: '/' as unknown as number
     }
-    */
 ];
 
 export const SnakeBotConfig = {

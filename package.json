@@ -17,10 +17,10 @@
     "canvas-constructor": "^3.1.0",
     "cheerio": "^1.0.0-rc.3",
     "discord.js": "github:discordjs/discord.js#fe7df708e44e0280dfaf0f8e457b154781bb5140",
-    "discord.js-lavalink": "github:MrJacz/discord.js-lavalink#v3",
+    "discord.js-lavalink": "github:Favna/discord.js-lavalink#v3",
     "dotenv": "^8.0.0",
     "klasa": "github:dirigeants/klasa#settings",
-    "klasa-giveaway": "github:immortalsnake/klasa-giveaway#settings",
+    "klasa-giveaway": "immortalsnake/klasa-giveaway#settings",
     "moment": "^2.24.0",
     "mongodb": "^3.2.7"
   },
@@ -37,8 +37,8 @@
     "typescript": "^3.7.4"
   },
   "files": [
-      "assets",
-      "dist/",
-      "LICENSE"
+    "assets",
+    "dist/",
+    "LICENSE"
   ]
 }

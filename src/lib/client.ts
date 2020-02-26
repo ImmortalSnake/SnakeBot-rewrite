@@ -5,7 +5,7 @@ import AudioManager from './structures/audio/Manager';
 import APIWrapperStore from './structures/base/APIWrapperStore';
 import { WebhookClient } from 'discord.js';
 import { SnakeBotConfig } from '../config';
-// import { GiveawayClient } from 'klasa-giveaway';
+import { GiveawayClient } from 'klasa-giveaway';
 
 import './Setup/Canvas';
 import './extensions/SnakeGuild';
@@ -15,7 +15,7 @@ import './structures/schemas/UserSchema';
 
 const { WebhookID, WebhookToken } = SnakeBotConfig;
 
-// KlasaClient.use(GiveawayClient);
+KlasaClient.use(GiveawayClient);
 
 export default class SnakeBot extends KlasaClient {
 

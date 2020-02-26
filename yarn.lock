@@ -427,9 +427,9 @@ detect-libc@^1.0.2:
   resolved "https://registry.yarnpkg.com/detect-libc/-/detect-libc-1.0.3.tgz#fa137c4bd698edf55cd5cd02ac559f91a4c4ba9b"
   integrity sha1-+hN8S9aY7fVc1c0CrFWfkaTEups=
 
-"discord.js-lavalink@github:MrJacz/discord.js-lavalink#v3":
+"discord.js-lavalink@github:Favna/discord.js-lavalink#v3":
   version "3.0.0"
-  resolved "https://codeload.github.com/MrJacz/discord.js-lavalink/tar.gz/2863eefbdb1c50168dea1de2852ba6b55e9d3e14"
+  resolved "https://codeload.github.com/Favna/discord.js-lavalink/tar.gz/169c7587ed515714eaf3175d05bcfe104a8b8090"
   dependencies:
     ws "^7.1.2"
 
@@ -924,9 +924,9 @@ json-stable-stringify-without-jsonify@^1.0.1:
   resolved "https://registry.yarnpkg.com/json-stable-stringify-without-jsonify/-/json-stable-stringify-without-jsonify-1.0.1.tgz#9db7b59496ad3f3cfef30a75142d2d930ad72651"
   integrity sha1-nbe1lJatPzz+8wp1FC0tkwrXJlE=
 
-"klasa-giveaway@github:immortalsnake/klasa-giveaway#settings":
+klasa-giveaway@immortalsnake/klasa-giveaway#settings:
   version "1.1.5"
-  resolved "https://codeload.github.com/immortalsnake/klasa-giveaway/tar.gz/197f37fc6f979d12090f6eb6db9ee2af116568ad"
+  resolved "https://codeload.github.com/immortalsnake/klasa-giveaway/tar.gz/07bb8ac7a74b3b3328aebc08665fd73de614f3e1"
 
 "klasa@github:dirigeants/klasa#settings":
   version "0.5.0-dev"
