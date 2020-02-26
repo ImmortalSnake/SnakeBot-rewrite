@@ -14,7 +14,7 @@ export default class GuildMemberAddEvent extends Event {
 
             await welcomeChan.send(welcomeMess).catch();
         }
-        if (welcomeRoles.length && member.guild.me?.hasPermission('MANAGE_ROLES')) await member.roles.add(welcomeRoles);
+        if (welcomeRoles.length && member.guild.me?.hasPermission('MANAGE_ROLES')) await member.roles.add(welcomeRoles).catch();
     }
 
     private regex = (type: string) => new RegExp(`\{([${type}]+)\}`, 'igm');

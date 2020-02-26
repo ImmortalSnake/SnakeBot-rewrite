@@ -1,5 +1,5 @@
 import { Extendable, ExtendableStore } from 'klasa';
-import { GuildMember, Role } from 'discord.js';
+import { GuildMember } from 'discord.js';
 
 export default class extends Extendable {
 
@@ -11,7 +11,7 @@ export default class extends Extendable {
     }
 
     public get isDJ(this: GuildMember) {
-        return this.hasPermission('ADMINISTRATOR') || (this.guild.settings.get('roles.dj') as Role[]).some(r => this.roles.has(r.id));
+        return this.hasPermission('ADMINISTRATOR') || (this.guild.settings.get('roles.dj') as string[]).some(r => this.roles.has(r));
     }
 
 }

@@ -1,12 +1,17 @@
-import { Client, SchemaFolder } from 'klasa';
+import { Client } from 'klasa';
 import { Hour } from '../../utils/constants';
 
 export default Client.defaultGuildSchema
-    .add('automeme', (folder: SchemaFolder) => folder
+    .add('automeme', folder => folder
         .add('limit', 'number', { configurable: false })
         .add('channel', 'channel', { configurable: false }))
 
-    .add('message', (folder: SchemaFolder) => folder
+    .add('automod', folder => folder
+        .add('invites', 'boolean', { 'default': false })
+        .add('links', 'boolean', { 'default': false })
+        .add('ignorestaff', 'boolean', { 'default': true }))
+
+    .add('message', folder => folder
         .add('welcome', 'string', { 'max': 2000, 'default': 'Hi {user}, welcome to {guild}' })
         .add('leave', 'string', { 'max': 2000, 'default': '{username} has left, it was nice knowing you' }))
 
@@ -19,8 +24,9 @@ export default Client.defaultGuildSchema
 
     .add('roles', folder => folder
         .add('mute', 'Role')
-        .add('auto', 'Role', { array: true })
-        .add('dj', 'Role', { array: true }))
+        .add('auto', 'Role', { 'array': true, 'default': [] })
+        .add('dj', 'Role', { 'array': true, 'default': [] })
+        .add('public', 'Role', { 'array': true, 'default': [] }))
 
     .add('modlogs', 'any', { array: true, configurable: false })
 
@@ -32,6 +38,6 @@ export default Client.defaultGuildSchema
 
     .add('music', folder => folder
         .add('volume', 'Number', { 'min': 0, 'max': 200, 'default': 100 })
-        .add('maxduration', 'Number', { 'min': 0, 'max': Hour * 4, 'default': Hour * 2 })
+        .add('maxduration', 'Number', { 'min': 0, 'max': Hour * 3, 'default': Hour })
         .add('maxentries', 'Number', { 'min': 1, 'max': 100, 'default': 25 })
         .add('allowstreams', 'Boolean', { 'default': true }));

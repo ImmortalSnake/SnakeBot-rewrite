@@ -1,10 +1,11 @@
 import { Monitor, MonitorStore, KlasaMessage, SettingsFolder, Duration } from 'klasa';
 
-export default class AFKMonitor extends Monitor {
+export default class extends Monitor {
 
     public constructor(store: MonitorStore, file: string[], directory: string) {
         super(store, file, directory, {
-            ignoreOthers: false
+            ignoreOthers: false,
+            ignoreEdits: false
         });
     }
 
@@ -13,7 +14,7 @@ export default class AFKMonitor extends Monitor {
         const isAFK = msg.author.settings.get('afk.time');
 
         if (isAFK) {
-            await msg.author.settings.reset('afk');
+            await msg.author.settings.reset(['afk.time', 'afk.reason']);
             await msg.sendLocale('MONITOR_AFK_REMOVE', [msg.author.toString()])
                 .then(m => m.delete({ timeout: 10000 }));
         }
