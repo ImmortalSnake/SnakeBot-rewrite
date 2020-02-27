@@ -11,6 +11,8 @@ export default {
     commandEditing: true,
     commandMessageLifetime: 120,
     disableEveryone: true,
+    clientID: '543796400165748736',
+    clientSecret: process.env.CLIENT_SECRET,
     presence: {
         activity: {
             name: 'sb!help',
@@ -23,7 +25,15 @@ export default {
             runIn: ['text'],
             usageDelim: ' '
         }
-    }
+    },
+    disabledEvents: [
+        'CHANNEL_PINS_UPDATE',
+        'GUILD_CREATE',
+        'GUILD_MEMBER_UPDATE',
+        'PRESENCE_UPDATE',
+        'TYPING_START',
+        'USER_UPDATE'
+    ]
 } as KlasaClientOptions;
 
 export const mongoOptions = {
