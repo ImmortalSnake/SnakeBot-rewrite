@@ -4,7 +4,7 @@ export default {
     ownerID: '410806297580011520',
     mentionPrefix: true,
     prefix: 'sb!',
-    regexPrefix: /^(?:hey |ok |hi )?(?:snake|snakebot)(?: |,|!)/ig,
+    regexPrefix: /^(?:hey |ok |hi )?(?:snakey|snakebot)(?: |,|!)/ig,
     prefixCaseInsensitive: true,
     preserveSettings: false,
     noPrefixDM: true,
@@ -28,7 +28,6 @@ export default {
     },
     disabledEvents: [
         'CHANNEL_PINS_UPDATE',
-        'GUILD_CREATE',
         'GUILD_MEMBER_UPDATE',
         'PRESENCE_UPDATE',
         'TYPING_START',

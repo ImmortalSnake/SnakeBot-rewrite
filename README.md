@@ -1,6 +1,6 @@
 # SnakeBot
 
-Another multi-purpose discord bot made using typescript and klasa
+A multi-purpose discord bot made using typescript and klasa, featuring high quality music, secure moderation, Games and much more
 
 ## Features
 
