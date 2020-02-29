@@ -28,7 +28,8 @@ export default Client.defaultGuildSchema
         .add('dj', 'Role', { 'array': true, 'default': [] })
         .add('public', 'Role', { 'array': true, 'default': [] }))
 
-    .add('modlogs', 'any', { array: true, configurable: false })
+    .add('modlogs', 'any', { 'array': true, 'configurable': false, 'default': [] })
+    .add('tags', 'any', { 'array': true, 'configurable': false, 'default': [] })
 
     .add('starboard', folder => folder
         .add('required', 'Number', { 'min': 1, 'default': 5 })
