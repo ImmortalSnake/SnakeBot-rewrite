@@ -5,11 +5,11 @@ import AudioTrack from '../lib/structures/audio/AudioTrack';
 export default class extends Argument {
 
     public async run(arg: string, _: Possible, msg: KlasaMessage) {
-        if (!arg) throw ':x: Please specify a song name or provide a valid url';
+        if (!arg) throw msg.language.get('RESOLVER_INVALID_SONG');
         if (!msg.guild) return null;
 
         const remainingEntries = this.getRemainingEntries(msg);
-        if (remainingEntries <= 0) throw ':x: You have already reached the maximum number of entries per user';
+        if (remainingEntries <= 0) throw msg.language.get('RESOLVER_MAX_ENTRIES');
 
         const { audio } = this.client as SnakeBot;
 
@@ -28,7 +28,7 @@ export default class extends Argument {
         if (!tracks.length && !soundcloud) tracks.push(...await audio.fetchSongs(`scsearch: ${query}`));
         tracks = this.filter(msg, tracks).slice(0, remainingEntries);
 
-        if (!tracks.length) throw ':x: Could not get any search results!';
+        if (!tracks.length) throw msg.language.get('RESOLVER_SEARCH_FAILED');
         return returnAll ? tracks : [tracks[0]];
     }
 

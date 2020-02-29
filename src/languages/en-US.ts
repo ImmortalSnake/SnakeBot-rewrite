@@ -65,13 +65,14 @@ export default class extends Language {
             COMMAND_JOIN_VOICE_SAME: `❌ Hello! I am already in your voice channel`,
             COMMAND_QUEUE_LINE: (position, duration, title, url, requester) => `**[${position}]** │ ${duration} │ [${title}](${url}) │ Requester: **${requester}**`,
 
-            COMMAND_REMINDER_CREATE: duration => `✅ A Reminder was created for ${duration}!`,
+            COMMAND_REMINDER_CREATE: duration => `⏱️ A Reminder was created for ${duration}!`,
             COMMAND_AFK_CREATE: (user, reason) => `${user} has been set to **AFK** for reason: **${reason}**`,
             COMMAND_SUGGESTION_REPLY: '✅ Successfully sent the suggestion. Thank you for taking your time to make this bot better!',
 
             COMMAND_EVAL_SENDHASTE: (time, url, footer) => `Output was too long... sent the result in **hastebin**:\n${url}\n**TYPE**\n${footer}\n${time}`,
 
             COMMAND_YOUTUBE_NO_SEARCH: '❌ Could not find any youtube result with that title',
+
             /**
              * Giveaway command locales
              */
@@ -253,13 +254,13 @@ export default class extends Language {
             COMMAND_KICK_EXTENDED: `This command requires me to have the \`KICK_MEMBERS\` permission.
             Only members with a lower role hierarchy than you and me can be kicked.`,
 
-            COMMAND_LOCKDOWN_DESCRIPTION: '',
+            COMMAND_LOCKDOWN_DESCRIPTION: 'Locks or unlocks a text channel',
             COMMAND_LOCKDOWN_EXTENDED: '',
 
-            COMMAND_MODLOG_DESCRIPTION: '',
+            COMMAND_MODLOG_DESCRIPTION: 'View all moderation logs for this server or a user',
             COMMAND_MODLOG_EXTENDED: '',
 
-            COMMAND_MUTE_DESCRIPTION: '',
+            COMMAND_MUTE_DESCRIPTION: 'Mutes a guild member',
             COMMAND_MUTE_EXTENDED: '',
 
             COMMAND_PURGE_DESCRIPTION: '',
@@ -371,6 +372,9 @@ export default class extends Language {
             COMMAND_SERVER_DESCRIPTION: 'View some details of this server',
             COMMAND_SERVER_EXTENDED: '',
 
+            COMMAND_TAG_DESCRIPTION: 'Allows you to create, remove or show tags.',
+            COMMAND_TAG_EXTENDED: '',
+
             COMMAND_TOPINVITES_DESCRIPTION: 'See the guilds top inviters',
             COMMAND_TOPINVITES_EXTENDED: '',
 
@@ -397,6 +401,9 @@ export default class extends Language {
             MONITOR_AFK_REMOVE: user => `Welcome back ${user}! I have removed your AFK status`,
             MONITOR_AFK_USER: (user, since, reason) => `**${user}** is currently AFK for reason: \`${reason}\`, ${since} ago`,
 
+            RESOLVER_INVALID_SONG: ':x: Please specify a song name or provide a valid url',
+            RESOLVER_MAX_ENTRIES: ':x: You have already reached the maximum number of entries per user',
+            RESOLVER_SEARCH_FAILED: ':x: Could not get any search results!',
             /**
              * Errors
              */

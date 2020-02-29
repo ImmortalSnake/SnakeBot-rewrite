@@ -8,9 +8,15 @@ export default class TagCommand extends SnakeCommand {
 
     public constructor(store: CommandStore, file: string[], directory: string) {
         super(store, file, directory, {
-            description: 'Allows you to create, remove or show tags.',
             subcommands: true,
-            usage: '<add|remove|source|list|show:default> (tag:tagname) [content:...string]'
+            usage: '<add|remove|source|list|show:default> (tag:tagname) [content:...string]',
+            examples: [
+                'add pins Please check the pins for this channel',
+                'remove pins',
+                'source pins',
+                'list',
+                'show pins'
+            ]
         });
 
         this.createCustomResolver('tagname', (arg, possible, message, [action]) => {
