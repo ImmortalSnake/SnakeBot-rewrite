@@ -20,7 +20,7 @@ export default class extends Monitor {
         const staffbypass = msg.guildSettings.get('automod.ignorestaff');
 
         if (!enabled || regex.test(msg.content)) return;
-        if (staffbypass && msg.hasAtLeastPermissionLevel(4)) return;
+        if (staffbypass && await msg.hasAtLeastPermissionLevel(4)) return;
 
         await msg.delete({ reason: 'No links allowed' });
         const [logChannel] = await msg.guildSettings.resolve('channels.log') as [TextChannel];
