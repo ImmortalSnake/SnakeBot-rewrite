@@ -5,25 +5,27 @@ export default class extends MusicCommand {
 
     public constructor(store: CommandStore, file: string[], directory: string) {
         super(store, file, directory, {
-            music: ['SAME_VC', 'VOICE_PLAYING']
+            music: ['SAME_VC', 'VOICE_PLAYING'],
+            usage: '[force]'
         });
     }
 
-    public async run(msg: KlasaMessage): Promise<KlasaMessage | KlasaMessage[] | null> {
+    public async run(msg: KlasaMessage, [force = false]: [boolean]): Promise<KlasaMessage | KlasaMessage[] | null> {
         const audio = msg.guild!.audio!;
+        if (force && !msg.member?.isDJ) throw 'Only DJ members and admins can force skip!';
 
         if (!audio.current?.skippers.includes(msg.author!.id)) {
             const reqVotes = Math.ceil((msg.guild!.me!.voice.channel!.members.size - 1) / 2) - audio.current!.skippers.length;
-            if (msg.member!.isDJ || reqVotes === 0) {
+            if ((force && msg.member!.isDJ) || reqVotes === 1) {
                 await audio.stop();
-                return msg.send(`✅ Your skip has been Acknowledged. Skipping Now ⏭️`);
+                return msg.sendLocale('COMMAND_SKIP_SUCCESS');
             }
 
             audio.current?.skippers.push(msg.author!.id);
-            return msg.send(`✅ Your skip has been Acknowledged. You need **${reqVotes - 1}** more votes to skip!`);
+            return msg.sendLocale('COMMAND_SKIP_ACKNOWLEDGED', [reqVotes - 1]);
         }
 
-        return msg.send(`❌ You already voted to skip!`);
+        return msg.sendLocale('COMMAND_SKIP_DOUBLE');
     }
 
 }

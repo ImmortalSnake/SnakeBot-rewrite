@@ -11,7 +11,7 @@ export default class extends MusicCommand {
 
     public async run(msg: KlasaMessage): Promise<KlasaMessage | KlasaMessage[] | null> {
         msg.guild!.audio!.shuffle();
-        return msg.send(`🔀 Shuffled the queue!`);
+        return msg.sendLocale('COMMAND_SHUFFLE_SUCCESS');
     }
 
 }

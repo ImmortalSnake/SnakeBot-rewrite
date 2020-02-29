@@ -11,7 +11,7 @@ export default class extends MusicCommand {
 
     public async run(msg: KlasaMessage): Promise<KlasaMessage | KlasaMessage[] | null> {
         const diff = msg.guild!.audio!.tracks.length - msg.guild!.audio!.removeDupes().length;
-        return msg.send(`✅ Removed **${diff}** duplicate tracks from the queue`);
+        return msg.sendLocale('COMMAND_REMOVEDUPES_SUCCESS', [diff]);
     }
 
 }

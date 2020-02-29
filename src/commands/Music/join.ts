@@ -13,16 +13,15 @@ export default class extends MusicCommand {
 
     public async run(msg: KlasaMessage): Promise<KlasaMessage | KlasaMessage[] | null> {
         const { channel } = msg.member!.voice;
-        if (!channel) throw 'You need to be in a voice channel';
 
         if (msg.guild!.me?.voice.channelID) {
-            if (channel.id === msg.guild!.me?.voice.channelID) throw msg.language.get('COMMAND_JOIN_VOICE_SAME');
+            if (channel!.id === msg.guild!.me?.voice.channelID) throw msg.language.get('COMMAND_JOIN_VOICE_SAME');
             throw msg.language.get('COMMAND_JOIN_VOICE_DIFFERENT');
         }
 
-        this.resolvePermissions(msg, channel);
-        await this.client.audio.join(channel);
-        return msg.sendLocale('COMMAND_JOIN_SUCCESS', [channel.toString()]);
+        this.resolvePermissions(msg, channel!);
+        await this.client.audio.join(channel!);
+        return msg.sendLocale('COMMAND_JOIN_SUCCESS', [channel!.toString()]);
     }
 
     public resolvePermissions(message: KlasaMessage, voiceChannel: VoiceChannel): void {

@@ -39,34 +39,50 @@ export default class extends Language {
             GAME_DIFFICULTY: '**Select Difficulty:**\n**[1]** - `Easy`\n**[2]** - `Medium`\n**[3]** - `Impossible`',
             GAME_INVALID_DIFFICULTY: '❌ Invalid Difficulty Level',
 
+            COMMAND_CLEAR_SUCCESS: `✅ **Succesfully cleared the queue**`,
+            COMMAND_MOVE_SUCCESS: (from, to) => `✅ **Moved the track from \`${from}\` to \`${to}\``,
+            COMMAND_REMOVE_SUCCESS: title => `✅ **Removed** \`${title}\``,
+            COMMAND_REMOVEDUPES_SUCCESS: diff => `✅ **Removed \`${diff}\` duplicate tracks from the queue**`,
+            COMMAND_BASSBOOST_SUCCESS: toggle => `✅ **Bass Boost has been turned \`${toggle ? 'on' : 'off'}\`**`,
+            COMMAND_LOOP_SUCCESS: toggle => `**Queue loop has been turned \`${toggle ? 'on' : 'off'}\`**`,
+            COMMAND_PAUSE_SUCCESS: `⏸️ **Paused current playing music**`,
+            COMMAND_RESUME_SUCCESS: `🎵 **Resumed current playing music**`,
+            COMMAND_SEEK_SUCCESS: position => `⏩ Successfully changed the time to \`${position}\`!`,
+            COMMAND_LEAVE_SUCCESS: `✅ **Left the voice channel**`,
+            COMMAND_SHUFFLE_SUCCESS: `🔀 **Shuffled the queue!**`,
+            COMMAND_SKIP_SUCCESS: `✅ Your skip has been Acknowledged. **Skipping Now** ⏭️`,
+            COMMAND_SKIP_ACKNOWLEDGED: req => `✅ Your skip has been Acknowledged. You need **${req}** more votes to skip!`,
+            COMMAND_VOLUME_VIEW: volume => `🔊 The volume for this guild is **${volume}**`,
+            COMMAND_VOLUME_SET: volume => `🔊 Set the volume to **${volume}**`,
+            COMMAND_SKIP_DOUBLE: `❌ You already voted to skip!`,
             COMMAND_JOIN_NO_MEMBER: `❌ I am sorry, but Discord did not tell me the information I need, so I do not know what voice channel are you connected to...`,
             COMMAND_JOIN_NO_VOICECHANNEL: `❌ You are not connected in a voice channel.`,
-            COMMAND_JOIN_SUCCESS: channel => `:white_check_mark: Successfully joined the voice channel ${channel}`,
+            COMMAND_JOIN_SUCCESS: channel => `✅ Successfully joined the voice channel ${channel}`,
             COMMAND_JOIN_VOICE_DIFFERENT: `❌ Sorry, I am already in a different voice channel`,
-            COMMAND_JOIN_VOICE_FULL: `:x: I cannot join your voice channel, it's full... kick somebody or make room for me!`,
-            COMMAND_JOIN_VOICE_NO_CONNECT: `:x: I do not have enough permissions to connect to your voice channel. I am missing the **CONNECT** permission.`,
-            COMMAND_JOIN_VOICE_NO_SPEAK: `:x: I can connect... but not speak. Please turn on this permission so I can play some music.`,
-            COMMAND_JOIN_VOICE_SAME: `:x: Hello! I am already in your voice channel`,
+            COMMAND_JOIN_VOICE_FULL: `❌ I cannot join your voice channel, it's full... kick somebody or make room for me!`,
+            COMMAND_JOIN_VOICE_NO_CONNECT: `❌ I do not have enough permissions to connect to your voice channel. I am missing the **CONNECT** permission.`,
+            COMMAND_JOIN_VOICE_NO_SPEAK: `❌ I can connect... but not speak. Please turn on this permission so I can play some music.`,
+            COMMAND_JOIN_VOICE_SAME: `❌ Hello! I am already in your voice channel`,
             COMMAND_QUEUE_LINE: (position, duration, title, url, requester) => `**[${position}]** │ ${duration} │ [${title}](${url}) │ Requester: **${requester}**`,
 
-            COMMAND_REMINDER_CREATE: duration => `:white_check_mark: A Reminder was created for ${duration}!`,
+            COMMAND_REMINDER_CREATE: duration => `✅ A Reminder was created for ${duration}!`,
             COMMAND_AFK_CREATE: (user, reason) => `${user} has been set to **AFK** for reason: **${reason}**`,
-            COMMAND_SUGGESTION_REPLY: 'Successfully sent the suggestion. Thank you for taking your time to make this bot better!',
+            COMMAND_SUGGESTION_REPLY: '✅ Successfully sent the suggestion. Thank you for taking your time to make this bot better!',
 
             COMMAND_EVAL_SENDHASTE: (time, url, footer) => `Output was too long... sent the result in **hastebin**:\n${url}\n**TYPE**\n${footer}\n${time}`,
 
-            COMMAND_YOUTUBE_NO_SEARCH: 'Could not find any youtube result with that title',
+            COMMAND_YOUTUBE_NO_SEARCH: '❌ Could not find any youtube result with that title',
             /**
              * Giveaway command locales
              */
 
             ENDS_AT: 'Ends At:',
             ENDED_AT: 'Ended At:',
-            GIVEAWAY_NOT_FOUND: 'Could not find that giveaway! Try again!',
-            MAX_GIVEAWAYS: max => `You can have only upto ${max} giveaways in a guild! Remove a giveaway and try again!`,
-            GIVEAWAY_RUNNING: 'This giveaway is running right now. Wait for it to end or use the `end` command to stop it now!',
-            NO_RUNNING_GIVEAWAY: prefix => `There are no running giveaways in this server. Create one using the \`${prefix}gcreate\` command!`,
-            NO_FINISHED_GIVEAWAY: prefix => `No giveaways were completed in this server. Use \`${prefix}gcreate\` to create one and \`${prefix}gend\` to end it`,
+            GIVEAWAY_NOT_FOUND: '❌ Could not find that giveaway! Try again!',
+            MAX_GIVEAWAYS: max => `❌ You can have only upto ${max} giveaways in a guild! Remove a giveaway and try again!`,
+            GIVEAWAY_RUNNING: '❌ This giveaway is running right now. Wait for it to end or use the `end` command to stop it now!',
+            NO_RUNNING_GIVEAWAY: prefix => `❌ There are no running giveaways in this server. Create one using the \`${prefix}gcreate\` command!`,
+            NO_FINISHED_GIVEAWAY: prefix => `❌ No giveaways were completed in this server. Use \`${prefix}gcreate\` to create one and \`${prefix}gend\` to end it`,
 
             COMMAND_CREATE_DESCRIPTION: 'Creates a giveaway in the specified channel!',
             COMMAND_CREATE_EXTENDED: `You must specify the channel, duration, amount of winners and title of the giveaway
@@ -92,10 +108,10 @@ export default class extends Language {
             COMMAND_START_DESCRIPTION: 'Immediately starts a giveaway in the current channel',
             COMMAND_START_EXTENDED: `Same as the create command, except you dont need to specify the channel as the current channel will be used`,
 
-            GIVEAWAY_CREATE: ':tada: **GIVEAWAY** :tada:',
-            GIVEAWAY_END: ':tada: **GIVEAWAY ENDED** :tada:',
+            GIVEAWAY_CREATE: '🎉 **GIVEAWAY** 🎉',
+            GIVEAWAY_END: '🎉 **GIVEAWAY ENDED** 🎉',
             GIVEAWAY_DELETE: id => `Successfully deleted the giveaway with the id: \`${id}\``,
-            GIVEAWAY_WON: (winners, title) => `:tada: Congratulations ${winners}! You won **${title}**`,
+            GIVEAWAY_WON: (winners, title) => `🎉 Congratulations ${winners}! You won **${title}**`,
             GIVEAWAY_CREATE_SUCCESS: chan => `A giveaway was started in ${chan}!`,
             NOT_ENOUGH_REACTIONS: count =>
                 `The Giveaway has ended, not enough people voted.

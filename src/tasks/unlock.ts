@@ -7,7 +7,7 @@ export default class extends Task {
         const channel = this.client.channels.get(channelID) as TextChannel;
 
         if (!channel?.manageable) return null;
-        return channel.updateOverwrite(channel.guild.id, { SEND_MESSAGES: false });
+        return channel.updateOverwrite(channel.guild.id, { SEND_MESSAGES: true });
     }
 
 }

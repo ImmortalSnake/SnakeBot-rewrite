@@ -17,7 +17,7 @@ export default class extends MusicCommand {
     public async run(msg: KlasaMessage): Promise<KlasaMessage | KlasaMessage[] | null> {
 
         const player = msg.guild!.audio;
-        if (!player || !player.current) throw `I am not playing anything`;
+        if (!player || !player.current) throw `❌ I am not playing anything`;
 
         const response = await msg.send('Loading...');
 

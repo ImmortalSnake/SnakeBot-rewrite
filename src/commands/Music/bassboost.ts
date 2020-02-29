@@ -12,7 +12,7 @@ export default class extends MusicCommand {
 
     public async run(msg: KlasaMessage): Promise<KlasaMessage | KlasaMessage[] | null> {
         const res = await msg.guild!.audio!.bassboost();
-        return msg.send(`**Bass Boost** has been turned **${res ? 'on' : 'off'}**`);
+        return msg.sendLocale('COMMAND_BASSBOOST_SUCCESS', [res]);
     }
 
 }

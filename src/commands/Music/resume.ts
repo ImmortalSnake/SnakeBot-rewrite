@@ -11,7 +11,7 @@ export default class extends MusicCommand {
 
     public async run(msg: KlasaMessage): Promise<KlasaMessage | KlasaMessage[] | null> {
         await msg.guild!.audio!.resume();
-        return msg.send(`Resumed current playing music`);
+        return msg.sendLocale('COMMAND_RESUME_SUCCESS');
     }
 
 }

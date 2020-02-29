@@ -16,7 +16,7 @@ export default class extends SnakeCommand {
 
     public async run(msg: KlasaMessage, [query]: [string]): Promise<KlasaMessage | KlasaMessage[] | null> {
         const genius = this.client.apis.get('Genius') as GeniusAPI;
-        await msg.send(`:mag: **Searching lyrics for** \`${query}\``);
+        const res = await msg.send(`:mag: **Searching lyrics for** \`${query}\``);
 
         return genius.search(query)
             .then(async body => {
@@ -38,8 +38,8 @@ export default class extends SnakeCommand {
                                 .setDescription(`**${lyrics.slice(i, i + 2044)}**`));
                         }
 
-                        await display.run(msg);
-                        return msg;
+                        await display.run(res);
+                        return res;
                     });
             });
     }

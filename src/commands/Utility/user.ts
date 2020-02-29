@@ -36,7 +36,7 @@ export default class extends SnakeCommand {
                 ])
                 .addField(`Roles (${member.roles.size})`, [...member.roles.values()]
                     .sort((a, b) => b.comparePositionTo(a)).slice(1).join('|')
-                    .slice(0, 1000));
+                    .slice(0, 1000) || 'None');
         }
 
         return msg.sendEmbed(embed);

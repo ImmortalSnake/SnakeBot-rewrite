@@ -12,7 +12,7 @@ export default class extends MusicCommand {
 
     public async run(msg: KlasaMessage): Promise<KlasaMessage | KlasaMessage[] | null> {
         msg.guild!.audio!.setRepeat();
-        return msg.send(`Queue loop has been turned **${msg.guild!.audio!.repeat ? 'on' : 'off'}**`);
+        return msg.sendLocale('COMMAND_LOOP_SUCCESS', [msg.guild!.audio!.repeat]);
     }
 
 }
