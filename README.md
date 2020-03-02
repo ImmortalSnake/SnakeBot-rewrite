@@ -1,22 +1,22 @@
 # SnakeBot
 
-Another multi-purpose discord bot made using typescript and klasa
+A multi-purpose discord bot made using typescript and klasa, featuring high quality music, secure moderation, Games and much more
 
 ## Features
 
-1. Play **Games** like tictactoe, akinator, connect4, etc
-2. **Moderate** your discord server with ease using moderation commands and logs
-3. **Auto Moderation**: let SnakeBot filter messages, prevent spam, welcome new members
-4. Hold **Giveaways** on your server instantly
-5. Play high quality **Music** in your server
-6. **Fun commands**, like memes, puns, quotes and more
-7. **Search** for various information such as weather, wikipedia, movies
-8. Manipulate **Images**
-9. And lots more!
+1. Play **Games** like tictactoe, slots, connect4, etc
+2. **Moderate** your discord server with ease using moderation commands
+3. View all server activity with **Server Logs**
+4. **Auto Moderation**: let SnakeBot filter messages, prevent spam, welcome new members
+5. Hold and manage **Giveaways** on your server instantly
+6. Play high quality **Music** in your server
+7. **Fun commands**, like memes, puns, quotes and more
+8. **Search** for various information such as weather, wikipedia, movies
+9. Generate custom **Images** like tweets, comments
+10. Send **Auto Memes** to your Discord Channel every X minutes!
+11. And lots more!
 
 ## Credits
-
-Some of Snakebot's Source Code has been taken from
 
 - [Klasa Community Plugins](https://github.com/KlasaCommunityPlugins)
 - [Klasa-Pieces](https://github.com/dirigeants/klasa-pieces)

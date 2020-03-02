@@ -6,6 +6,7 @@ import APIWrapperStore from './structures/base/APIWrapperStore';
 import { WebhookClient } from 'discord.js';
 import { SnakeBotConfig } from '../config';
 import { GiveawayClient } from 'klasa-giveaway';
+import { DashboardClient } from 'klasa-dashboard-hooks';
 
 import './Setup/Canvas';
 import './extensions/SnakeGuild';
@@ -15,7 +16,9 @@ import './structures/schemas/UserSchema';
 
 const { WebhookID, WebhookToken } = SnakeBotConfig;
 
-KlasaClient.use(GiveawayClient);
+KlasaClient
+    .use(GiveawayClient)
+    .use(DashboardClient);
 
 export default class SnakeBot extends KlasaClient {
 

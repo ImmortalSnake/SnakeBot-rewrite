@@ -4,13 +4,15 @@ export default {
     ownerID: '410806297580011520',
     mentionPrefix: true,
     prefix: 'sb!',
-    regexPrefix: /^(?:hey |ok |hi )?(?:snake|snakebot)(?: |,|!)/ig,
+    regexPrefix: /^(?:hey |ok |hi )?(?:snakey|snakebot)(?: |,|!)/ig,
     prefixCaseInsensitive: true,
     preserveSettings: false,
     noPrefixDM: true,
     commandEditing: true,
     commandMessageLifetime: 120,
     disableEveryone: true,
+    clientID: '543796400165748736',
+    clientSecret: process.env.CLIENT_SECRET,
     presence: {
         activity: {
             name: 'sb!help',
@@ -23,7 +25,14 @@ export default {
             runIn: ['text'],
             usageDelim: ' '
         }
-    }
+    },
+    disabledEvents: [
+        'CHANNEL_PINS_UPDATE',
+        'GUILD_MEMBER_UPDATE',
+        'PRESENCE_UPDATE',
+        'TYPING_START',
+        'USER_UPDATE'
+    ]
 } as KlasaClientOptions;
 
 export const mongoOptions = {
