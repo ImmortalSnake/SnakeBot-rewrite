@@ -20,7 +20,7 @@ export default class extends SnakeCommand {
         const [muteRole] = await msg.guildSettings.resolve('roles.mute') as [Role];
 
         if (!muteRole) throw `A mute role was not found for this guild`;
-        if (member.roles.highest.position >= msg.member!.roles.highest.position && !msg.hasAtLeastPermissionLevel(7)) throw 'You cannot mute this user.';
+        if (member.roles.highest.position >= msg.member!.roles.highest.position && !await msg.hasAtLeastPermissionLevel(7)) throw 'You cannot mute this user.';
         if (member.roles.has(muteRole.id)) throw 'The member is already muted.';
 
         const { duration } = this.parseDuration(msg);

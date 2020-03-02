@@ -17,7 +17,8 @@ export default class extends SnakeCommand {
                     this.client.guilds.reduce((a, b) => a + b.memberCount, 0),
                     `${(msg.guild?.shardID ?? 0) + 1} / ${this.client.shard?.count || 1}`,
                     Duration.toNow(Date.now() - (process.uptime() * 1000)),
-                    Math.round(this.client.ws.ping))))
+                    Math.round(this.client.ws.ping),
+                    this.client.settings?.get('commandUses'))))
             .addField('System Stats',
                 util.codeBlock('asciidoc', msg.language.get('COMMAND_STATS_SYSTEM',
                     os.type().replace('_', ' '),

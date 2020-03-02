@@ -5,18 +5,15 @@ export default class extends SnakeCommand {
 
     public constructor(store: CommandStore, file: string[], directory: string) {
         super(store, file, directory, {
-            usage: '<reason:...str>',
+            usage: '[reason:...str]',
             requiredPermissions: ['MANAGE_MESSAGES'],
             cooldown: 10,
             examples: ['having dinner']
         });
     }
 
-    public async run(msg: KlasaMessage, [reason]: [string]): Promise<KlasaMessage | KlasaMessage[]> {
-        return msg.guildSettings.update('afkusers', {
-            id: msg.author!.id,
-            reason
-        })
+    public async run(msg: KlasaMessage, [reason = 'No reason']: [string]): Promise<KlasaMessage | KlasaMessage[]> {
+        return msg.author.settings.update([['afk.time', Date.now()], ['afk.reason', reason]])
             .then(() => msg.sendLocale('COMMAND_AFK_CREATE', [msg.author.toString(), reason]));
     }
 

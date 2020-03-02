@@ -20,16 +20,17 @@ export default class extends SnakeCommand {
     }
 
     public async run(msg: KlasaMessage, [channel = msg.channel as TextChannel, duration]: [TextChannel, number]) {
+        if (!channel.manageable) throw 'I do not have the permissions to lock this channel';
         if (channel.permissionsFor(channel.guild.id)?.has('SEND_MESSAGES')) {
             if (duration && duration > 24 * Hour) throw 'Duration should be less than 24 hours';
 
             await channel.updateOverwrite(channel.guild.id, { SEND_MESSAGES: false });
-            await channel.send(`This channel has been locked ${duration ? `for ${Util.msToDuration(duration)} ` : ''}by ${msg.author.tag}`)
+            await channel.send(`🔒 This channel has been locked ${duration ? `for ${Util.msToDuration(duration)} ` : ''}by ${msg.author.tag}`)
                 .catch(() => msg.send(`${channel.toString()} has been locked`));
             if (duration) await this.client.schedule.create('unlock', duration, { data: { channelID: channel.id } });
         } else {
             await channel.updateOverwrite(channel.guild.id, { SEND_MESSAGES: true });
-            await msg.send(`Lockdown for ${channel.toString()} has been lifted`);
+            await msg.send(`🔓 Lockdown for ${channel.toString()} has been lifted`);
         }
 
         return null;

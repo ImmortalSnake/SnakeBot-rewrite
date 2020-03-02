@@ -1,6 +1,7 @@
 import { CommandStore, KlasaMessage } from 'klasa';
 import { User, Message } from 'discord.js';
 import SnakeCommand from '../../lib/structures/base/SnakeCommand';
+import { Day } from '../../lib/utils/constants';
 
 type PurgeFilter = 'link' | 'invite' | 'bots' | 'you' | 'me' | 'upload' | User;
 export default class extends SnakeCommand {
@@ -15,8 +16,9 @@ export default class extends SnakeCommand {
     }
 
     public async run(msg: KlasaMessage, [limit = 5, filter]: [number, PurgeFilter?]): Promise<KlasaMessage | KlasaMessage[] | null> {
-        let messages = await msg.channel.messages.fetch({ limit: 100 });
-        if (messages.size < 1) throw 'No messages were found!';
+        await msg.delete();
+        let messages = await msg.channel.messages.fetch({ limit: 100 })
+            .then(m => m.filter(m => m.createdTimestamp > Date.now() - (14 * Day)));
         if (filter) {
             const type = typeof filter === 'string' ? filter : 'user';
             const user = typeof filter === 'string' ? msg.author : filter;
@@ -24,9 +26,12 @@ export default class extends SnakeCommand {
         }
 
         const del = messages.first(limit);
+        if (!del) throw ':x: Could not find any messages to delete! This could be because the messages are over 14 days old';
+
         const deleted = await msg.channel.bulkDelete(del);
 
-        await msg.channel.send(`**:wastebasket: Deleted ${deleted.size} messages!**`).then(m => m.delete({ timeout: 10000 }));
+        await msg.channel.send(`**:wastebasket: Deleted ${deleted.size} messages!**`)
+            .then(m => m.delete({ timeout: 10000 }));
         return null;
     }
 

@@ -11,7 +11,7 @@ export default class extends MusicCommand {
 
     public async run(msg: KlasaMessage): Promise<KlasaMessage | KlasaMessage[] | null> {
         msg.guild!.audio!.tracks = [];
-        return msg.send(`Cleared the music queue`);
+        return msg.sendLocale('COMMAND_CLEAR_SUCCESS');
     }
 
 }

@@ -20,6 +20,7 @@
     "discord.js-lavalink": "github:MrJacz/discord.js-lavalink#v3",
     "dotenv": "^8.0.0",
     "klasa": "github:dirigeants/klasa#settings",
+    "klasa-dashboard-hooks": "dirigeants/klasa-dashboard-hooks#settings",
     "klasa-giveaway": "github:immortalsnake/klasa-giveaway#settings",
     "moment": "^2.24.0",
     "mongodb": "^3.2.7"
@@ -37,8 +38,8 @@
     "typescript": "^3.7.4"
   },
   "files": [
-      "assets",
-      "dist/",
-      "LICENSE"
+    "assets",
+    "dist/",
+    "LICENSE"
   ]
 }

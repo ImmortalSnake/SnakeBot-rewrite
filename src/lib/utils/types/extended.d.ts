@@ -29,3 +29,9 @@ declare module 'canvas-constructor' {
         public measureText(text: string, callback: (metrics: TextMetrics, instance: Canvas) => unknown): Canvas;
     }
 }
+
+declare module 'klasa' {
+    interface Serializer {
+        public stringify(data: any, message?: KlasaMessage): string;
+    }
+}

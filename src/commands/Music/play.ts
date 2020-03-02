@@ -24,10 +24,10 @@ export default class extends MusicCommand {
         const embed = new MessageEmbed()
             .setURL(uri)
             .setTitle(title)
-            .addField('Length', Util.msToDuration(length))
-            .setFooter(`Requested By ${msg.author.tag}`);
+            .setDescription(Util.msToDuration(length))
+            .setFooter(`Requested By ${msg.author.tag}`, msg.author.displayAvatarURL());
 
-        return msg.send(tracks.length > 1 ? 'Playlist Loaded!' : 'Track Loaded', embed);
+        return msg.send(tracks.length > 1 ? '✅ **Playlist Loaded!**' : '✅ **Track Loaded!**', embed);
     }
 
 }

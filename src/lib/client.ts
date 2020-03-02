@@ -1,25 +1,32 @@
 import { KlasaClient, KlasaClientOptions } from 'klasa';
-import Embed from './utils/RichEmbedHandler';
 import permissionLevel from './structures/permissionLevel';
 import MemeHandler from './structures/meme';
 import AudioManager from './structures/audio/Manager';
 import APIWrapperStore from './structures/base/APIWrapperStore';
-// import { GiveawayClient } from 'klasa-giveaway';
+import { WebhookClient } from 'discord.js';
+import { SnakeBotConfig } from '../config';
+import { GiveawayClient } from 'klasa-giveaway';
+import { DashboardClient } from 'klasa-dashboard-hooks';
 
 import './Setup/Canvas';
 import './extensions/SnakeGuild';
 import './structures/schemas/GuildSchema';
 import './structures/schemas/ClientSchema';
+import './structures/schemas/UserSchema';
 
+const { WebhookID, WebhookToken } = SnakeBotConfig;
 
-// KlasaClient.use(GiveawayClient);
+KlasaClient
+    .use(GiveawayClient)
+    .use(DashboardClient);
 
 export default class SnakeBot extends KlasaClient {
 
-    public version = 'v0.4.2 - Alpha';
+    public version = 'v0.5.2 - Alpha';
     public meme: MemeHandler;
     public audio: AudioManager;
     public apis: APIWrapperStore;
+    public webhook: WebhookClient;
 
     public constructor(options: KlasaClientOptions = {}) {
         super(options);
@@ -31,10 +38,8 @@ export default class SnakeBot extends KlasaClient {
         this.registerStore(this.apis);
         this.audio = new AudioManager(this);
 
-    }
+        this.webhook = new WebhookClient(WebhookID, WebhookToken, { disableEveryone: true });
 
-    public get embed() {
-        return Embed;
     }
 
 }

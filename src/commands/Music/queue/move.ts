@@ -12,12 +12,12 @@ export default class extends MusicCommand {
     }
 
     public async run(msg: KlasaMessage, [from, to]: [number, number]): Promise<KlasaMessage | KlasaMessage[] | null> {
-        if (from === to) throw `:x: Cannot move the track to the same position`;
+        if (from === to) throw `❌ Cannot move the track to the same position`;
         const { tracks } = msg.guild!.audio!;
-        if (from > tracks.length || to > tracks.length) throw 'Invalid position';
+        if (from > tracks.length || to > tracks.length) throw '❌ Invalid position';
 
         msg.guild!.audio!.tracks = tracks.splice(to, 0, tracks.splice(from, 1)[0]);
-        return msg.send(`✅ Moved the track from **${from}** to **${to}**`);
+        return msg.sendLocale('COMMAND_MOVE_SUCCESS', [from, to]);
     }
 
 }

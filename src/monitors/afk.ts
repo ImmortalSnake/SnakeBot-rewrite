@@ -1,28 +1,29 @@
-import { Monitor, MonitorStore, KlasaMessage } from 'klasa';
-import { Collection, GuildMember, Snowflake, User, Message } from 'discord.js';
+import { Monitor, MonitorStore, KlasaMessage, SettingsFolder, Duration } from 'klasa';
 
-export default class AFKMonitor extends Monitor {
+export default class extends Monitor {
 
     public constructor(store: MonitorStore, file: string[], directory: string) {
         super(store, file, directory, {
-            ignoreOthers: false
+            ignoreOthers: false,
+            ignoreEdits: false
         });
     }
 
-    public async run(msg: KlasaMessage): Promise<undefined | Message | Message[]> {
-        if (!msg.guild) return;
-        const afkusers = msg.guild.settings.get('afkusers') as any[];
-        for (const user of afkusers) {
-            if ((msg.author as User).id === (user as any).id) {
-                const afk = afkusers.find(a => a.id === (msg.author as User).id);
-                await msg.guild.settings.update('afkusers', afk, { arrayAction: 'remove' });
-                return msg.channel.send(`Welcome back ${(msg.author as User).toString()}! I have removed your AFK`);
-            } else if ((msg.mentions.members as Collection<Snowflake, GuildMember>).has((user as any).id)) {
-                const _user = this.client.users.get((user as any).id) as User;
-                const afk = afkusers.find(a => a.id === _user.id);
-                return msg.channel.send(`${_user.tag} is currently afk with reason: ${afk.reason}`);
-            }
+    public async run(msg: KlasaMessage) {
+        if (!msg.guild || !msg.channel.postable) return;
+        const isAFK = msg.author.settings.get('afk.time');
+
+        if (isAFK) {
+            await msg.author.settings.reset(['afk.time', 'afk.reason']);
+            await msg.sendLocale('MONITOR_AFK_REMOVE', [msg.author.toString()])
+                .then(m => m.delete({ timeout: 10000 }));
         }
+
+        for (const user of msg.mentions.users.values()) {
+            const afk = user.settings.get('afk') as SettingsFolder;
+            if (afk?.get('time')) return msg.sendLocale('MONITOR_AFK_USER', [user.tag, Duration.toNow(afk.get('time') as number), afk.get('reason')]);
+        }
+
     }
 
 }

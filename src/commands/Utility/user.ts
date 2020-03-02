@@ -18,18 +18,25 @@ export default class extends SnakeCommand {
 
         const embed = new MessageEmbed()
             .setThumbnail(user.displayAvatarURL())
-            .setTitle(user.username)
-            .addField('❯ ID', user.id, true)
-            .addField('❯ Discord Join Date', this.timestamp.display(user.createdAt), true)
-            .addField('❯ Status', user.presence.status, true)
-            .addField('❯ Bot?', user.bot ? 'Yes' : 'No', true);
+            .setTitle(user.tag)
+            .addField('General Information', [
+                `❯ **ID:** \`${user.id}\``,
+                `❯ **Discord Join Date:** \`${this.timestamp.display(user.createdAt)}\``,
+                `❯ **Status:** \`${user.presence.status}\``,
+                `❯ **Game:** \`${user.presence.activities[0]?.name || 'None'}\``,
+                `❯ **Bot?** \`${user.bot ? 'Yes' : 'No'}\``
+            ].join('\n'));
 
         if (member) {
             embed.setColor(member.displayHexColor)
-                .addField('❯ Nickname', member.displayName, true)
-                .addField('❯ Server Join Date', this.timestamp.display(member.joinedTimestamp as number), true)
-                .addField(`❯ Roles (${member.roles.size})`, Object.values(member.roles).sort().slice(0, 10)
-                    .join(' '));
+                .addField('Member Information', [
+                    `❯ **Nickname:** \`${member.displayName}\``,
+                    `❯ **Server Join Date:** \`${this.timestamp.display(member.joinedTimestamp!)}\``,
+                    `❯ **Highest Role:** ${member.roles.highest}`
+                ])
+                .addField(`Roles (${member.roles.size})`, [...member.roles.values()]
+                    .sort((a, b) => b.comparePositionTo(a)).slice(1).join('|')
+                    .slice(0, 1000) || 'None');
         }
 
         return msg.sendEmbed(embed);

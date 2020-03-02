@@ -33,6 +33,7 @@ export default class extends SnakeCommand {
                     .setThumbnail(result.snippet.thumbnails.default.url)
                     .addField('Channel', result.snippet.channelTitle)
                     .addField('Created At:', new Date(result.snippet.publishedAt).toUTCString())
+                    .setFooter('Youtube', 'https://i.imgur.com/kKHJg9Q.png')
                     .setURL(this.getLink(result));
                 return msg.send(embed);
             });
@@ -45,7 +46,7 @@ export default class extends SnakeCommand {
             case 'youtube#playlist':
                 return `https://youtube.com/channel/${data.id.playlistId}`;
             case 'youtube#video':
-                return `https://youtube.com/${data.id.videoId}`;
+                return `https://youtube.com/watch?v=${data.id.videoId}`;
             default:
                 return '';
         }

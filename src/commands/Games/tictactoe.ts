@@ -1,7 +1,7 @@
 import { CommandStore, KlasaMessage } from 'klasa';
-import tictactoe from '../../lib/Games/tictactoe';
 import { GuildMember } from 'discord.js';
 import SnakeCommand from '../../lib/structures/base/SnakeCommand';
+import TicTacToe from '../../lib/Games/tictactoe';
 
 export default class extends SnakeCommand {
 
@@ -18,20 +18,23 @@ export default class extends SnakeCommand {
 
     public async run(msg: KlasaMessage, [opp]: [GuildMember]): Promise<KlasaMessage | KlasaMessage[] | null> {
         if (opp && opp.id === msg.author.id) return msg.sendMessage('You cant play against yourself');
+        let players: string[] = [];
+
         if (opp) {
+            players = [msg.author.id, opp.id];
             await msg.channel.send(`${opp.toString()}, Do you confirm to play? (y/n)`);
             const responses = await msg.channel.awaitMessages(m => m.author.id === opp.id, { time: 30000, max: 1 });
 
             if (responses.size === 0) throw 'Challenge Request Timeout!';
-            if (responses.first()!.content.toLowerCase() === 'n') throw msg.language.get('CHALLENGE_REJECTED');
+            if (responses.first()!.content.toLowerCase() === 'n') throw 'Challenge was rejected';
+        } else {
+            const start = await msg.ask('Do you want to start first? (y/n)');
+
+            if (start) players = [msg.author!.id, this.client.user!.id];
+            else players = [this.client.user!.id, msg.author!.id];
         }
 
-        const game = new tictactoe(this.client, opp ? false : true);
-        const res = await game.play(msg,
-            [msg.author.id,
-                opp ? opp.user.id : this.client.user!.id]);
-
-        await msg.channel.send(res);
+        await new TicTacToe(msg, players).run();
         return null;
     }
 
