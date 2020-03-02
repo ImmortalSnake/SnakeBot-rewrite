@@ -41,4 +41,6 @@ export default Client.defaultGuildSchema
         .add('volume', 'Number', { 'min': 0, 'max': 200, 'default': 100 })
         .add('maxduration', 'Number', { 'min': 0, 'max': Hour * 3, 'default': Hour })
         .add('maxentries', 'Number', { 'min': 1, 'max': 100, 'default': 25 })
-        .add('allowstreams', 'Boolean', { 'default': true }));
+        .add('allowstreams', 'Boolean', { 'default': true })
+        .add('announcesongs', 'Boolean', { 'default': false })
+        .add('preventduplicates', 'Boolean', { 'default': false }));

@@ -3,15 +3,19 @@ import Util from '../lib/utils/Util';
 
 export default class extends Language {
 
+    public config: Record<string, string>;
     public constructor(store: LanguageStore, file: string[], directory: string) {
         super(store, file, directory);
 
         this.language = {
 
-            COMMAND_CONF_GET: (prefix, key, value) => `
-            **Current Value**: \`${value}\`
-            **Update**: \`${prefix}conf set ${key} <value>\`
-            **Reset**: \`${prefix}conf reset ${key}\``,
+            COMMAND_CONF_GET: (prefix, path, entry, value) => [
+                `${this.config[path.toUpperCase().replace(/(\.|\/)/g, '_')]}`,
+                '',
+                `✏️ **Current Value**: \`${value}\``,
+                `⚙️ **Update**: \`${prefix}conf set ${path} <${entry.type}>\``,
+                `🗑️ **Reset**: \`${prefix}conf reset ${path}\``
+            ].join('\n'),
 
             COMMAND_HELP_USAGE: usage => `📜 | **Command Usage**\n\`${usage}\``,
             COMMAND_HELP_EXTENDED: `🔎 | **Extended Help**`,
@@ -415,6 +419,36 @@ export default class extends Language {
             CHALLENGE_REJECTED: 'Challenge was rejected',
             MODERATION_SELF: action => `:x: You cannot ${action} yourself!`,
             MODERATION_ME: action => `:x: I cannot ${action} myself.. xD`
+        };
+
+        this.config = {
+            PREFIX: 'Changes the prefix used for all commands in this guild',
+            LANGUAGE: 'Changes the language for my responses, currently only english is supported',
+            DISABLEDCOMMANDS: 'Allows you to disable any command for this server, however core commands like config and help cannot disabled',
+            DISABLENATURALPREFIX: 'Toggle command responses to my natural prefix `snakey, `',
+            MUSIC_ALLOWSTREAMS: 'Toggle whether streams can be loaded to the queue',
+            MUSIC_VOLUME: 'Set the default volume when I start playing music',
+            MUSIC_MAXENTRIES: 'Limit the number of tracks your members can add to queue at a time',
+            MUSIC_MAXDURATION: 'Set the maximum duration for tracks, those which are longer will not be loaded',
+            MUSIC_ANNOUNCESONGS: 'Toggle whether songs should be announced when they start to play',
+            MUSIC_PREVENTDUPLICATES: 'Toggle whether duplicate tracks should be loaded or not',
+            STARBOARD_CHANNEL: 'Set the channel where all starred messages will be posted',
+            STARBOARD_REQUIRED: 'Set the minimum number of stars required to be on the starboard',
+            STARBOARD_EMOJI: 'Change the emoji used for the starboard',
+            ROLES_DJ: 'A list of roles that can enjoy some special music commands like `bassboost`, `removedupes`',
+            ROLES_MUTE: 'Set the mute role that will be used whenever the mute command is used',
+            ROLES_AUTO: 'A list of roles that will be given to new members when they join the server',
+            ROLES_PUBLIC: '',
+            CHANNELS_LOG: 'Set the channel where all server events such as deleted messages will be posted',
+            CHANNELS_MODLOG: 'Set the channel for logging all moderation events such as bans, mutes',
+            CHANNELS_WELCOME: 'Set the channel for welcoming new members when they join the server',
+            CHANNELS_LEAVE: 'Set the channel for sending farewell messages to members who have left the server',
+            CHANNELS_REPORTS: 'Set the channel where reports from the report command will be posted',
+            MESSAGE_LEAVE: 'Set the message sent when a member leaves the server',
+            MESSAGE_WELCOME: 'Set the welcome message sent when a member joins the server',
+            AUTOMOD_LINKS: 'Toggle whether links should be automatically deleted',
+            AUTOMOD_INVITES: 'Toggle whether discord server invites should be automatically deleted',
+            AUTOMOD_IGNORESTAFF: 'Toggle whether members that have the `MANAGE_MESSAGES` permission to be ignored by the auto moderation'
         };
     }
 

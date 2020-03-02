@@ -63,8 +63,9 @@ export default class extends Argument {
 
         const allowStreams = msg.guildSettings.get('music.allowstreams');
         const maxduration = msg.guildSettings.get('music.maxduration') as number;
+        const preventDupes = msg.guildSettings.get('music.preventdupes');
 
-        return tracks.filter(t => (allowStreams || !t.info.isStream) && t.info.length < maxduration);
+        return tracks.filter(t => (allowStreams || !t.info.isStream) && t.info.length < maxduration && !(preventDupes && msg.guild!.audio?.tracks.some(t2 => t2.info.uri === t.info.uri)));
     }
 
 }
