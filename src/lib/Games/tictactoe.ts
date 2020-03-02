@@ -106,9 +106,9 @@ export default class TicTacToe {
     private computerMove(): number {
         let m = 4;
         const depth = this.board.filter(s => parseInt(s, 10)).length;
-        if (this.difficulty === 3) [m] = this.minimax(this.board, depth, 0);
+        if (this.difficulty === 3) [m] = this.minimax(this.board, depth, 1);
         if (this.difficulty === 2) m = this.random(this.board);
-        if (this.difficulty === 1) [m] = this.minimax(this.board, depth, 1);
+        if (this.difficulty === 1) [m] = this.minimax(this.board, depth, 0);
         return m;
     }
 

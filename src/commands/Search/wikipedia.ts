@@ -22,7 +22,6 @@ export default class extends SnakeCommand {
         if (!data) throw `Could not find this page in wikipedia. Try a lower page`;
         if (data.missing) throw `**${text}** was not found in Wikipedia.`;
 
-        console.log(data);
         return msg.sendEmbed(new MessageEmbed()
             .setColor('#ace9e7')
             .setTitle(`${data.title || text} | Page ${page}/${body.query.pages.length}`)

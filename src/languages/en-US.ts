@@ -3,15 +3,19 @@ import Util from '../lib/utils/Util';
 
 export default class extends Language {
 
+    public config: Record<string, string>;
     public constructor(store: LanguageStore, file: string[], directory: string) {
         super(store, file, directory);
 
         this.language = {
 
-            COMMAND_CONF_GET: (prefix, key, value) => `
-            **Current Value**: \`${value}\`
-            **Update**: \`${prefix}conf set ${key} <value>\`
-            **Reset**: \`${prefix}conf reset ${key}\``,
+            COMMAND_CONF_GET: (prefix, path, entry, value) => [
+                `${this.config[path.toUpperCase().replace(/(\.|\/)/g, '_')]}`,
+                '',
+                `✏️ **Current Value**: \`${value}\``,
+                `⚙️ **Update**: \`${prefix}conf set ${path} <${entry.type}>\``,
+                `🗑️ **Reset**: \`${prefix}conf reset ${path}\``
+            ].join('\n'),
 
             COMMAND_HELP_USAGE: usage => `📜 | **Command Usage**\n\`${usage}\``,
             COMMAND_HELP_EXTENDED: `🔎 | **Extended Help**`,
@@ -39,34 +43,51 @@ export default class extends Language {
             GAME_DIFFICULTY: '**Select Difficulty:**\n**[1]** - `Easy`\n**[2]** - `Medium`\n**[3]** - `Impossible`',
             GAME_INVALID_DIFFICULTY: '❌ Invalid Difficulty Level',
 
+            COMMAND_CLEAR_SUCCESS: `✅ **Succesfully cleared the queue**`,
+            COMMAND_MOVE_SUCCESS: (from, to) => `✅ **Moved the track from \`${from}\` to \`${to}\``,
+            COMMAND_REMOVE_SUCCESS: title => `✅ **Removed** \`${title}\``,
+            COMMAND_REMOVEDUPES_SUCCESS: diff => `✅ **Removed \`${diff}\` duplicate tracks from the queue**`,
+            COMMAND_BASSBOOST_SUCCESS: toggle => `✅ **Bass Boost has been turned \`${toggle ? 'on' : 'off'}\`**`,
+            COMMAND_LOOP_SUCCESS: toggle => `**Queue loop has been turned \`${toggle ? 'on' : 'off'}\`**`,
+            COMMAND_PAUSE_SUCCESS: `⏸️ **Paused current playing music**`,
+            COMMAND_RESUME_SUCCESS: `🎵 **Resumed current playing music**`,
+            COMMAND_SEEK_SUCCESS: position => `⏩ Successfully changed the time to \`${position}\`!`,
+            COMMAND_LEAVE_SUCCESS: `✅ **Left the voice channel**`,
+            COMMAND_SHUFFLE_SUCCESS: `🔀 **Shuffled the queue!**`,
+            COMMAND_SKIP_SUCCESS: `✅ Your skip has been Acknowledged. **Skipping Now** ⏭️`,
+            COMMAND_SKIP_ACKNOWLEDGED: req => `✅ Your skip has been Acknowledged. You need **${req}** more votes to skip!`,
+            COMMAND_VOLUME_VIEW: volume => `🔊 The volume for this guild is **${volume}**`,
+            COMMAND_VOLUME_SET: volume => `🔊 Set the volume to **${volume}**`,
+            COMMAND_SKIP_DOUBLE: `❌ You already voted to skip!`,
             COMMAND_JOIN_NO_MEMBER: `❌ I am sorry, but Discord did not tell me the information I need, so I do not know what voice channel are you connected to...`,
             COMMAND_JOIN_NO_VOICECHANNEL: `❌ You are not connected in a voice channel.`,
-            COMMAND_JOIN_SUCCESS: channel => `:white_check_mark: Successfully joined the voice channel ${channel}`,
+            COMMAND_JOIN_SUCCESS: channel => `✅ Successfully joined the voice channel ${channel}`,
             COMMAND_JOIN_VOICE_DIFFERENT: `❌ Sorry, I am already in a different voice channel`,
-            COMMAND_JOIN_VOICE_FULL: `:x: I cannot join your voice channel, it's full... kick somebody or make room for me!`,
-            COMMAND_JOIN_VOICE_NO_CONNECT: `:x: I do not have enough permissions to connect to your voice channel. I am missing the **CONNECT** permission.`,
-            COMMAND_JOIN_VOICE_NO_SPEAK: `:x: I can connect... but not speak. Please turn on this permission so I can play some music.`,
-            COMMAND_JOIN_VOICE_SAME: `:x: Hello! I am already in your voice channel`,
+            COMMAND_JOIN_VOICE_FULL: `❌ I cannot join your voice channel, it's full... kick somebody or make room for me!`,
+            COMMAND_JOIN_VOICE_NO_CONNECT: `❌ I do not have enough permissions to connect to your voice channel. I am missing the **CONNECT** permission.`,
+            COMMAND_JOIN_VOICE_NO_SPEAK: `❌ I can connect... but not speak. Please turn on this permission so I can play some music.`,
+            COMMAND_JOIN_VOICE_SAME: `❌ Hello! I am already in your voice channel`,
             COMMAND_QUEUE_LINE: (position, duration, title, url, requester) => `**[${position}]** │ ${duration} │ [${title}](${url}) │ Requester: **${requester}**`,
 
-            COMMAND_REMINDER_CREATE: duration => `:white_check_mark: A Reminder was created for ${duration}!`,
+            COMMAND_REMINDER_CREATE: duration => `⏱️ A Reminder was created for ${duration}!`,
             COMMAND_AFK_CREATE: (user, reason) => `${user} has been set to **AFK** for reason: **${reason}**`,
-            COMMAND_SUGGESTION_REPLY: 'Successfully sent the suggestion. Thank you for taking your time to make this bot better!',
+            COMMAND_SUGGESTION_REPLY: '✅ Successfully sent the suggestion. Thank you for taking your time to make this bot better!',
 
             COMMAND_EVAL_SENDHASTE: (time, url, footer) => `Output was too long... sent the result in **hastebin**:\n${url}\n**TYPE**\n${footer}\n${time}`,
 
-            COMMAND_YOUTUBE_NO_SEARCH: 'Could not find any youtube result with that title',
+            COMMAND_YOUTUBE_NO_SEARCH: '❌ Could not find any youtube result with that title',
+
             /**
              * Giveaway command locales
              */
 
             ENDS_AT: 'Ends At:',
             ENDED_AT: 'Ended At:',
-            GIVEAWAY_NOT_FOUND: 'Could not find that giveaway! Try again!',
-            MAX_GIVEAWAYS: max => `You can have only upto ${max} giveaways in a guild! Remove a giveaway and try again!`,
-            GIVEAWAY_RUNNING: 'This giveaway is running right now. Wait for it to end or use the `end` command to stop it now!',
-            NO_RUNNING_GIVEAWAY: prefix => `There are no running giveaways in this server. Create one using the \`${prefix}gcreate\` command!`,
-            NO_FINISHED_GIVEAWAY: prefix => `No giveaways were completed in this server. Use \`${prefix}gcreate\` to create one and \`${prefix}gend\` to end it`,
+            GIVEAWAY_NOT_FOUND: '❌ Could not find that giveaway! Try again!',
+            MAX_GIVEAWAYS: max => `❌ You can have only upto ${max} giveaways in a guild! Remove a giveaway and try again!`,
+            GIVEAWAY_RUNNING: '❌ This giveaway is running right now. Wait for it to end or use the `end` command to stop it now!',
+            NO_RUNNING_GIVEAWAY: prefix => `❌ There are no running giveaways in this server. Create one using the \`${prefix}gcreate\` command!`,
+            NO_FINISHED_GIVEAWAY: prefix => `❌ No giveaways were completed in this server. Use \`${prefix}gcreate\` to create one and \`${prefix}gend\` to end it`,
 
             COMMAND_CREATE_DESCRIPTION: 'Creates a giveaway in the specified channel!',
             COMMAND_CREATE_EXTENDED: `You must specify the channel, duration, amount of winners and title of the giveaway
@@ -92,10 +113,10 @@ export default class extends Language {
             COMMAND_START_DESCRIPTION: 'Immediately starts a giveaway in the current channel',
             COMMAND_START_EXTENDED: `Same as the create command, except you dont need to specify the channel as the current channel will be used`,
 
-            GIVEAWAY_CREATE: ':tada: **GIVEAWAY** :tada:',
-            GIVEAWAY_END: ':tada: **GIVEAWAY ENDED** :tada:',
+            GIVEAWAY_CREATE: '🎉 **GIVEAWAY** 🎉',
+            GIVEAWAY_END: '🎉 **GIVEAWAY ENDED** 🎉',
             GIVEAWAY_DELETE: id => `Successfully deleted the giveaway with the id: \`${id}\``,
-            GIVEAWAY_WON: (winners, title) => `:tada: Congratulations ${winners}! You won **${title}**`,
+            GIVEAWAY_WON: (winners, title) => `🎉 Congratulations ${winners}! You won **${title}**`,
             GIVEAWAY_CREATE_SUCCESS: chan => `A giveaway was started in ${chan}!`,
             NOT_ENOUGH_REACTIONS: count =>
                 `The Giveaway has ended, not enough people voted.
@@ -237,13 +258,13 @@ export default class extends Language {
             COMMAND_KICK_EXTENDED: `This command requires me to have the \`KICK_MEMBERS\` permission.
             Only members with a lower role hierarchy than you and me can be kicked.`,
 
-            COMMAND_LOCKDOWN_DESCRIPTION: '',
+            COMMAND_LOCKDOWN_DESCRIPTION: 'Locks or unlocks a text channel',
             COMMAND_LOCKDOWN_EXTENDED: '',
 
-            COMMAND_MODLOG_DESCRIPTION: '',
+            COMMAND_MODLOG_DESCRIPTION: 'View all moderation logs for this server or a user',
             COMMAND_MODLOG_EXTENDED: '',
 
-            COMMAND_MUTE_DESCRIPTION: '',
+            COMMAND_MUTE_DESCRIPTION: 'Mutes a guild member',
             COMMAND_MUTE_EXTENDED: '',
 
             COMMAND_PURGE_DESCRIPTION: '',
@@ -355,6 +376,9 @@ export default class extends Language {
             COMMAND_SERVER_DESCRIPTION: 'View some details of this server',
             COMMAND_SERVER_EXTENDED: '',
 
+            COMMAND_TAG_DESCRIPTION: 'Allows you to create, remove or show tags.',
+            COMMAND_TAG_EXTENDED: '',
+
             COMMAND_TOPINVITES_DESCRIPTION: 'See the guilds top inviters',
             COMMAND_TOPINVITES_EXTENDED: '',
 
@@ -381,6 +405,9 @@ export default class extends Language {
             MONITOR_AFK_REMOVE: user => `Welcome back ${user}! I have removed your AFK status`,
             MONITOR_AFK_USER: (user, since, reason) => `**${user}** is currently AFK for reason: \`${reason}\`, ${since} ago`,
 
+            RESOLVER_INVALID_SONG: ':x: Please specify a song name or provide a valid url',
+            RESOLVER_MAX_ENTRIES: ':x: You have already reached the maximum number of entries per user',
+            RESOLVER_SEARCH_FAILED: ':x: Could not get any search results!',
             /**
              * Errors
              */
@@ -392,6 +419,36 @@ export default class extends Language {
             CHALLENGE_REJECTED: 'Challenge was rejected',
             MODERATION_SELF: action => `:x: You cannot ${action} yourself!`,
             MODERATION_ME: action => `:x: I cannot ${action} myself.. xD`
+        };
+
+        this.config = {
+            PREFIX: 'Changes the prefix used for all commands in this guild',
+            LANGUAGE: 'Changes the language for my responses, currently only english is supported',
+            DISABLEDCOMMANDS: 'Allows you to disable any command for this server, however core commands like config and help cannot disabled',
+            DISABLENATURALPREFIX: 'Toggle command responses to my natural prefix `snakey, `',
+            MUSIC_ALLOWSTREAMS: 'Toggle whether streams can be loaded to the queue',
+            MUSIC_VOLUME: 'Set the default volume when I start playing music',
+            MUSIC_MAXENTRIES: 'Limit the number of tracks your members can add to queue at a time',
+            MUSIC_MAXDURATION: 'Set the maximum duration for tracks, those which are longer will not be loaded',
+            MUSIC_ANNOUNCESONGS: 'Toggle whether songs should be announced when they start to play',
+            MUSIC_PREVENTDUPLICATES: 'Toggle whether duplicate tracks should be loaded or not',
+            STARBOARD_CHANNEL: 'Set the channel where all starred messages will be posted',
+            STARBOARD_REQUIRED: 'Set the minimum number of stars required to be on the starboard',
+            STARBOARD_EMOJI: 'Change the emoji used for the starboard',
+            ROLES_DJ: 'A list of roles that can enjoy some special music commands like `bassboost`, `removedupes`',
+            ROLES_MUTE: 'Set the mute role that will be used whenever the mute command is used',
+            ROLES_AUTO: 'A list of roles that will be given to new members when they join the server',
+            ROLES_PUBLIC: '',
+            CHANNELS_LOG: 'Set the channel where all server events such as deleted messages will be posted',
+            CHANNELS_MODLOG: 'Set the channel for logging all moderation events such as bans, mutes',
+            CHANNELS_WELCOME: 'Set the channel for welcoming new members when they join the server',
+            CHANNELS_LEAVE: 'Set the channel for sending farewell messages to members who have left the server',
+            CHANNELS_REPORTS: 'Set the channel where reports from the report command will be posted',
+            MESSAGE_LEAVE: 'Set the message sent when a member leaves the server',
+            MESSAGE_WELCOME: 'Set the welcome message sent when a member joins the server',
+            AUTOMOD_LINKS: 'Toggle whether links should be automatically deleted',
+            AUTOMOD_INVITES: 'Toggle whether discord server invites should be automatically deleted',
+            AUTOMOD_IGNORESTAFF: 'Toggle whether members that have the `MANAGE_MESSAGES` permission to be ignored by the auto moderation'
         };
     }
 
