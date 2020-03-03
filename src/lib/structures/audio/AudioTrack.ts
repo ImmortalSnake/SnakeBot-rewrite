@@ -1,5 +1,5 @@
 import Util from '../../utils/Util';
-import { LavalinkTrackLoaded, LavalinkPlaylistInfo } from './Manager';
+import { LavalinkTrackLoaded, LavalinkPlaylistInfo } from './AudioManager';
 
 interface AudioTrackInfo {
     identifier: string;

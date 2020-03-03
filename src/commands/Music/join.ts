@@ -20,7 +20,7 @@ export default class extends MusicCommand {
         }
 
         this.resolvePermissions(msg, channel!);
-        await this.client.audio.join(channel!);
+        await msg.guild!.audio.join(channel!);
         return msg.sendLocale('COMMAND_JOIN_SUCCESS', [channel!.toString()]);
     }
 

@@ -1,7 +1,7 @@
 import { KlasaClient, KlasaClientOptions } from 'klasa';
 import permissionLevel from './structures/permissionLevel';
 import MemeHandler from './structures/meme';
-import AudioManager from './structures/audio/Manager';
+import AudioManager from './structures/audio/AudioManager';
 import APIWrapperStore from './structures/base/APIWrapperStore';
 import { WebhookClient } from 'discord.js';
 import { SnakeBotConfig } from '../config';

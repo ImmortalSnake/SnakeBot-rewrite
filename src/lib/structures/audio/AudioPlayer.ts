@@ -1,11 +1,14 @@
-import { Player, PlayerOptions, LavalinkNode } from 'discord.js-lavalink';
 import AudioTrack from './AudioTrack';
 import Util from '../../utils/Util';
-import { KlasaMessage } from 'klasa';
+import { KlasaMessage, KlasaGuild } from 'klasa';
+import { VoiceChannel, TextChannel } from 'discord.js';
+import SnakeBot from '../../client';
 
-export default class AudioPlayer extends Player {
+export default class AudioPlayer {
 
-    public current: AudioTrack | null = null;
+    public current?: AudioTrack;
+    public guild: KlasaGuild;
+    public channelID?: string;
     public tracks: AudioTrack[] = [];
 
     public repeat = false;
@@ -13,11 +16,32 @@ export default class AudioPlayer extends Player {
 
     private previousVolume: number | null = null;
 
-    public constructor(node: LavalinkNode, options: PlayerOptions) {
-        super(node, options);
+    public constructor(guild: KlasaGuild) {
+        this.guild = guild;
+        // this.on('end', data => this.onEnd(data));
+        // this.on('error', err => this.client.console.error(`An error has occured at ${this.channel}:\n${err}`));
+    }
 
-        this.on('end', data => this.onEnd(data));
-        this.on('error', err => this.client.console.error(`An error has occured at ${this.channel}:\n${err}`));
+    public get manager() {
+        return (this.guild.client as SnakeBot).audio;
+    }
+
+    public get player() {
+        return this.manager.lavalink.players.get(this.guild.id);
+    }
+
+    public get channel() {
+        return this.channelID && this.guild.channels.get(this.channelID) as TextChannel;
+    }
+
+    public get totalTime() {
+        let accumulator = 0;
+        for (const track of this.tracks) {
+            if (track.info.isStream) return -1;
+            accumulator += track.info.length;
+        }
+
+        return accumulator;
     }
 
     public setRepeat(loop?: boolean) {
@@ -37,52 +61,71 @@ export default class AudioPlayer extends Player {
         return this.tracks;
     }
 
+    public async join(voiceChannel: VoiceChannel) {
+        const { node } = this.manager;
+        if (!node) throw 'No lavalink nodes were initialised';
+
+        const volume = this.guild.settings.get('music.volume') as number;
+        this.manager.lavalink!.join({
+            guild: this.guild.id,
+            channel: voiceChannel.id,
+            host: node.tag || node.host
+        });
+
+        await this.player!.volume(volume);
+        return this;
+    }
+
+    public async leave() {
+        this.tracks = [];
+        this.channelID = undefined;
+        this.repeat = false;
+        this.bassboosted = false;
+        this.previousVolume = null;
+
+        return this.manager.lavalink.leave(this.guild.id);
+    }
+
     public async bassboost(state?: boolean) {
+        if (!this.player) throw 'No Audio player was initialised';
+
         this.bassboosted = state || !this.bassboosted;
         if (this.bassboosted) {
-            this.previousVolume = this.state.volume;
-            await this.volume(150);
+            this.previousVolume = this.player.state.volume;
+            await this.player.volume(150);
 
-            await this.equalizer(Array(6).fill(0).map((_, i) => ({ band: i, gain: i })));
+            await this.player.equalizer(Array(6).fill(0).map((_, i) => ({ band: i, gain: i })));
         } else {
-            if (this.previousVolume) await this.volume(this.previousVolume);
-            await this.equalizer(Array(6).fill(0).map((_, i) => ({ band: i, gain: 0 })));
+            if (this.previousVolume) await this.player.volume(this.previousVolume);
+            await this.player.equalizer(Array(6).fill(0).map((_, i) => ({ band: i, gain: 0 })));
         }
 
         return state || this.bassboosted;
     }
 
-    public totalTime() {
-        let accumulator = 0;
-        for (const track of this.tracks) {
-            if (track.info.isStream) return -1;
-            accumulator += track.info.length;
-        }
-
-        return accumulator;
-    }
-
     public handleTrack(msg: KlasaMessage, track: AudioTrack) {
+        if (!this.player) throw 'No Audio player was initialised';
+
         track.requester = msg.author.tag;
         if (!this.current) {
             this.current = track;
-            return this.play(track.track);
+            return this.player.play(track.track);
         }
 
         this.tracks.push(track);
     }
 
-    public onEnd(data: any) {
+    private onEnd(data: any) {
         try {
-            if (data.reason === 'REPLACED') return;
+            if (!this.player || data.reason === 'REPLACED') return;
             if (this.repeat) this.tracks.push(this.current!);
             if (this.tracks.length) {
                 this.current = this.tracks.shift()!;
 
-                return this.play(this.current.track);
+                return this.player.play(this.current.track);
             }
 
-            return this.manager.leave(this.id);
+            return this.leave();
         } catch (err) {
             throw err;
         }
