@@ -1,6 +1,6 @@
 import SnakeBot from '../../client';
 import fetch from 'node-fetch';
-import { PlayerManager, Player } from 'discord.js-lavalink';
+import { PlayerManager } from 'discord.js-lavalink';
 import { LavalinkServer } from '../../../config';
 import AudioTrack from './AudioTrack';
 
@@ -13,7 +13,7 @@ export default class AudioManager {
         this.client = client;
 
         this.lavalink = new PlayerManager(this.client, LavalinkServer, {
-            user: this.client.user!.id,
+            user: this.client.options.clientID,
             shards: this.client.shard?.count
         })
             .on('ready', node => this.client.console.log(`Successfully initialised Lavalink node: ${node.tag}`))

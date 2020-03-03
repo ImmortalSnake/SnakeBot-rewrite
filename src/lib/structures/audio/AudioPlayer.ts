@@ -18,12 +18,14 @@ export default class AudioPlayer {
 
     public constructor(guild: KlasaGuild) {
         this.guild = guild;
-        // this.on('end', data => this.onEnd(data));
-        // this.on('error', err => this.client.console.error(`An error has occured at ${this.channel}:\n${err}`));
+    }
+
+    public get client() {
+        return this.guild.client as SnakeBot;
     }
 
     public get manager() {
-        return (this.guild.client as SnakeBot).audio;
+        return this.client.audio;
     }
 
     public get player() {
@@ -70,7 +72,9 @@ export default class AudioPlayer {
             guild: this.guild.id,
             channel: voiceChannel.id,
             host: node.tag || node.host
-        });
+        })
+            .on('end', data => this.onEnd(data))
+            .on('error', err => this.client.console.error(`An error has occured at ${this.guild.id}:\n${err}`));
 
         await this.player!.volume(volume);
         return this;
@@ -127,7 +131,8 @@ export default class AudioPlayer {
 
             return this.leave();
         } catch (err) {
-            throw err;
+            this.client.emit('wtf', this.guild.id, this.player?.node, err);
+            if (this.channel) return this.channel.sendLocale('COMMAND_ERROR');
         }
     }
 

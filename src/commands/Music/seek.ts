@@ -14,7 +14,7 @@ export default class extends MusicCommand {
     }
 
     public async run(msg: KlasaMessage, [position]: [number]): Promise<KlasaMessage | KlasaMessage[] | null> {
-        await msg.guild!.audio!.seek(position);
+        await msg.guild!.audio.player!.seek(position);
         return msg.sendLocale('COMMAND_SEEK_SUCCESS', [Util.formatDuration(position)]);
     }
 

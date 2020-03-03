@@ -13,6 +13,7 @@ export default {
     disableEveryone: true,
     clientID: '543796400165748736',
     clientSecret: process.env.CLIENT_SECRET,
+    production: process.env.NODE_ENV === 'production',
     presence: {
         activity: {
             name: 'sb!help',

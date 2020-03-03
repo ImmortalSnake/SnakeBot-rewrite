@@ -17,7 +17,7 @@ export default class extends MusicCommand {
         if (!audio.current?.skippers.includes(msg.author!.id)) {
             const reqVotes = Math.ceil((msg.guild!.me!.voice.channel!.members.size - 1) / 2) - audio.current!.skippers.length;
             if ((force && msg.member!.isDJ) || reqVotes === 1) {
-                await audio.stop();
+                await audio.player!.stop();
                 return msg.sendLocale('COMMAND_SKIP_SUCCESS');
             }
 
