@@ -1,55 +1,25 @@
 import SnakeBot from '../../client';
 import fetch from 'node-fetch';
-import { PlayerManager, Player } from 'discord.js-lavalink';
-import { LavalinkServer } from '../../../config';
-import { VoiceChannel, Guild, Collection } from 'discord.js';
+import { PlayerManager, LavalinkNodeOptions, PlayerManagerOptions } from 'discord.js-lavalink';
 import AudioTrack from './AudioTrack';
-import AudioPlayer from './AudioPlayer';
 
-export default class AudioManager {
+export default class AudioManager extends PlayerManager {
 
-    public client: SnakeBot;
-    public lavalink: PlayerManager | null = null;
-    public players: Collection<string, AudioPlayer>;
-
-    public constructor(client: SnakeBot) {
+    public readonly client: SnakeBot;
+    public constructor(client: SnakeBot, nodes: LavalinkNodeOptions[], options: PlayerManagerOptions) {
+        super(client, nodes, options);
         this.client = client;
-        this.players = new Collection();
-    }
 
-    public get node() {
-        return this.lavalink!.nodes.first();
-    }
-
-    public init() {
-        this.lavalink = new PlayerManager(this.client, LavalinkServer, {
-            user: this.client.user!.id,
-            shards: this.client.shard?.count,
-            Player: AudioPlayer as unknown as Player
-        })
+        // listen for all events
+        this
             .on('ready', node => this.client.console.log(`Successfully initialised Lavalink node: ${node.tag}`))
             .on('reconnecting', node => this.client.console.log(`Attempting to reconnect to Lavalink Node ${node.tag}`))
             .on('error', (node, err) => this.client.console.warn(`There was an error at Lavalink Node ${node.tag}:\n${err}`))
             .on('disconnect', (node, code, reason) => this.client.console.warn(`Disconnected from Lavalink Node ${node.tag}\nCode: ${code}\nReason: ${reason}`));
     }
 
-    public async join(channel: VoiceChannel) {
-        if (!this.node?.connected) throw 'No lavalink nodes were initialised';
-        const player = this.lavalink!.join({
-            guild: channel.guild.id,
-            channel: channel.id,
-            host: this.node.tag || this.node.host
-        }, { selfdeaf: true });
-
-        await player.volume(channel.guild.settings.get('music.volume') as number);
-        return this.players.set(channel.guild.id, player as AudioPlayer);
-    }
-
-    public leave(guild: Guild) {
-        this.players.delete(guild.id);
-        guild.me?.voice.channel?.leave();
-
-        return this.lavalink!.leave(guild.id);
+    public get node() {
+        return this.idealNodes.first();
     }
 
     public async fetchSongs(query: string): Promise<AudioTrack[]> {
@@ -75,7 +45,7 @@ export default class AudioManager {
                 return [];
             })
             .catch(err => {
-                console.error(err);
+                this.client.console.error(err);
                 throw 'An error has occurred... Try again later!';
             });
     }

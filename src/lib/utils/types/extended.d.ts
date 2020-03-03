@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/member-ordering */
 import { MessagePromptOptions } from '../../../extendables/Message';
 import { MessageEmbed, ImageSize } from 'discord.js';
-import AudioPlayer from '../../structures/audio/AudioPlayer';
 
 declare module 'discord.js' {
     interface Message {
@@ -12,10 +11,6 @@ declare module 'discord.js' {
 
     interface GuildMember {
         public isDJ: boolean;
-    }
-
-    interface Guild {
-        public audio: AudioPlayer | undefined;
     }
 
     interface User {

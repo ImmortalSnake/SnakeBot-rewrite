@@ -27,7 +27,7 @@ export default class extends MusicCommand {
             .addField(ZWS, `**Now Playing**
             [${player.current.info.title}](${player.current.info.uri}) \`${player.current.requester}\`
 
-            **${player.tracks.length}** song(s) in queue | \`${Util.formatDuration(player.totalTime())}\` Expected length
+            **${player.tracks.length}** song(s) in queue | \`${Util.formatDuration(player.totalTime)}\` Expected length
             `));
 
         const songFields = player.tracks.map((track, position) => this.generateSongField(msg, position, track));

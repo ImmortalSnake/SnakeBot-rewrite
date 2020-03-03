@@ -1,11 +1,10 @@
 import { Event } from 'klasa';
 import SnakeBot from '../../lib/client';
-import { SnakeBotConfig } from '../../config';
 
 export default class extends Event {
 
-    public run() {
-        if (SnakeBotConfig.Lavalink) (this.client as SnakeBot).audio.init();
+    public async run() {
+        if (this.client.options.production) await (this.client as SnakeBot).webhook.send(`Ready to serve ${this.client.guilds.size} guilds`);
     }
 
 }

@@ -1,13 +1,15 @@
 import { KlasaClient, KlasaClientOptions } from 'klasa';
 import permissionLevel from './structures/permissionLevel';
 import MemeHandler from './structures/meme';
-import AudioManager from './structures/audio/Manager';
+import AudioManager from './structures/audio/AudioManager';
 import APIWrapperStore from './structures/base/APIWrapperStore';
 import { WebhookClient } from 'discord.js';
-import { SnakeBotConfig } from '../config';
+import { SnakeBotConfig, LavalinkServer } from '../config';
 import { GiveawayClient } from 'klasa-giveaway';
 import { DashboardClient } from 'klasa-dashboard-hooks';
 
+
+// Load all stuctures and extensions
 import './Setup/Canvas';
 import './extensions/SnakeGuild';
 import './structures/schemas/GuildSchema';
@@ -22,7 +24,7 @@ KlasaClient
 
 export default class SnakeBot extends KlasaClient {
 
-    public version = 'v0.5.2 - Alpha';
+    public version = 'v0.5.8 - Alpha';
     public meme: MemeHandler;
     public audio: AudioManager;
     public apis: APIWrapperStore;
@@ -36,7 +38,10 @@ export default class SnakeBot extends KlasaClient {
         this.apis = new APIWrapperStore(this);
 
         this.registerStore(this.apis);
-        this.audio = new AudioManager(this);
+        this.audio = new AudioManager(this, LavalinkServer, {
+            user: this.options.clientID,
+            shards: this.options.shardCount
+        });
 
         this.webhook = new WebhookClient(WebhookID, WebhookToken, { disableEveryone: true });
 

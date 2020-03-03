@@ -7,8 +7,8 @@ import { COLORS } from '../utils/constants';
 export type ModLogAction = 'Ban' | 'Kick' | 'Mute' | 'Purge' | 'Softban' | 'Unban' | 'Unmute' | 'Warn';
 export default class ModLog {
 
-    public message: KlasaMessage;
-    public action: ModLogAction;
+    public readonly message: KlasaMessage;
+    public readonly action: ModLogAction;
     public user?: User;
     public duration?: number;
     public reason?: string;

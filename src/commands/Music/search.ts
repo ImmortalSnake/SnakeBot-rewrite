@@ -13,7 +13,8 @@ export default class extends MusicCommand {
     }
 
     public async run(msg: KlasaMessage, [query]: [string]): Promise<KlasaMessage | KlasaMessage[] | null> {
-        const data = await this.client.audio.fetchSongs(`ytsearch: ${query}`);
+        const searchType = 'sc' in msg.flagArgs || 'soundcloud' in msg.flagArgs ? `scsearch` : `ytsearch`;
+        const data = await this.client.audio.fetchSongs(`${searchType}: ${query}`);
 
         const mess = await msg.prompt('**Select a video (1 to 10)**', {
             filter: m => Boolean(Number(m)),

@@ -309,25 +309,33 @@ export default class extends Language {
             COMMAND_LYRICS_DESCRIPTION: 'Check out the lyrics of a song',
             COMMAND_LYRICS_EXTENDED: `Searches lyrics for the specified song using the **Genius** API`,
 
-            COMMAND_NOWPLAYING_DESCRIPTION: 'View the current playing song',
+            COMMAND_NOWPLAYING_DESCRIPTION: 'View information about the current track',
             COMMAND_NOWPLAYING_EXTENDED: '',
 
-            COMMAND_PAUSE_DESCRIPTION: '',
+            COMMAND_PAUSE_DESCRIPTION: 'Pauses the current track',
             COMMAND_PAUSE_EXTENDED: '',
 
-            COMMAND_PLAY_DESCRIPTION: '',
-            COMMAND_PLAY_EXTENDED: '',
-            COMMAND_RESUME_DESCRIPTION: '',
+            COMMAND_PLAY_DESCRIPTION: 'Plays a song with the given name or url',
+            COMMAND_PLAY_EXTENDED: [
+                'If a url is not provided, the name will be searched in youtube and loaded.',
+                'You can also search in soundcloud using `--sc` flag',
+                'Playlists are also supported'
+            ].join('\n'),
+
+            COMMAND_RESUME_DESCRIPTION: 'Resumes the current track when paused',
             COMMAND_RESUME_EXTENDED: '',
 
-            COMMAND_SEARCH_DESCRIPTION: '',
-            COMMAND_SEARCH_EXTENDED: '',
+            COMMAND_SEARCH_DESCRIPTION: 'Searches for a list of songs to load',
+            COMMAND_SEARCH_EXTENDED: [
+                'Searches youtube for a given name and displays it, from which you can select any track to load',
+                'You can also search in soundcloud using the `--sc` flag'
+            ].join('\n'),
 
-            COMMAND_SEEK_DESCRIPTION: '',
+            COMMAND_SEEK_DESCRIPTION: 'Seeks to the specified position in the current track',
             COMMAND_SEEK_EXTENDED: '',
-            COMMAND_SKIP_DESCRIPTION: '',
-            COMMAND_SKIP_EXTENDED: '',
-            COMMAND_VOLUME_DESCRIPTION: '',
+            COMMAND_SKIP_DESCRIPTION: 'Skips the current track',
+            COMMAND_SKIP_EXTENDED: 'Skipping is done on a voting system based on the number of members in the voice channel. DJ Members can force skip',
+            COMMAND_VOLUME_DESCRIPTION: 'View or set the volume for the guild',
             COMMAND_VOLUME_EXTENDED: '',
             COMMAND_CAT_DESCRIPTION: '',
             COMMAND_CAT_EXTENDED: '',
@@ -352,7 +360,7 @@ export default class extends Language {
             COMMAND_AFK_DESCRIPTION: '',
             COMMAND_AFK_EXTENDED: '',
 
-            COMMAND_AVATAR_DESCRIPTION: '',
+            COMMAND_AVATAR_DESCRIPTION: 'Shows the avatar of any discord user',
             COMMAND_AVATAR_EXTENDED: '',
 
             COMMAND_CODE_DESCRIPTION: 'Evaluate code in any language!',
@@ -385,22 +393,22 @@ export default class extends Language {
             COMMAND_USER_DESCRIPTION: 'Provides information of a specified user',
             COMMAND_USER_EXTENDED: '',
 
-            COMMAND_CLEAR_DESCRIPTION: 'Clears the queue',
-            COMMAND_CLEAR_EXTENDED: '',
-            COMMAND_MOVE_DESCRIPTION: '',
-            COMMAND_MOVE_EXTENDED: '',
+            COMMAND_CLEAR_DESCRIPTION: 'Clears the guild queue',
+            COMMAND_CLEAR_EXTENDED: 'Removes all tracks from the queue, loaded in the queue. The current track will not be removed',
+            COMMAND_MOVE_DESCRIPTION: 'Move tracks from one position to another!',
+            COMMAND_MOVE_EXTENDED: 'Moves a selected track to another position using its current position numbers',
 
-            COMMAND_QUEUE_DESCRIPTION: '',
-            COMMAND_QUEUE_EXTENDED: '',
+            COMMAND_QUEUE_DESCRIPTION: 'Display the guild queue in a neat embed',
+            COMMAND_QUEUE_EXTENDED: 'Shows a paginated embed of all tracks loaded in the queue along with their details',
 
-            COMMAND_REMOVE_DESCRIPTION: '',
+            COMMAND_REMOVE_DESCRIPTION: 'Removes a track from the queue',
             COMMAND_REMOVE_EXTENDED: '',
 
             COMMAND_REMOVEDUPES_DESCRIPTION: 'Removes all duplicate entries from the queue',
             COMMAND_REMOVEDUPES_EXTENDED: '',
 
-            COMMAND_SHUFFLE_DESCRIPTION: 'Shuffle the queue',
-            COMMAND_SHUFFLE_EXTENDED: '',
+            COMMAND_SHUFFLE_DESCRIPTION: 'Shuffles the queue',
+            COMMAND_SHUFFLE_EXTENDED: 'Rearranges the queue so that it is in a random order',
 
             MONITOR_AFK_REMOVE: user => `Welcome back ${user}! I have removed your AFK status`,
             MONITOR_AFK_USER: (user, since, reason) => `**${user}** is currently AFK for reason: \`${reason}\`, ${since} ago`,

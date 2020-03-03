@@ -12,7 +12,8 @@ export default class extends MusicCommand {
     }
 
     public async run(msg: KlasaMessage): Promise<KlasaMessage | KlasaMessage[] | null> {
-        const { current, state } = msg.guild!.audio!;
+        const { current } = msg.guild!.audio;
+        const { state } = msg.guild!.audio.player!;
 
         return msg.send(new SnakeEmbed(msg)
             .setTitle(`Now Playing`)
