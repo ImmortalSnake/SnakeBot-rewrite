@@ -6,8 +6,8 @@ import SnakeBot from '../../client';
 
 export default class AudioPlayer {
 
+    public readonly guild: KlasaGuild;
     public current?: AudioTrack;
-    public guild: KlasaGuild;
     public channelID?: string;
     public tracks: AudioTrack[] = [];
 
@@ -86,6 +86,7 @@ export default class AudioPlayer {
         this.repeat = false;
         this.bassboosted = false;
         this.previousVolume = null;
+        this.current = undefined;
 
         return this.manager.leave(this.guild.id);
     }

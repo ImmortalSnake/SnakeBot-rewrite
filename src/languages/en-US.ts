@@ -321,6 +321,7 @@ export default class extends Language {
                 'You can also search in soundcloud using `--sc` flag',
                 'Playlists are also supported'
             ].join('\n'),
+
             COMMAND_RESUME_DESCRIPTION: 'Resumes the current track when paused',
             COMMAND_RESUME_EXTENDED: '',
 
@@ -328,7 +329,7 @@ export default class extends Language {
             COMMAND_SEARCH_EXTENDED: [
                 'Searches youtube for a given name and displays it, from which you can select any track to load',
                 'You can also search in soundcloud using the `--sc` flag'
-            ],
+            ].join('\n'),
 
             COMMAND_SEEK_DESCRIPTION: 'Seeks to the specified position in the current track',
             COMMAND_SEEK_EXTENDED: '',

@@ -12,7 +12,7 @@ export default class SnakeCommand extends Command {
     public constructor(store: CommandStore, file: string[], directory: string, options: SnakeCommandOptions = {}) {
         super(store, file, directory, util.mergeDefault({
             description: (lang: Language) => lang.get(`COMMAND_${this.name.toUpperCase()}_DESCRIPTION`),
-            extendedHelp: (lang: Language) => lang.get(`COMMAND_${this.name.toUpperCase()}_EXTENDED`)
+            extendedHelp: (lang: Language) => lang.language[`COMMAND_${this.name.toUpperCase()}_EXTENDED`] || lang.get('COMMAND_HELP_NO_EXTENDED')
         }, options));
 
         this.client = store.client as SnakeBot;

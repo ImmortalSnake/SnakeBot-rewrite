@@ -5,7 +5,7 @@ import AudioTrack from './AudioTrack';
 
 export default class AudioManager extends PlayerManager {
 
-    public client: SnakeBot;
+    public readonly client: SnakeBot;
     public constructor(client: SnakeBot, nodes: LavalinkNodeOptions[], options: PlayerManagerOptions) {
         super(client, nodes, options);
         this.client = client;
