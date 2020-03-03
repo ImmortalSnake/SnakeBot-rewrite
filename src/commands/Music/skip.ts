@@ -11,7 +11,7 @@ export default class extends MusicCommand {
     }
 
     public async run(msg: KlasaMessage, [force = false]: [boolean]): Promise<KlasaMessage | KlasaMessage[] | null> {
-        const audio = msg.guild!.audio!;
+        const { audio } = msg.guild!;
         if (force && !msg.member?.isDJ) throw 'Only DJ members and admins can force skip!';
 
         if (!audio.current?.skippers.includes(msg.author!.id)) {

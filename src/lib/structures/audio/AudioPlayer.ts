@@ -29,7 +29,7 @@ export default class AudioPlayer {
     }
 
     public get player() {
-        return this.manager.lavalink.players.get(this.guild.id);
+        return this.manager.players.get(this.guild.id);
     }
 
     public get channel() {
@@ -68,7 +68,7 @@ export default class AudioPlayer {
         if (!node) throw 'No lavalink nodes were initialised';
 
         const volume = this.guild.settings.get('music.volume') as number;
-        this.manager.lavalink!.join({
+        this.manager.join({
             guild: this.guild.id,
             channel: voiceChannel.id,
             host: node.tag || node.host
@@ -87,7 +87,7 @@ export default class AudioPlayer {
         this.bassboosted = false;
         this.previousVolume = null;
 
-        return this.manager.lavalink.leave(this.guild.id);
+        return this.manager.leave(this.guild.id);
     }
 
     public async bassboost(state?: boolean) {

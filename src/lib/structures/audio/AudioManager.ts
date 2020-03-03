@@ -1,21 +1,17 @@
 import SnakeBot from '../../client';
 import fetch from 'node-fetch';
-import { PlayerManager } from 'discord.js-lavalink';
-import { LavalinkServer } from '../../../config';
+import { PlayerManager, LavalinkNodeOptions, PlayerManagerOptions } from 'discord.js-lavalink';
 import AudioTrack from './AudioTrack';
 
-export default class AudioManager {
+export default class AudioManager extends PlayerManager {
 
     public client: SnakeBot;
-    public lavalink: PlayerManager;
-
-    public constructor(client: SnakeBot) {
+    public constructor(client: SnakeBot, nodes: LavalinkNodeOptions[], options: PlayerManagerOptions) {
+        super(client, nodes, options);
         this.client = client;
 
-        this.lavalink = new PlayerManager(this.client, LavalinkServer, {
-            user: this.client.options.clientID,
-            shards: this.client.shard?.count
-        })
+        // listen for all events
+        this
             .on('ready', node => this.client.console.log(`Successfully initialised Lavalink node: ${node.tag}`))
             .on('reconnecting', node => this.client.console.log(`Attempting to reconnect to Lavalink Node ${node.tag}`))
             .on('error', (node, err) => this.client.console.warn(`There was an error at Lavalink Node ${node.tag}:\n${err}`))
@@ -23,7 +19,7 @@ export default class AudioManager {
     }
 
     public get node() {
-        return this.lavalink!.idealNodes.first();
+        return this.idealNodes.first();
     }
 
     public async fetchSongs(query: string): Promise<AudioTrack[]> {
