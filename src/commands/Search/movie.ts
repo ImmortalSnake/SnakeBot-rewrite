@@ -10,7 +10,8 @@ export default class extends SnakeCommand {
             usage: '<query:str> [page:int]',
             usageDelim: '-',
             cooldown: 10,
-            examples: ['endgame', 'joker -2']
+            examples: ['endgame', 'joker -2'],
+            requiredPermissions: ['EMBED_LINKS']
         });
     }
 

@@ -9,7 +9,7 @@ export default class extends SnakeCommand {
         super(store, file, directory, {
             aliases: ['modlogs'],
             usage: '[user:user]',
-            requiredPermissions: ['MANAGE_GUILD'],
+            requiredPermissions: ['EMBED_LINKS', 'ADD_REACTIONS'],
             permissionLevel: 5,
             examples: ['', '@Jeff']
         });

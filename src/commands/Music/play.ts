@@ -10,7 +10,8 @@ export default class extends MusicCommand {
         super(store, file, directory, {
             usage: '<track:song>',
             music: ['USER_VC'],
-            examples: ['see you again']
+            examples: ['see you again'],
+            requiredPermissions: ['EMBED_LINKS', 'SPEAK']
         });
     }
 
