@@ -24,7 +24,8 @@ export default class extends SnakeCommand {
     public timestamp = new Timestamp('d MMMM YYYY');
     public constructor(store: CommandStore, file: string[], directory: string) {
         super(store, file, directory, {
-            aliases: ['server-info', 'serverinfo']
+            aliases: ['server-info', 'serverinfo'],
+            requiredPermissions: ['EMBED_LINKS']
         });
     }
 

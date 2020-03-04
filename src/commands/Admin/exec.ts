@@ -11,6 +11,7 @@ export default class extends SnakeCommand {
             hidden: true,
             guarded: true,
             permissionLevel: 10,
+            requiredPermissions: ['ATTACH_FILES'],
             usage: '<expression:...str>',
             examples: ['node -v']
         });

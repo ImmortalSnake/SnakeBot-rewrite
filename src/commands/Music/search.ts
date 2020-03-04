@@ -8,7 +8,8 @@ export default class extends MusicCommand {
         super(store, file, directory, {
             music: ['SAME_VC'],
             usage: '<query:...string>',
-            examples: ['sunflower']
+            examples: ['sunflower'],
+            requiredPermissions: ['EMBED_LINKS']
         });
     }
 

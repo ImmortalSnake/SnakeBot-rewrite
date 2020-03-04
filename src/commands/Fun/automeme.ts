@@ -6,7 +6,7 @@ export default class extends SnakeCommand {
     public constructor(store: CommandStore, file: string[], directory: string) {
         super(store, file, directory, {
             usage: '<minutes:int{15,}>',
-            requiredPermissions: ['MANAGE_MESSAGES'],
+            requiredPermissions: ['MANAGE_MESSAGES', 'EMBED_LINKS'],
             permissionLevel: 6,
             examples: ['20']
         });

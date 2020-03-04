@@ -11,7 +11,8 @@ export default class extends SnakeCommand {
             usageDelim: '-',
             cooldown: 10,
             description: lang => lang.get('COMMAND_SHOWS_DESCRIPTION'),
-            examples: ['friends']
+            examples: ['friends'],
+            requiredPermissions: ['EMBED_LINKS']
         });
     }
 

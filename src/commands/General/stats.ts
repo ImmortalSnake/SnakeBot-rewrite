@@ -1,9 +1,16 @@
 import SnakeCommand from '../../lib/structures/base/SnakeCommand';
 import { MessageEmbed, version as discordVersion } from 'discord.js';
-import { util, KlasaMessage, Duration } from 'klasa';
+import { util, KlasaMessage, Duration, CommandStore } from 'klasa';
 import os from 'os';
 
 export default class extends SnakeCommand {
+
+    public constructor(store: CommandStore, file: string[], directory: string) {
+        super(store, file, directory, {
+            requiredPermissions: ['EMBED_LINKS'],
+            guarded: true
+        });
+    }
 
     public async run(msg: KlasaMessage) {
         const usage = process.memoryUsage();

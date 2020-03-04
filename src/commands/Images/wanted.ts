@@ -13,7 +13,8 @@ export default class extends SnakeCommand {
         super(store, file, directory, {
             cooldown: 10,
             usage: '[user:user]',
-            examples: ['', '@Jeff']
+            examples: ['', '@Jeff'],
+            requiredPermissions: ['ATTACH_FILES']
         });
     }
 

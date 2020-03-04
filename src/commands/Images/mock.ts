@@ -12,7 +12,8 @@ export default class extends SnakeCommand {
         super(store, file, directory, {
             cooldown: 10,
             usage: '<text:...string{1,30}>',
-            examples: ['memes are bad']
+            examples: ['memes are bad'],
+            requiredPermissions: ['ATTACH_FILES']
         });
     }
 

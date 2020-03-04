@@ -13,6 +13,7 @@ export default class extends SnakeCommand {
             aliases: ['yt', 'ytsearch'],
             description: lang => lang.get('COMMAND_YOUTUBE_EXTENDED'),
             extendedHelp: lang => lang.get('COMMAND_YOUTUBE_EXTENDED'),
+            requiredPermissions: ['EMBED_LINKS'],
             examples: ['pewdiepie']
         });
     }

@@ -10,7 +10,8 @@ export default class extends SnakeCommand {
         super(store, file, directory, {
             usage: '<query:...string>',
             cooldown: 10,
-            examples: ['happy now']
+            examples: ['happy now'],
+            requiredPermissions: ['EMBED_LINKS', 'ADD_REACTIONS']
         });
     }
 
