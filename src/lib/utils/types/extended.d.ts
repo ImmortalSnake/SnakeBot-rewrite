@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/member-ordering */
-import { MessagePromptOptions } from '../../../extendables/Message';
+import { MessagePromptOptions, MessageAskOptions } from '../../../extendables/Message';
 import { MessageEmbed, ImageSize } from 'discord.js';
 
 declare module 'discord.js' {

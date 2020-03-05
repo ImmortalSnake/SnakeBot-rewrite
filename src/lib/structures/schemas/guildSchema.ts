@@ -20,13 +20,15 @@ export default Client.defaultGuildSchema
         .add('modlog', 'textchannel')
         .add('welcome', 'textchannel')
         .add('reports', 'textchannel')
-        .add('leave', 'textchannel'))
+        .add('leave', 'textchannel')
+        .add('announce', 'textchannel'))
 
     .add('roles', folder => folder
         .add('mute', 'Role')
+        .add('announce', 'Role')
         .add('auto', 'Role', { 'array': true, 'default': [] })
         .add('dj', 'Role', { 'array': true, 'default': [] })
-        .add('public', 'Role', { 'array': true, 'default': [] }))
+        .add('selfroles', 'Role', { 'array': true, 'default': [] }))
 
     .add('modlogs', 'any', { 'array': true, 'configurable': false, 'default': [] })
     .add('tags', 'any', { 'array': true, 'configurable': false, 'default': [] })
