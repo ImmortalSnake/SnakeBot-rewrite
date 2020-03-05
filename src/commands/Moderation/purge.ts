@@ -30,7 +30,7 @@ export default class extends SnakeCommand {
 
         const deleted = await msg.channel.bulkDelete(del);
 
-        await msg.channel.send('COMMAND_PURGE_SUCCESS', [deleted.size])
+        await msg.sendLocale('COMMAND_PURGE_SUCCESS', [deleted.size])
             .then(m => m.delete({ timeout: 10000 }));
         return null;
     }

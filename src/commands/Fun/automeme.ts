@@ -30,7 +30,7 @@ export default class extends SnakeCommand {
             catchUp: true
         });
 
-        return msg.send('COMMAND_AUTOMEME_ENABLED', [msg.channel.toString(), minutes]);
+        return msg.sendLocale('COMMAND_AUTOMEME_ENABLED', [msg.channel.toString(), minutes]);
     }
 
 }

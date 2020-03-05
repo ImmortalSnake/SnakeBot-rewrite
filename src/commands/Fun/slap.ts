@@ -1,7 +1,8 @@
 import { CommandStore, KlasaMessage } from 'klasa';
 import slaps from '../../lib/Data/ts/slaps';
-import { MessageEmbed, User } from 'discord.js';
+import { User } from 'discord.js';
 import SnakeCommand from '../../lib/structures/base/SnakeCommand';
+import SnakeEmbed from '../../lib/structures/SnakeEmbed';
 
 export default class extends SnakeCommand {
 
@@ -15,10 +16,10 @@ export default class extends SnakeCommand {
     public async run(msg: KlasaMessage, [user]: [User]): Promise<KlasaMessage | KlasaMessage[]> {
         const gif = slaps[Math.floor(Math.random() * slaps.length)];
 
-        return msg.sendEmbed(new MessageEmbed()
+        return msg.sendEmbed(new SnakeEmbed(msg)
             .setColor('ORANGE')
             .setImage(gif)
-            .setLocaleTitle('COMMAND_SLAP_TITLE', [msg.author.username, user.username]));
+            .setLocaleTitle('COMMAND_SLAP_TITLE', msg.author.username, user.username));
     }
 
 }

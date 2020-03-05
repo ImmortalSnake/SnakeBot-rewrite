@@ -28,7 +28,7 @@ export default class extends SnakeCommand {
 
         const { duration, days } = this.parseDuration(msg);
 
-        await user.sendLocale('MODERATION_USER_DM', 'banned', msg.guild!.name, reason).catch(() => null);
+        await user.sendLocale('MODERATION_USER_DM', ['banned', msg.guild!.name, reason]).catch(() => null);
         await msg.guild!.members.ban(user.id, { reason, days });
 
         return new ModLog(msg, 'Ban')
