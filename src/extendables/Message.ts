@@ -14,6 +14,7 @@ export interface MessageAskOptions {
     user?: string;
     time?: number;
     delete?: boolean;
+    embed?: MessageEmbed;
 }
 
 
