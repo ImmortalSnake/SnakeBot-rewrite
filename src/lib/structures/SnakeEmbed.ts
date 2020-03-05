@@ -25,7 +25,7 @@ export default class SnakeEmbed extends MessageEmbed {
     public init() {
         return this.setColor(this.displayColor)
             .setAuthor(this.client.user?.tag, this.client.user?.displayAvatarURL())
-            .setFooter(`Requested By: ${this.msg.author.tag}`);
+            .setFooter(`Requested By: ${this.msg.author.tag}`, this.msg.author.displayAvatarURL());
     }
 
     public setLocaleDescription(key: string, ...args: any[]) {
@@ -34,6 +34,10 @@ export default class SnakeEmbed extends MessageEmbed {
 
     public setLocaleTitle(key: string, ...args: any[]) {
         return this.setTitle(this.language.get(key, ...args));
+    }
+
+    public addLocaleField([key, ...args1]: [string, any[]], [value, ...args2]: [string, any[]], inline?: boolean) {
+        return this.addField(this.language.get(key, ...args1), this.language.get(value, ...args2), inline);
     }
 
 }
