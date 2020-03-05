@@ -11,7 +11,7 @@ export default class extends SnakeCommand {
     }
 
     public async run(msg: KlasaMessage, [item]: [string]): Promise<KlasaMessage | KlasaMessage[]> {
-        return msg.sendMessage(`I would give **${item}** a \`${Math.round(Math.random() * 10)} / 10\``);
+        return msg.sendLocale('COMMAND_RATE_REPLY', [item, Math.round(Math.random() * 10)]);
     }
 
 }

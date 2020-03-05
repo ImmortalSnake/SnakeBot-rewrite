@@ -26,11 +26,11 @@ export default class extends SnakeCommand {
         }
 
         const del = messages.first(limit);
-        if (!del) throw ':x: Could not find any messages to delete! This could be because the messages are over 14 days old';
+        if (!del) throw msg.language.get('COMMAND_PURGE_NO_MESSAGES');
 
         const deleted = await msg.channel.bulkDelete(del);
 
-        await msg.channel.send(`**:wastebasket: Deleted ${deleted.size} messages!**`)
+        await msg.channel.send('COMMAND_PURGE_SUCCESS', [deleted.size])
             .then(m => m.delete({ timeout: 10000 }));
         return null;
     }

@@ -17,7 +17,7 @@ export default class extends SnakeCommand {
 
         if (automeme.channel) {
             await msg.guildSettings.reset('automeme.channel');
-            return msg.send('Disabled Automemes for the server!');
+            return msg.sendLocale('COMMAND_AUTOMEME_DISABLED');
         }
 
         await msg.guildSettings.update([
@@ -30,7 +30,7 @@ export default class extends SnakeCommand {
             catchUp: true
         });
 
-        return msg.send(`:white_check_mark: Automemes have been set at ${msg.channel} for every **${minutes}** minutes`);
+        return msg.send('COMMAND_AUTOMEME_ENABLED', [msg.channel.toString(), minutes]);
     }
 
 }

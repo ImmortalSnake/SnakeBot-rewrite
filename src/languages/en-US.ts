@@ -9,56 +9,8 @@ export default class extends Language {
 
         this.language = {
 
-            COMMAND_CONF_GET: (prefix, path, entry, value) => [
-                `${this.config[path.toUpperCase().replace(/(\.|\/)/g, '_')]}`,
-                '',
-                `✏️ **Current Value**: \`${value}\``,
-                `⚙️ **Update**: \`${prefix}conf set ${path} <${entry.type}>\``,
-                `🗑️ **Reset**: \`${prefix}conf reset ${path}\``
-            ].join('\n'),
+            COMMAND_ERROR: 'Uh oh! An error has occured... Please try again later!',
 
-            COMMAND_HELP_USAGE: usage => `📜 | **Command Usage**\n\`${usage}\``,
-            COMMAND_HELP_EXTENDED: `🔎 | **Extended Help**`,
-
-            COMMAND_STATS_GENERAL: (version, guilds, channels, users, shard, uptime, ping, uses) => [
-                `• Version      :: ${version}`,
-                `• Guilds       :: ${guilds}`,
-                `• Channels     :: ${channels}`,
-                `• Users        :: ${users}`,
-                `• Shard        :: ${shard}`,
-                `• Uptime       :: ${uptime}`,
-                `• Ping         :: ${ping} ms`,
-                `• Command Uses :: ${uses}`
-            ].join('\n'),
-            COMMAND_STATS_SYSTEM: (os, cpu, usage, nodeVersion, discordVersion) => [
-                `• Operating System  :: ${os} `,
-                `• Processor         :: ${cpu}`,
-                `• Memory Usage      :: ${usage} MB`,
-                `• Node Version      :: ${nodeVersion}`,
-                `• DiscordJS Version :: ${discordVersion}`
-            ].join('\n'),
-
-
-            COMMAND_AKINATOR_NO_GUESS: 'I don\'t have any guesses. Bravo.',
-            GAME_DIFFICULTY: '**Select Difficulty:**\n**[1]** - `Easy`\n**[2]** - `Medium`\n**[3]** - `Impossible`',
-            GAME_INVALID_DIFFICULTY: '❌ Invalid Difficulty Level',
-
-            COMMAND_CLEAR_SUCCESS: `✅ **Succesfully cleared the queue**`,
-            COMMAND_MOVE_SUCCESS: (from, to) => `✅ **Moved the track from \`${from}\` to \`${to}\``,
-            COMMAND_REMOVE_SUCCESS: title => `✅ **Removed** \`${title}\``,
-            COMMAND_REMOVEDUPES_SUCCESS: diff => `✅ **Removed \`${diff}\` duplicate tracks from the queue**`,
-            COMMAND_BASSBOOST_SUCCESS: toggle => `✅ **Bass Boost has been turned \`${toggle ? 'on' : 'off'}\`**`,
-            COMMAND_LOOP_SUCCESS: toggle => `**Queue loop has been turned \`${toggle ? 'on' : 'off'}\`**`,
-            COMMAND_PAUSE_SUCCESS: `⏸️ **Paused current playing music**`,
-            COMMAND_RESUME_SUCCESS: `🎵 **Resumed current playing music**`,
-            COMMAND_SEEK_SUCCESS: position => `⏩ Successfully changed the time to \`${position}\`!`,
-            COMMAND_LEAVE_SUCCESS: `✅ **Left the voice channel**`,
-            COMMAND_SHUFFLE_SUCCESS: `🔀 **Shuffled the queue!**`,
-            COMMAND_SKIP_SUCCESS: `✅ Your skip has been Acknowledged. **Skipping Now** ⏭️`,
-            COMMAND_SKIP_ACKNOWLEDGED: req => `✅ Your skip has been Acknowledged. You need **${req}** more votes to skip!`,
-            COMMAND_VOLUME_VIEW: volume => `🔊 The volume for this guild is **${volume}**`,
-            COMMAND_VOLUME_SET: volume => `🔊 Set the volume to **${volume}**`,
-            COMMAND_SKIP_DOUBLE: `❌ You already voted to skip!`,
             COMMAND_JOIN_NO_MEMBER: `❌ I am sorry, but Discord did not tell me the information I need, so I do not know what voice channel are you connected to...`,
             COMMAND_JOIN_NO_VOICECHANNEL: `❌ You are not connected in a voice channel.`,
             COMMAND_JOIN_SUCCESS: channel => `✅ Successfully joined the voice channel ${channel}`,
@@ -67,7 +19,6 @@ export default class extends Language {
             COMMAND_JOIN_VOICE_NO_CONNECT: `❌ I do not have enough permissions to connect to your voice channel. I am missing the **CONNECT** permission.`,
             COMMAND_JOIN_VOICE_NO_SPEAK: `❌ I can connect... but not speak. Please turn on this permission so I can play some music.`,
             COMMAND_JOIN_VOICE_SAME: `❌ Hello! I am already in your voice channel`,
-            COMMAND_QUEUE_LINE: (position, duration, title, url, requester) => `**[${position}]** │ ${duration} │ [${title}](${url}) │ Requester: **${requester}**`,
 
             COMMAND_REMINDER_CREATE: duration => `⏱️ A Reminder was created for ${duration}!`,
             COMMAND_AFK_CREATE: (user, reason) => `${user} has been set to **AFK** for reason: **${reason}**`,
@@ -132,9 +83,7 @@ export default class extends Language {
             GIVEAWAY_LIST_BODY: (i, message, channel, wCount, time, title) =>
                 `\n**${i}]** \`${message}\` → <#${channel}> | \`${wCount}\` **Winner(s)** | **Ends At:** ${Util.msToDuration(time - Date.now())} | **Title:** \`${title}\``,
 
-
-            COMMAND_EXEC_DESCRIPTION: '',
-            COMMAND_EXEC_EXTENDED: '',
+            // Command Specific Locales
 
             COMMAND_EVAL_EXTENDED: [
                 'The eval command evaluates code as-in, any error thrown from it will be handled.',
@@ -145,23 +94,54 @@ export default class extends Language {
                 'The **--showHidden** flag will enable the showHidden option in util.inspect.',
                 'If the output is too large, it\ll send the output as a file, or in the console if the bot does not have the `ATTACH_FILES` permission.'
             ].join('\n'),
-            /**
-             * Configuration
-             */
+
+            COMMAND_EXEC_DESCRIPTION: '',
+            COMMAND_EXEC_EXTENDED: '',
+
+            COMMAND_CONF_GET: (prefix, path, entry, value) => [
+                `${this.config[path.toUpperCase().replace(/(\.|\/)/g, '_')]}`,
+                '',
+                `✏️ **Current Value**: \`${value}\``,
+                `⚙️ **Update**: \`${prefix}conf set ${path} <${entry.type}>\``,
+                `🗑️ **Reset**: \`${prefix}conf reset ${path}\``
+            ].join('\n'),
+            COMMAND_CONF_SHOW: path => `**Guild Settings ${path ? `: ${path}` : ''}**`,
+            COMMAND_CONF_SHOW_DESCRIPTION: (prefix, path, display) => `Use \`${prefix}conf ${path ? `${path}/` : ''}<entry>\` to view an entry\n\n${display}`,
 
             COMMAND_PREFIX_DESCRIPTION: 'View or set the prefix for your server',
             COMMAND_PREFIX_EXTENDED: '',
 
-            /**
-             * Fun
-             */
-
             COMMAND_8BALL_DESCRIPTION: 'Ask any question and the holy 8ball shall answer',
             COMMAND_8BALL_EXTENDED: 'Gives you random answers based on your questions',
+            COMMAND_8BALL_RESPONSES: [
+                'It is certain',
+                'It is decidedly so',
+                'Without a doubt',
+                'Yes definitely',
+                'You may rely on it',
+                'As I see it, yes',
+                'Most likely',
+                'Outlook good',
+                'Yes',
+                'Signs point to yes',
+                'Reply hazy try again',
+                'Ask again later',
+                'Better not tell you now',
+                'Cannot predict now',
+                'Concentrate and ask again',
+                'Do not count on it',
+                'My reply is no',
+                'My sources say no',
+                'Outlook not so good',
+                'Very doubtful'
+            ],
 
             COMMAND_AUTOMEME_DESCRIPTION: 'Sends memes every X minutes!',
             COMMAND_AUTOMEME_EXTENDED: '',
+            COMMAND_AUTOMEME_DISABLED: 'Disabled Automemes for the server!',
+            COMMAND_AUTOMEME_ENABLED: (channel, minutes) => `✅ Automemes have been set at ${channel} for every **${minutes}** minutes`,
 
+            COMMAND_COWSAY_DESCRIPTION: 'Make a cow say mooo!',
             COMMAND_CUBES_DESCRIPTION: 'Cubify your text!',
             COMMAND_CUBES_EXTENDED: [
                 'This is a unique fun command that generates cubes from your input.\nHere is an example',
@@ -180,10 +160,8 @@ export default class extends Language {
 
             COMMAND_FLIPTEXT_DESCRIPTION: 'Flips your text',
             COMMAND_FLIPTEXT_EXTENDED: 'sᴉɥʇ pɐǝɹ noʎ uɐɔ',
-
             COMMAND_INSULT_DESCRIPTION: 'Insult a user.. Hahaha!',
             COMMAND_INSULT_EXTENDED: 'If no user is provided, it insults you! Try it',
-
             COMMAND_MEME_DESCRIPTION: 'Memes to keep you healthy',
             COMMAND_MEME_EXTENDED: '**NOTE** All memes displayed are taken from reddit, please do give credit to their creators',
 
@@ -192,28 +170,27 @@ export default class extends Language {
 
             COMMAND_QUOTE_DESCRIPTION: '',
             COMMAND_QUOTE_EXTENDED: '',
-
             COMMAND_RATE_DESCRIPTION: 'Rate something out of 10',
-            COMMAND_RATE_EXTENDED: '',
-
+            COMMAND_RATE_REPLY: (item, rate) => `I would give **${item}** a \`${rate} / 10\``,
             COMMAND_SAY_DESCRIPTION: 'Make the bot say something for you!',
             COMMAND_SAY_EXTENDED: '**Note** This command requires me and you to have the \`MANAGE_MESSAGES\` permission',
-
             COMMAND_SLAP_DESCRIPTION: 'Slap someone',
-            COMMAND_SLAP_EXTENDED: '',
-
+            COMMAND_SLAP_TITLE: (user1, user2) => `_**${user1}** slaps **${user2}**._`,
             COMMAND_VAPORWAVE_DESCRIPTION: 'Vaporize your text',
             COMMAND_VAPORWAVE_EXTENDED: 'ｈｏｗ ｉｓ ｔｈｉｓ ｌｏｏｋｉｎｇ',
-
-            COMMAND_YOUTUBE_DESCRIPTION: 'Searches youtube for a channel, comment or video',
-            COMMAND_YOUTUBE_EXTENDED: 'Fetches details of a particular youtube channel, command or video',
-
             COMMAND_ZALGO_DESCRIPTION: 'zalgoify your text',
             COMMAND_ZALGO_EXTENDED: '',
 
+
+            GAME_DIFFICULTY: '**Select Difficulty:**\n**[1]** - `Easy`\n**[2]** - `Medium`\n**[3]** - `Impossible`',
+            GAME_INVALID_DIFFICULTY: '❌ Invalid Difficulty Level',
+            TIME_UP: ':x: **Sorry, time is up!**',
+            CHANNEl_MULTIPLE_GAME: ':x: **Only one game may be occuring per channel**',
+            CHALLENGE_REJECTED: 'Challenge was rejected',
+
             COMMAND_AKINATOR_DESCRIPTION: '',
             COMMAND_AKINATOR_EXTENDED: '',
-
+            COMMAND_AKINATOR_NO_GUESS: 'I don\'t have any guesses. Bravo.',
             COMMAND_CONNECT4_DESCRIPTION: 'Play a game of connect4 with me or someone else',
             COMMAND_CONNECT4_EXTENDED: [
                 `**Connect Four** *(also known as Four Up, Plot Four, Find Four, Four in a Row, Drop Four and Gravitrips)*\
@@ -224,7 +201,6 @@ export default class extends Language {
 
             COMMAND_RPS_DESCRIPTION: 'Play Rock Paper Scissors!',
             COMMAND_RPS_EXTENDED: '',
-
             COMMAND_SLOTS_DESCRIPTION: '',
             COMMAND_SLOTS_EXTENDED: '',
 
@@ -232,34 +208,56 @@ export default class extends Language {
             COMMAND_TICTACTOE_EXTENDED: `Tic-tac-toe, noughts and crosses, or Xs and Os is a paper-and-pencil game for two players, X and O, who take turns marking the spaces in a 3×3 grid.
             The player who succeeds in placing three of their marks in a horizontal, vertical, or diagonal row is the winner.`,
 
-            COMMAND_STATS_DESCRIPTION: 'Shows some statistics regarding the bot',
-            COMMAND_STATS_EXTENDED: '',
+            COMMAND_HELP_USAGE: usage => `📜 | **Command Usage**\n\`${usage}\``,
+            COMMAND_HELP_EXTENDED: `🔎 | **Extended Help**`,
+            COMMAND_STATS_DESCRIPTION: 'Shows some statistics related to the bot',
+            COMMAND_STATS_GENERAL: (version, guilds, channels, users, shard, uptime, ping, uses) => [
+                `• Version      :: ${version}`,
+                `• Guilds       :: ${guilds}`,
+                `• Channels     :: ${channels}`,
+                `• Users        :: ${users}`,
+                `• Shard        :: ${shard}`,
+                `• Uptime       :: ${uptime}`,
+                `• Ping         :: ${ping} ms`,
+                `• Command Uses :: ${uses}`
+            ].join('\n'),
+            COMMAND_STATS_SYSTEM: (os, cpu, usage, nodeVersion, discordVersion) => [
+                `• Operating System  :: ${os} `,
+                `• Processor         :: ${cpu}`,
+                `• Memory Usage      :: ${usage} MB`,
+                `• Node Version      :: ${nodeVersion}`,
+                `• DiscordJS Version :: ${discordVersion}`
+            ].join('\n'),
 
             COMMAND_HITLER_DESCRIPTION: 'Generates a hitler meme',
-            COMMAND_HITLER_EXTENDED: '',
-
             COMMAND_TWEET_DESCRIPTION: 'Generates a tweet image',
-            COMMAND_TWEET_EXTENDED: '',
+            COMMAND_WANTED_DESCRIPTION: 'Generates a wanted image',
+            COMMAND_YTCOMMENT_DESCRIPTION: 'Generates a youtube comment image',
 
-            COMMAND_WANTED_DESCRIPTION: '',
-            COMMAND_WANTED_EXTENDED: '',
-
-            COMMAND_YTCOMMENT_DESCRIPTION: '',
-            COMMAND_YTCOMMENT_EXTENDED: '',
+            MODERATION_SELF: action => `:x: You cannot ${action} yourself!`,
+            MODERATION_ME: action => `:x: I cannot ${action} myself.. xD`,
+            MODERATION_NO_ACTION_USER: action => `:x: You cannot ${action} this user! Your role hierarchy must be higher in order to ${action}`,
+            MODERATION_NO_ACTION_ME: action => `:x: I cannot ban this user! My role hierarchy must be higher in order to ${action}`,
+            MODERATION_USER_DM: (action, guild, reason) => `You were ${action} from **${guild}** for reason:\n**${reason}**`,
 
             COMMAND_BAN_DESCRIPTION: 'Ban a user/member from your guild',
             COMMAND_BAN_EXTENDED: `This command requires me to have the \`BAN_MEMBERS\` permission.
             Only members with a lower role hierarchy than you and me can be banned.`,
-
+            COMMAND_BAN_INVALID_TEMP: 'Invalid ban duration, minimum is 0s and maximum is 30 days',
+            COMMAND_BAN_INVALID_SOFT: 'Invalid days of messages to be deleted. 1-7 only',
             COMMAND_CASE_DESCRIPTION: 'View details of a moderation log case',
             COMMAND_CASE_EXTENDED: `Shows you information of a certain activity that has taken place in your server (ban, kick, mute, ...) using the case id`,
-
             COMMAND_KICK_DESCRIPTION: 'Kick a member from your guild',
             COMMAND_KICK_EXTENDED: `This command requires me to have the \`KICK_MEMBERS\` permission.
             Only members with a lower role hierarchy than you and me can be kicked.`,
 
             COMMAND_LOCKDOWN_DESCRIPTION: 'Locks or unlocks a text channel',
             COMMAND_LOCKDOWN_EXTENDED: '',
+            COMMAND_LOCKDOWN_NO_PERMS: 'I do not have the permissions to lock this channel',
+            COMMAND_LOCKDOWN_INVALID_DURATION: 'Duration should be less than 24 hours',
+            COMMAND_LOCKDOWN_LOCK: (duration, user) => `🔒 This channel has been locked ${duration ? `for ${Util.msToDuration(duration)} ` : ''}by ${user}`,
+            COMMAND_LOCKDOWN_UNLOCK: channel => `🔓 Lockdown for ${channel} has been lifted`,
+            COMMAND_LOCKDOWN_SUCCESS: channel => `${channel} has been locked`,
 
             COMMAND_MODLOG_DESCRIPTION: 'View all moderation logs for this server or a user',
             COMMAND_MODLOG_EXTENDED: '',
@@ -269,6 +267,8 @@ export default class extends Language {
 
             COMMAND_PURGE_DESCRIPTION: '',
             COMMAND_PURGE_EXTENDED: '',
+            COMMAND_PURGE_NO_MESSAGES: ':x: Could not find any messages to delete! This could be because the messages are over 14 days old',
+            COMMAND_PURGE_SUCCESS: size => `**:wastebasket: Deleted ${size} messages!**`,
 
             COMMAND_REASON_DESCRIPTION: 'View or edit the reason of a moderation log case',
             COMMAND_REASON_EXTENDED: '',
@@ -294,87 +294,85 @@ export default class extends Language {
             COMMAND_WARN_DESCRIPTION: '',
             COMMAND_WARN_EXTENDED: '',
 
+            COMMAND_CLEAR_DESCRIPTION: 'Clears the guild queue',
+            COMMAND_CLEAR_EXTENDED: 'Removes all tracks from the queue, loaded in the queue. The current track will not be removed',
+            COMMAND_CLEAR_SUCCESS: `✅ **Succesfully cleared the queue**`,
+            COMMAND_MOVE_DESCRIPTION: 'Move tracks from one position to another!',
+            COMMAND_MOVE_EXTENDED: 'Moves a selected track to another position using its current position numbers',
+            COMMAND_MOVE_SUCCESS: (from, to) => `✅ **Moved the track from \`${from}\` to \`${to}\``,
+            COMMAND_QUEUE_DESCRIPTION: 'Display the guild queue in a neat embed',
+            COMMAND_QUEUE_EXTENDED: 'Shows a paginated embed of all tracks loaded in the queue along with their details',
+            COMMAND_QUEUE_LINE: (position, duration, title, url, requester) => `**[${position}]** │ ${duration} │ [${title}](${url}) │ Requester: **${requester}**`,
+            COMMAND_REMOVE_DESCRIPTION: 'Removes a track from the queue',
+            COMMAND_REMOVE_SUCCESS: title => `✅ **Removed** \`${title}\``,
+            COMMAND_REMOVEDUPES_DESCRIPTION: 'Removes all duplicate entries from the queue',
+            COMMAND_REMOVEDUPES_SUCCESS: diff => `✅ **Removed \`${diff}\` duplicate tracks from the queue**`,
+            COMMAND_SHUFFLE_DESCRIPTION: 'Shuffles the queue',
+            COMMAND_SHUFFLE_EXTENDED: 'Rearranges the queue so that it is in a random order',
+            COMMAND_SHUFFLE_SUCCESS: `🔀 **Shuffled the queue!**`,
             COMMAND_BASSBOOST_DESCRIPTION: '',
             COMMAND_BASSBOOST_EXTENDED: '',
-
+            COMMAND_BASSBOOST_SUCCESS: toggle => `✅ **Bass Boost has been turned \`${toggle ? 'on' : 'off'}\`**`,
             COMMAND_JOIN_DESCRIPTION: 'Joins your voice channel',
-            COMMAND_JOIN_EXTENDED: '',
-
             COMMAND_LEAVE_DESCRIPTION: 'Leaves the current voice channel',
-            COMMAND_LEAVE_EXTENDED: '',
-
+            COMMAND_LEAVE_SUCCESS: `✅ **Left the voice channel**`,
             COMMAND_LOOP_DESCRIPTION: 'Toggles looping for the queue',
             COMMAND_LOOP_EXTENDED: '',
-
+            COMMAND_LOOP_SUCCESS: toggle => `**Queue loop has been turned \`${toggle ? 'on' : 'off'}\`**`,
             COMMAND_LYRICS_DESCRIPTION: 'Check out the lyrics of a song',
             COMMAND_LYRICS_EXTENDED: `Searches lyrics for the specified song using the **Genius** API`,
-
             COMMAND_NOWPLAYING_DESCRIPTION: 'View information about the current track',
-            COMMAND_NOWPLAYING_EXTENDED: '',
-
             COMMAND_PAUSE_DESCRIPTION: 'Pauses the current track',
-            COMMAND_PAUSE_EXTENDED: '',
-
+            COMMAND_PAUSE_SUCCESS: `⏸️ **Paused current playing music**`,
             COMMAND_PLAY_DESCRIPTION: 'Plays a song with the given name or url',
             COMMAND_PLAY_EXTENDED: [
                 'If a url is not provided, the name will be searched in youtube and loaded.',
                 'You can also search in soundcloud using `--sc` flag',
                 'Playlists are also supported'
             ].join('\n'),
-
             COMMAND_RESUME_DESCRIPTION: 'Resumes the current track when paused',
-            COMMAND_RESUME_EXTENDED: '',
-
+            COMMAND_RESUME_SUCCESS: `🎵 **Resumed current playing music**`,
             COMMAND_SEARCH_DESCRIPTION: 'Searches for a list of songs to load',
             COMMAND_SEARCH_EXTENDED: [
                 'Searches youtube for a given name and displays it, from which you can select any track to load',
                 'You can also search in soundcloud using the `--sc` flag'
             ].join('\n'),
-
             COMMAND_SEEK_DESCRIPTION: 'Seeks to the specified position in the current track',
             COMMAND_SEEK_EXTENDED: '',
+            COMMAND_SEEK_SUCCESS: position => `⏩ Successfully changed the time to \`${position}\`!`,
             COMMAND_SKIP_DESCRIPTION: 'Skips the current track',
             COMMAND_SKIP_EXTENDED: 'Skipping is done on a voting system based on the number of members in the voice channel. DJ Members can force skip',
+            COMMAND_SKIP_SUCCESS: `✅ Your skip has been Acknowledged. **Skipping Now** ⏭️`,
+            COMMAND_SKIP_ACKNOWLEDGED: req => `✅ Your skip has been Acknowledged. You need **${req}** more votes to skip!`,
+            COMMAND_SKIP_DOUBLE: `❌ You already voted to skip!`,
             COMMAND_VOLUME_DESCRIPTION: 'View or set the volume for the guild',
-            COMMAND_VOLUME_EXTENDED: '',
-            COMMAND_CAT_DESCRIPTION: '',
-            COMMAND_CAT_EXTENDED: '',
-            COMMAND_DOG_DESCRIPTION: '',
-            COMMAND_DOG_EXTENDED: '',
+            COMMAND_VOLUME_VIEW: volume => `🔊 The volume for this guild is **${volume}**`,
+            COMMAND_VOLUME_SET: volume => `🔊 Set the volume to **${volume}**`,
 
+            COMMAND_CAT_DESCRIPTION: 'Shows a random cat image',
+            COMMAND_DOG_DESCRIPTION: 'Shows a random dog image',
             COMMAND_MOVIE_DESCRIPTION: 'Searches TheMovieDatabase for any movie',
             COMMAND_MOVIE_EXTENDED: `This command retrieves information of a movie from **TheMovieDatabase** API`,
-
             COMMAND_SHOWS_DESCRIPTION: 'Searches TheMovieDatabase for any show',
             COMMAND_SHOWS_EXTENDED: `This command retrieves information of a tv show from **TheMovieDatabase** API`,
-
             COMMAND_URBAN_DESCRIPTION: 'Check the definition of some word on UrbanDictionary.',
             COMMAND_URBAN_EXTENDED: 'This command can be used in **nsfw** channels only',
-
             COMMAND_WEATHER_DESCRIPTION: 'Check the weather details of any city',
-            COMMAND_WEATHER_EXTENDED: '',
-
+            COMMAND_WEATHER_EXTENDED: 'This command retrieves weather information using **Open Weather Map** API',
             COMMAND_WIKIPEDIA_DESCRIPTION: 'Searches wikipedia for your query',
-            COMMAND_WIKIPEDIA_EXTENDED: '',
+            COMMAND_WIKIPEDIA_EXTENDED: 'This command can be used in **nsfw** channels only',
+            COMMAND_YOUTUBE_DESCRIPTION: 'Searches youtube for a channel, comment or video',
+            COMMAND_YOUTUBE_EXTENDED: 'Fetches details of a particular youtube channel, command or video',
 
             COMMAND_AFK_DESCRIPTION: '',
             COMMAND_AFK_EXTENDED: '',
 
             COMMAND_AVATAR_DESCRIPTION: 'Shows the avatar of any discord user',
-            COMMAND_AVATAR_EXTENDED: '',
-
             COMMAND_CODE_DESCRIPTION: 'Evaluate code in any language!',
             COMMAND_CODE_EXTENDED: '',
-
-            COMMAND_DISCRIMINATOR_DESCRIPTION: '',
-            COMMAND_DISCRIMINATOR_EXTENDED: '',
-
             COMMAND_DOCS_DESCRIPTION: 'Searches discord.js documentation',
             COMMAND_DOCS_EXTENDED: '',
-
             COMMAND_EMOTES_DESCRIPTION: 'View all emotes available on this server',
-            COMMAND_EMOTES_EXTENDED: '',
-
             COMMAND_POLL_DESCRIPTION: '',
             COMMAND_POLL_EXTENDED: '',
 
@@ -382,51 +380,20 @@ export default class extends Language {
             COMMAND_REMINDER_EXTENDED: '',
 
             COMMAND_SERVER_DESCRIPTION: 'View some details of this server',
-            COMMAND_SERVER_EXTENDED: '',
 
             COMMAND_TAG_DESCRIPTION: 'Allows you to create, remove or show tags.',
             COMMAND_TAG_EXTENDED: '',
 
             COMMAND_TOPINVITES_DESCRIPTION: 'See the guilds top inviters',
             COMMAND_TOPINVITES_EXTENDED: '',
-
             COMMAND_USER_DESCRIPTION: 'Provides information of a specified user',
-            COMMAND_USER_EXTENDED: '',
-
-            COMMAND_CLEAR_DESCRIPTION: 'Clears the guild queue',
-            COMMAND_CLEAR_EXTENDED: 'Removes all tracks from the queue, loaded in the queue. The current track will not be removed',
-            COMMAND_MOVE_DESCRIPTION: 'Move tracks from one position to another!',
-            COMMAND_MOVE_EXTENDED: 'Moves a selected track to another position using its current position numbers',
-
-            COMMAND_QUEUE_DESCRIPTION: 'Display the guild queue in a neat embed',
-            COMMAND_QUEUE_EXTENDED: 'Shows a paginated embed of all tracks loaded in the queue along with their details',
-
-            COMMAND_REMOVE_DESCRIPTION: 'Removes a track from the queue',
-            COMMAND_REMOVE_EXTENDED: '',
-
-            COMMAND_REMOVEDUPES_DESCRIPTION: 'Removes all duplicate entries from the queue',
-            COMMAND_REMOVEDUPES_EXTENDED: '',
-
-            COMMAND_SHUFFLE_DESCRIPTION: 'Shuffles the queue',
-            COMMAND_SHUFFLE_EXTENDED: 'Rearranges the queue so that it is in a random order',
 
             MONITOR_AFK_REMOVE: user => `Welcome back ${user}! I have removed your AFK status`,
             MONITOR_AFK_USER: (user, since, reason) => `**${user}** is currently AFK for reason: \`${reason}\`, ${since} ago`,
 
             RESOLVER_INVALID_SONG: ':x: Please specify a song name or provide a valid url',
             RESOLVER_MAX_ENTRIES: ':x: You have already reached the maximum number of entries per user',
-            RESOLVER_SEARCH_FAILED: ':x: Could not get any search results!',
-            /**
-             * Errors
-             */
-
-            COMMAND_ERROR: 'Uh oh! An error has occured... Please try again later!',
-
-            TIME_UP: ':x: **Sorry, time is up!**',
-            CHANNEl_MULTIPLE_GAME: ':x: **Only one game may be occuring per channel**',
-            CHALLENGE_REJECTED: 'Challenge was rejected',
-            MODERATION_SELF: action => `:x: You cannot ${action} yourself!`,
-            MODERATION_ME: action => `:x: I cannot ${action} myself.. xD`
+            RESOLVER_SEARCH_FAILED: ':x: Could not get any search results!'
         };
 
         this.config = {

@@ -1,5 +1,4 @@
 import { CommandStore, KlasaMessage } from 'klasa';
-import replies from '../../lib/Data/ts/8ball';
 import SnakeCommand from '../../lib/structures/base/SnakeCommand';
 
 export default class extends SnakeCommand {
@@ -12,6 +11,7 @@ export default class extends SnakeCommand {
     }
 
     public async run(msg: KlasaMessage): Promise<KlasaMessage | KlasaMessage[]> {
+        const replies = msg.language.get('COMMAND_8BALL_RESPONSES');
         return msg.sendMessage(`🎱**${replies[Math.floor(Math.random() * replies.length)]}**🎱`);
     }
 

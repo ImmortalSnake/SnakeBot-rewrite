@@ -18,7 +18,7 @@ export default class extends SnakeCommand {
         return msg.sendEmbed(new MessageEmbed()
             .setColor('ORANGE')
             .setImage(gif)
-            .setTitle(`_**${msg.author!.username}** slaps **${user.username}**._`));
+            .setLocaleTitle('COMMAND_SLAP_TITLE', [msg.author.username, user.username]));
     }
 
 }

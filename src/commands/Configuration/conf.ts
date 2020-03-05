@@ -37,10 +37,9 @@ export default class extends SnakeCommand {
         const display = this.display(msg.guildSettings, msg, entry);
 
         if (entry.type === 'Folder') {
-            return msg.send(`**Guild Settings ${path ? `: ${path}` : ''}**`,
-                new SnakeEmbed(msg)
-                    .setDescription(`Use \`${prefix}conf ${path ? `${path}/` : ''}<entry>\` to view an entry\n\n${display}`)
-                    .init());
+            return msg.sendLocale('COMMAND_CONF_SHOW', [path], new SnakeEmbed(msg)
+                .setLocaleDescription('COMMAND_CONF_SHOW_DESCRIPTION', prefix, path, display)
+                .init());
         }
 
         return msg.send(new SnakeEmbed(msg)

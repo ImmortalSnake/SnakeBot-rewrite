@@ -112,6 +112,7 @@ export default class AudioPlayer {
         if (!this.player) throw 'No Audio player was initialised';
 
         track.requester = msg.author.tag;
+        this.channelID = msg.channel.id;
         if (!this.current) {
             this.current = track;
             return this.player.play(track.track);
@@ -120,20 +121,22 @@ export default class AudioPlayer {
         this.tracks.push(track);
     }
 
-    private onEnd(data: any) {
+    private async onEnd(data: any) {
         try {
             if (!this.player || data.reason === 'REPLACED') return;
             if (this.repeat) this.tracks.push(this.current!);
             if (this.tracks.length) {
+                const announce = this.guild.settings.get('music.announcesongs');
                 this.current = this.tracks.shift()!;
 
+                if (announce && this.channel) await this.channel.send(`**Now Playing:** \`${this.current.info.title}\``);
                 return this.player.play(this.current.track);
             }
 
             return this.leave();
         } catch (err) {
             this.client.emit('wtf', this.guild.id, this.player?.node, err);
-            if (this.channel) return this.channel.sendLocale('COMMAND_ERROR');
+            if (this.channel) return this.channel.sendLocale('COMMAND_ERROR').catch();
         }
     }
 
