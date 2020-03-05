@@ -8,7 +8,7 @@ export default class extends SnakeCommand {
     public constructor(store: CommandStore, file: string[], directory: string) {
         super(store, file, directory, {
             usage: '<user:member> [reason:...str]',
-            requiredPermissions: ['MANAGE_GUILD']
+            requiredPermissions: ['EMBED_LINKS']
         });
     }
 

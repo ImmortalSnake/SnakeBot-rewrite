@@ -7,6 +7,7 @@ export default class extends SnakeCommand {
         super(store, file, directory, {
             usage: '[prefix:...str]',
             permissionLevel: 6,
+            requiredPermissions: ['EMBED_LINKS'],
             examples: ['', '?']
         });
     }

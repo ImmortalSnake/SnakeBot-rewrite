@@ -1,9 +1,15 @@
-import { KlasaMessage, RichDisplay, util } from 'klasa';
+import { KlasaMessage, RichDisplay, util, CommandStore } from 'klasa';
 import SnakeCommand from '../../lib/structures/base/SnakeCommand';
 import SnakeEmbed from '../../lib/structures/SnakeEmbed';
 import { MessageEmbed } from 'discord.js';
 
 export default class extends SnakeCommand {
+
+    public constructor(store: CommandStore, file: string[], directory: string) {
+        super(store, file, directory, {
+            requiredPermissions: ['EMBED_LINKS', 'ADD_REACTIONS']
+        });
+    }
 
     public async run(msg: KlasaMessage): Promise<KlasaMessage | KlasaMessage[]> {
         const { emojis } = msg.guild!;

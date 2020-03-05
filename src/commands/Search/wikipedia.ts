@@ -9,7 +9,8 @@ export default class extends SnakeCommand {
         super(store, file, directory, {
             usage: '<text:...str{0,220}>',
             aliases: ['wiki'],
-            examples: ['snakes']
+            examples: ['snakes'],
+            requiredPermissions: ['EMBED_LINKS']
         });
     }
 

@@ -10,7 +10,8 @@ export default class extends SnakeCommand {
 
     public constructor(store: CommandStore, file: string[], directory: string) {
         super(store, file, directory, {
-            usage: '<xbox|psn|pc:default> <username:...string>'
+            usage: '<xbox|psn|pc:default> <username:...string>',
+            requiredPermissions: ['EMBED_LINKS', 'ADD_REACTIONS']
         });
     }
 

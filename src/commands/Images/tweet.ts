@@ -14,7 +14,8 @@ export default class extends SnakeCommand {
         super(store, file, directory, {
             cooldown: 10,
             usage: '<text:...str{1,200}>',
-            examples: ['This is a tweet!']
+            examples: ['This is a tweet!'],
+            requiredPermissions: ['ATTACH_FILES']
         });
     }
 

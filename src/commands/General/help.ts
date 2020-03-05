@@ -15,6 +15,7 @@ export default class extends SnakeCommand {
             guarded: true,
             description: language => language.get('COMMAND_HELP_DESCRIPTION'),
             usage: '(Command:command|Category:category|page:integer)',
+            requiredPermissions: ['EMBED_LINKS', 'ADD_REACTIONS'],
             examples: ['', 'ping', 'music', '2']
         });
 

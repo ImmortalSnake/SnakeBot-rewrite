@@ -8,6 +8,7 @@ export default class extends SnakeCommand {
     public constructor(store: CommandStore, file: string[], directory: string) {
         super(store, file, directory, {
             usage: '[user:user]',
+            requiredPermissions: ['EMBED_LINKS'],
             examples: ['@ImmortalSnake#0449', '']
         });
     }

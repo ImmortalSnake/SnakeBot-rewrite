@@ -7,7 +7,8 @@ export default class extends MusicCommand {
     public constructor(store: CommandStore, file: string[], directory: string) {
         super(store, file, directory, {
             aliases: ['connect'],
-            music: ['USER_VC']
+            music: ['USER_VC'],
+            requiredPermissions: ['CONNECT', 'SPEAK']
         });
     }
 

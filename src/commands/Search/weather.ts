@@ -9,7 +9,8 @@ export default class extends SnakeCommand {
         super(store, file, directory, {
             cooldown: 10,
             usage: '<city:...str>',
-            examples: ['london']
+            examples: ['london'],
+            requiredPermissions: ['EMBED_LINKS']
         });
     }
 
