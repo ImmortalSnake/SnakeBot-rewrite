@@ -28,15 +28,15 @@ export default class TagCommand extends SnakeCommand {
         });
     }
 
-    public async add(message: KlasaMessage, [tagName, content]: [string, string]) {
-        if (!await message.hasAtLeastPermissionLevel(4)) throw 'Sorry, you dont have the permission to add tags';
+    public async add(msg: KlasaMessage, [tagName, content]: [string, string]) {
+        if (!await msg.hasAtLeastPermissionLevel(4)) throw msg.language.get('COMMAND_TAG_ADD_NO_PERMS');
         if (!content) throw 'No content was provided';
 
-        const tags = message.guild!.settings.get('tags') as Tag[];
+        const tags = msg.guild!.settings.get('tags') as Tag[];
         if (tags.some(([name]) => name === tagName.toLowerCase())) throw `Tag **${tagName}** already exists, please remove it and add it again if you wish to update it`;
 
-        await message.guild!.settings.update('tags', [...tags, [tagName.toLowerCase(), content]], { arrayAction: 'overwrite' });
-        return message.send(`Added the tag \`${tagName}\` with content: \`\`\`${Util.escapeMarkdown(content)}\`\`\``);
+        await msg.guild!.settings.update('tags', [...tags, [tagName.toLowerCase(), content]], { arrayAction: 'overwrite' });
+        return msg.send(`Added the tag \`${tagName}\` with content: \`\`\`${Util.escapeMarkdown(content)}\`\`\``);
     }
 
     public async remove(message: KlasaMessage, [tagName]: [string]) {

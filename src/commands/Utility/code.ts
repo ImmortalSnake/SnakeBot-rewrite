@@ -15,10 +15,10 @@ export default class extends SnakeCommand {
 
     public async run(msg: KlasaMessage, [code]: [string]): Promise<KlasaMessage | KlasaMessage[]> {
         const resolved = Util.removeCodeBlock(code);
-        if (!resolved) throw 'Please enter the code using codeblocks';
+        if (!resolved) throw msg.language.get('COMMAND_CODE_NO_BLOCKS');
         const [lang, input] = resolved;
         const language = languages.find(l => l.name.includes(lang));
-        if (!language) throw `Sorry! this language (${lang}) is not supported!`;
+        if (!language) throw msg.language.get('COMMAND_CODE_LANGUAGE_NO_SUPPORT', lang);
 
         const result = await fetch(`https://pastebin.run/api/v0/run/${language.identifier}`, {
             body: new URLSearchParams({ code: input, compilerOptions: '', stdin: '' }),

@@ -16,7 +16,7 @@ export default class extends SnakeCommand {
     public async run(msg: KlasaMessage, [ID, reason]: [number, string]): Promise<KlasaMessage | KlasaMessage[]> {
         const cases = msg.guildSettings.get('modlogs') as ModLogData[];
         const log = cases.find(c => c.id === ID);
-        if (!log) throw 'Could not find a case with that ID';
+        if (!log) throw msg.language.get('COMMAND_CASE_INVALID', ID);
 
         await msg.guildSettings.update('modlogs', log, { arrayAction: 'remove' });
         log.reason = reason;

@@ -17,7 +17,7 @@ export default class extends SnakeCommand {
         const cases = msg.guildSettings.get('modlogs') as ModLogData[];
         const log = cases.find(c => c.id === ID);
 
-        if (!log) throw 'Could not find a case with that ID';
+        if (!log) throw msg.language.get('COMMAND_CASE_INVALID', ID);
         return msg.send(ModLog.renderRawEmbed(msg, log));
     }
 

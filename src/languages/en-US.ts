@@ -10,6 +10,7 @@ export default class extends Language {
         this.language = {
 
             COMMAND_ERROR: 'Uh oh! An error has occured... Please try again later!',
+            NO_SEARCH: 'Could not fetch any search results',
 
             COMMAND_JOIN_NO_MEMBER: `❌ I am sorry, but Discord did not tell me the information I need, so I do not know what voice channel are you connected to...`,
             COMMAND_JOIN_NO_VOICECHANNEL: `❌ You are not connected in a voice channel.`,
@@ -186,7 +187,9 @@ export default class extends Language {
             GAME_INVALID_DIFFICULTY: '❌ Invalid Difficulty Level',
             TIME_UP: ':x: **Sorry, time is up!**',
             CHANNEl_MULTIPLE_GAME: ':x: **Only one game may be occuring per channel**',
-            CHALLENGE_REJECTED: 'Challenge was rejected',
+            CHALLENGE_REJECTED: 'The challenge was rejected',
+            CHALLENGE_TIMEOUT: 'Challenge Request Timeout!',
+            NO_SELF_PLAY: 'You cant play against yourself!',
 
             COMMAND_AKINATOR_DESCRIPTION: '',
             COMMAND_AKINATOR_EXTENDED: '',
@@ -245,8 +248,11 @@ export default class extends Language {
             Only members with a lower role hierarchy than you and me can be banned.`,
             COMMAND_BAN_INVALID_TEMP: 'Invalid ban duration, minimum is 0s and maximum is 30 days',
             COMMAND_BAN_INVALID_SOFT: 'Invalid days of messages to be deleted. 1-7 only',
+
             COMMAND_CASE_DESCRIPTION: 'View details of a moderation log case',
             COMMAND_CASE_EXTENDED: `Shows you information of a certain activity that has taken place in your server (ban, kick, mute, ...) using the case id`,
+            COMMAND_CASE_INVALID: id => `Could not find a case with ID \`${id}\``,
+
             COMMAND_KICK_DESCRIPTION: 'Kick a member from your guild',
             COMMAND_KICK_EXTENDED: `This command requires me to have the \`KICK_MEMBERS\` permission.
             Only members with a lower role hierarchy than you and me can be kicked.`,
@@ -264,6 +270,8 @@ export default class extends Language {
 
             COMMAND_MUTE_DESCRIPTION: 'Mutes a guild member',
             COMMAND_MUTE_EXTENDED: '',
+            COMMAND_MUTE_NO_ROLE: prefix => `A mute role was not found for this guild. Use \`${prefix}conf set roles/mute @muterole\` to set a mute role`,
+            COMMAND_MUTE_INVALID_DURATION: 'Invalid mute duration: minimum is 1 minute and max is 30 days',
 
             COMMAND_PURGE_DESCRIPTION: '',
             COMMAND_PURGE_EXTENDED: '',
@@ -275,9 +283,13 @@ export default class extends Language {
 
             COMMAND_REPORT_DESCRIPTION: '',
             COMMAND_REPORT_EXTENDED: '',
+            COMMAND_REPORT_NO_CHANNEL: prefix => `Could not find a reports channel for this server. Use \`${prefix}conf set channels/report #reportchannel\` to set one up`,
 
             COMMAND_SLOWMODE_DESCRIPTION: '',
             COMMAND_SLOWMODE_EXTENDED: '',
+            COMMAND_SLOWMODE_MAX_TIME: ':x: Cannot set the cooldown to more than **6 hours**!',
+            COMMAND_SLOWMODE_OFF: 'Slowmode for this channel has been turned **off**',
+            COMMAND_SLOWMODE_SET: cooldown => `Slowmode for ${cooldown} has been set for this channel`,
 
             COMMAND_SOFTBAN_DESCRIPTION: 'Bans a member from your guild and immediately unbans them',
             COMMAND_SOFTBAN_EXTENDED: `This command requires me to have the \`BAN_MEMBERS\` permission.
@@ -290,9 +302,13 @@ export default class extends Language {
 
             COMMAND_UNMUTE_DESCRIPTION: '',
             COMMAND_UNMUTE_EXTENDED: '',
+            COMMAND_UNMUTE_NOT_MUTED: ':x: Sorry, but this member is not muted',
+            COMMAND_UNMUTE_SUCCESS: (member, reason) => `✅ Successfully unmuted ${member}${reason ? ` for reason **${reason}**` : '!'}`,
 
             COMMAND_WARN_DESCRIPTION: '',
             COMMAND_WARN_EXTENDED: '',
+            COMMAND_WARN_DM: (guild, reason) => `You were warned in **${guild}** for reason: \`${reason}\``,
+            COMMAND_WARN_SUCCESS: (member, reason) => `✅ ${member} was warned for reason: **${reason}**`,
 
             COMMAND_CLEAR_DESCRIPTION: 'Clears the guild queue',
             COMMAND_CLEAR_EXTENDED: 'Removes all tracks from the queue, loaded in the queue. The current track will not be removed',
@@ -361,15 +377,22 @@ export default class extends Language {
             COMMAND_WEATHER_EXTENDED: 'This command retrieves weather information using **Open Weather Map** API',
             COMMAND_WIKIPEDIA_DESCRIPTION: 'Searches wikipedia for your query',
             COMMAND_WIKIPEDIA_EXTENDED: 'This command can be used in **nsfw** channels only',
+            COMMAND_WIKIPEDIA_NO_SEARCH: 'Could not find this page in wikipedia. Try a lower page',
             COMMAND_YOUTUBE_DESCRIPTION: 'Searches youtube for a channel, comment or video',
             COMMAND_YOUTUBE_EXTENDED: 'Fetches details of a particular youtube channel, command or video',
+
+            COMMAND_ANNOUNCE_SUCCESS: 'Announcement was successfully sent!',
 
             COMMAND_AFK_DESCRIPTION: '',
             COMMAND_AFK_EXTENDED: '',
 
             COMMAND_AVATAR_DESCRIPTION: 'Shows the avatar of any discord user',
+
             COMMAND_CODE_DESCRIPTION: 'Evaluate code in any language!',
             COMMAND_CODE_EXTENDED: '',
+            COMMAND_CODE_NO_BLOCKS: 'Please enter the code using codeblocks',
+            COMMAND_CODE_LANGUAGE_NO_SUPPORT: lang => `Sorry! this language (${lang}) is not supported!`,
+
             COMMAND_DOCS_DESCRIPTION: 'Searches discord.js documentation',
             COMMAND_DOCS_EXTENDED: '',
             COMMAND_EMOTES_DESCRIPTION: 'View all emotes available on this server',
@@ -383,6 +406,7 @@ export default class extends Language {
 
             COMMAND_TAG_DESCRIPTION: 'Allows you to create, remove or show tags.',
             COMMAND_TAG_EXTENDED: '',
+            COMMAND_TAG_ADD_NO_PERMS: 'Sorry, you dont have the permission to add tags',
 
             COMMAND_TOPINVITES_DESCRIPTION: 'See the guilds top inviters',
             COMMAND_TOPINVITES_EXTENDED: '',

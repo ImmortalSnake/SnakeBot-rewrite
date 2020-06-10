@@ -25,8 +25,8 @@ export default class extends SnakeCommand {
             await msg.channel.send(`${opp.toString()}, Do you confirm to play? (y/n)`);
             const responses = await msg.channel.awaitMessages(m => m.author.id === opp.id, { time: 30000, max: 1 });
 
-            if (responses.size === 0) throw 'Challenge Request Timeout!';
-            if (responses.first()!.content.toLowerCase() === 'n') throw 'Challenge was rejected';
+            if (responses.size === 0) throw msg.language.get('CHALLENGE_TIMEOUT');
+            if (responses.first()!.content.toLowerCase() === 'n') throw msg.language.get('CHALLENGE_REJECTED');
         } else {
             const start = await msg.ask('Do you want to start first? (y/n)');
 

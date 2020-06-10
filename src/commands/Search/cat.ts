@@ -20,7 +20,7 @@ export default class extends SnakeCommand {
                 .attachFiles([new MessageAttachment(buf, 'cat.png')])
                 .setImage('attachment://cat.png')
                 .init()))
-            .catch(() => msg.send('Could not find an image, try again later'));
+            .catch(() => msg.sendLocale('NO_SEARCH'));
     }
 
 }

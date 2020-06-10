@@ -2,7 +2,6 @@ import SnakeCommand from '../../lib/structures/base/SnakeCommand';
 import { CommandStore, KlasaMessage } from 'klasa';
 import { TextChannel } from 'discord.js';
 import { Hour } from '../../lib/utils/constants';
-import Util from '../../lib/utils/Util';
 
 export default class extends SnakeCommand {
 

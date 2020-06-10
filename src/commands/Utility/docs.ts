@@ -20,7 +20,7 @@ export default class extends SnakeCommand {
         return fetch(`https://djsdocs.sorta.moe/v2/embed?src=${type}&q=${query}`)
             .then(res => res.json())
             .then(body => msg.send(body.error ? body : { embed: body }))
-            .catch(() => { throw 'Could not fetch any search results'; });
+            .catch(() => { throw msg.language.get('NO_SEARCH'); });
     }
 
 }

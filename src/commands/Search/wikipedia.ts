@@ -20,7 +20,7 @@ export default class extends SnakeCommand {
 
         const page = msg.flagArgs.page ? parseInt(msg.flagArgs.page, 10) || 1 : 1;
         const data = body.query.pages[page - 1];
-        if (!data) throw `Could not find this page in wikipedia. Try a lower page`;
+        if (!data) throw msg.language.get('COMMAND_WIKIPEDIA_NO_SEARCH');
         if (data.missing) throw `**${text}** was not found in Wikipedia.`;
 
         return msg.sendEmbed(new MessageEmbed()

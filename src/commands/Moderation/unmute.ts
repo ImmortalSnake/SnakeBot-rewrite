@@ -17,15 +17,15 @@ export default class extends SnakeCommand {
     public async run(msg: KlasaMessage, [member, reason]: [GuildMember, string?]): Promise<KlasaMessage | KlasaMessage[]> {
         const [muteRole] = await msg.guildSettings.resolve('roles.mute') as [Role];
 
-        if (!muteRole) throw `A mute role was not found for this guild`;
-        if (!member.roles.has(muteRole.id)) throw 'The member is not muted';
+        if (!muteRole) throw msg.language.get('COMMAND_MUTE_NO_ROLE', msg.guildSettings.get('prefix'));
+        if (!member.roles.has(muteRole.id)) throw msg.language.get('COMMAND_UNMUTE_NOT_MUTED');
 
         await member.roles.remove(muteRole.id);
         return new ModLog(msg, 'Unmute')
             .setUser(member.user)
             .setReason(reason)
             .save()
-            .then(() => msg.sendMessage(`${member.toString()} was unmuted${reason ? ` for reason **${reason}**` : ''}`));
+            .then(() => msg.sendLocale('COMMAND_UNMUTE_SUCCESS', [member.toString(), reason]));
     }
 
 }

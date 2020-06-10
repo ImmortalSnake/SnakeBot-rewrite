@@ -16,13 +16,13 @@ export default class extends SnakeCommand {
 
     public async run(msg: KlasaMessage, [member, reason]: [GuildMember, string?]): Promise<KlasaMessage | KlasaMessage[]> {
         if (member.roles.highest.position >= msg.member!.roles.highest.position) throw ':x: You cannot warn this user!';
-        await member.send(`You were warned in ${msg.guild!.name} for: ${reason}`).catch(() => null);
+        await member.send(msg.language.get('COMMAND_WARN_DM', msg.guild!.name, reason)).catch(() => null);
 
         return new ModLog(msg, 'Warn')
             .setUser(member.user)
             .setReason(reason)
             .save()
-            .then(() => msg.sendMessage(`${member.toString()} was warned!`));
+            .then(() => msg.sendLocale('COMMAND_WARN_SUCCESS', [member.toString(), reason || 'N/A']));
     }
 
 }

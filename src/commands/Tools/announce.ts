@@ -34,7 +34,7 @@ export default class extends SnakeCommand {
         await chan.send(content);
         if (!mention) await role.setMentionable(false, 'Announcement');
 
-        return msg.send('Announcement was successfully sent!');
+        return msg.sendLocale('COMMAND_ANNOUNCE_SUCCESS');
     }
 
 }

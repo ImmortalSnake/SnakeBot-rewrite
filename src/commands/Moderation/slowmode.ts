@@ -22,12 +22,12 @@ export default class extends SnakeCommand {
 
     public async run(msg: KlasaMessage, [cooldown]: ['off' | number]) {
         if (cooldown === 'off') cooldown = 0;
-        if (cooldown > 0.006 * Hour) throw ':x: Cannot set the cooldown to more than **6 hours**!';
+        if (cooldown > 0.006 * Hour) throw msg.language.get('COMMAND_SLOWMODE_MAX_TIME');
 
         await (msg.channel as TextChannel).setRateLimitPerUser(cooldown);
         return msg.send(cooldown === 0
-            ? 'Slowmode for this channel has been turned **off**'
-            : `Slowmode for ${Util.msToDuration(cooldown * 1000)} has been set for this channel`);
+            ? msg.language.get('COMMAND_SLOWMODE_OFF')
+            : msg.language.get('COMMAND_SLOWMODE_SET', Util.msToDuration(cooldown * 1000)));
 
     }
 

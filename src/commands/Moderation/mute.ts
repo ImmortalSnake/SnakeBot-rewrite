@@ -19,7 +19,7 @@ export default class extends SnakeCommand {
     public async run(msg: KlasaMessage, [member, reason]: [GuildMember, string?]): Promise<KlasaMessage | KlasaMessage[]> {
         const [muteRole] = await msg.guildSettings.resolve('roles.mute') as [Role];
 
-        if (!muteRole) throw `A mute role was not found for this guild`;
+        if (!muteRole) throw msg.language.get('COMMAND_MUTE_NO_ROLE', msg.guildSettings.get('prefix'));
         if (member.roles.highest.position >= msg.member!.roles.highest.position && !await msg.hasAtLeastPermissionLevel(7)) throw 'You cannot mute this user.';
         if (member.roles.has(muteRole.id)) throw 'The member is already muted.';
 
@@ -45,7 +45,7 @@ export default class extends SnakeCommand {
         const durationFlag = msg.flagArgs.duration || msg.flagArgs.time;
         const duration = durationFlag ? new Duration(durationFlag) : null;
 
-        if (duration && (duration.offset < 0 || duration.offset > 2592000000)) throw 'Invalid mute duration: minimum is 1 minute and max is 30 days';
+        if (duration && (duration.offset < 0 || duration.offset > 2592000000)) throw msg.language.get('COMMAND_MUTE_INVALID_DURATION');
 
         return { duration };
     }

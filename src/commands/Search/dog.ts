@@ -21,7 +21,7 @@ export default class extends SnakeCommand {
                         .setImage(data.message)
                         .init());
                 }
-                return msg.send('Sorry! could not find an image');
+                return msg.sendLocale('NO_SEARCH');
             });
     }
 
