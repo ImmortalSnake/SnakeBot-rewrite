@@ -14,14 +14,15 @@ export default class extends SnakeCommand {
 
     public async run(msg: KlasaMessage) {
         const usage = process.memoryUsage();
+        const guilds = this.client.guilds.cache;
         const embed = new MessageEmbed()
             .setAuthor(this.client.user?.tag, this.client.user?.displayAvatarURL())
             .addField('General Stats',
                 util.codeBlock('asciidoc', msg.language.get('COMMAND_STATS_GENERAL',
                     this.client.version,
-                    this.client.guilds.size,
-                    this.client.channels.size,
-                    this.client.guilds.reduce((a, b) => a + b.memberCount, 0),
+                    guilds.size,
+                    this.client.channels.cache.size,
+                    guilds.reduce((a, b) => a + b.memberCount, 0),
                     `${(msg.guild?.shardID ?? 0) + 1} / ${this.client.shard?.count || 1}`,
                     Duration.toNow(Date.now() - (process.uptime() * 1000)),
                     Math.round(this.client.ws.ping),

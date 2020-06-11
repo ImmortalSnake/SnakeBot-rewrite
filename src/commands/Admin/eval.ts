@@ -2,6 +2,7 @@ import { CommandStore, KlasaMessage, util, Stopwatch, Type } from 'klasa';
 import { inspect } from 'util';
 import Util from '../../lib/utils/Util';
 import SnakeCommand from '../../lib/structures/base/SnakeCommand';
+import { TextChannel } from 'discord.js';
 
 interface IEvalResult {
     success: boolean;
@@ -49,7 +50,7 @@ export default class extends SnakeCommand {
         const { success, result, time, type } = await this.timedEval(msg, code, flagTime);
 
         if (msg.flagArgs.silent) {
-            if (!success && result) this.client.emit('error', result);
+            if (!success && result) this.client.emit('error', result as Error);
             return null;
         }
 
@@ -62,7 +63,7 @@ export default class extends SnakeCommand {
     public async handleMessage(msg: KlasaMessage, options: IHandleMessageData, { success, result, time, footer, language }: IHandleMessageOptions): Promise<KlasaMessage | KlasaMessage[] | null> {
         switch (options.sendAs) {
             case 'file': {
-                if (msg.channel.attachable) return msg.channel.sendFile(Buffer.from(result), 'output.txt', msg.language.get('COMMAND_EVAL_SENDFILE', time, footer));
+                if ((msg.channel as TextChannel).attachable) return (msg.channel as TextChannel).sendFile(Buffer.from(result), 'output.txt', msg.language.get('COMMAND_EVAL_SENDFILE', time, footer));
                 await this.getTypeOutput(msg, options);
                 return this.handleMessage(msg, options, { success, result, time, footer, language });
             }
@@ -78,7 +79,7 @@ export default class extends SnakeCommand {
             }
             case 'console':
             case 'log': {
-                this.client.emit('log', result);
+                console.log(result);
                 return msg.sendMessage(msg.language.get('COMMAND_EVAL_SENDCONSOLE', time, footer));
             }
             case 'none':
@@ -96,7 +97,7 @@ export default class extends SnakeCommand {
 
     public async getTypeOutput(msg: KlasaMessage, options: IHandleMessageData): Promise<void> {
         const _options = ['log'];
-        if (msg.channel.attachable) _options.push('file');
+        if ((msg.channel as TextChannel).attachable) _options.push('file');
         if (!options.hastebinUnavailable) _options.push('hastebin');
         const _choice = await msg.prompt(`Choose one of the following options: ${_options.join(', ')}`).catch(() => ({ content: 'none' }));
 

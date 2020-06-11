@@ -14,9 +14,9 @@ export default class extends SnakeCommand {
     public async run(msg: KlasaMessage): Promise<KlasaMessage | KlasaMessage[]> {
         const { emojis } = msg.guild!;
         const display = new RichDisplay(new SnakeEmbed(msg).init()
-            .setAuthor(`${emojis.size} emojis in ${msg.guild!.name}`, msg.guild!.iconURL()!));
+            .setAuthor(`${emojis.cache.size} emojis in ${msg.guild!.name}`, msg.guild!.iconURL()!));
 
-        for (const lst of util.chunk(emojis.array(), 50)) {
+        for (const lst of util.chunk(emojis.cache.array(), 50)) {
             display.addPage((template: MessageEmbed) => template.setDescription(lst.join(' ')));
         }
 

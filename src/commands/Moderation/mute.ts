@@ -17,11 +17,11 @@ export default class extends SnakeCommand {
     }
 
     public async run(msg: KlasaMessage, [member, reason]: [GuildMember, string?]): Promise<KlasaMessage | KlasaMessage[]> {
-        const [muteRole] = await msg.guildSettings.resolve('roles.mute') as [Role];
+        const [muteRole] = await msg.guildSettings.get('roles.mute') as [Role];
 
         if (!muteRole) throw msg.language.get('COMMAND_MUTE_NO_ROLE', msg.guildSettings.get('prefix'));
         if (member.roles.highest.position >= msg.member!.roles.highest.position && !await msg.hasAtLeastPermissionLevel(7)) throw 'You cannot mute this user.';
-        if (member.roles.has(muteRole.id)) throw 'The member is already muted.';
+        if (member.roles.cache.has(muteRole.id)) throw 'The member is already muted.';
 
         const { duration } = this.parseDuration(msg);
         await member.roles.add(muteRole.id, reason);

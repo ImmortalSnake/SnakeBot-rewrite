@@ -35,7 +35,7 @@ export default class TagCommand extends SnakeCommand {
         const tags = msg.guild!.settings.get('tags') as Tag[];
         if (tags.some(([name]) => name === tagName.toLowerCase())) throw `Tag **${tagName}** already exists, please remove it and add it again if you wish to update it`;
 
-        await msg.guild!.settings.update('tags', [...tags, [tagName.toLowerCase(), content]], { arrayAction: 'overwrite' });
+        await msg.guild!.settings.update('tags', [...tags, [tagName.toLowerCase(), content]], { action: 'overwrite' });
         return msg.send(`Added the tag \`${tagName}\` with content: \`\`\`${Util.escapeMarkdown(content)}\`\`\``);
     }
 
@@ -46,7 +46,7 @@ export default class TagCommand extends SnakeCommand {
         const tag = tags.find(([name]) => name === tagName.toLowerCase());
         if (!tag) throw `${tagName} does not exist`;
 
-        await message.guild!.settings.update('tags', [tag], { arrayAction: 'remove' });
+        await message.guild!.settings.update('tags', [tag], { action: 'remove' });
         return message.send(`Removed the tag \`${tagName}\``);
     }
 

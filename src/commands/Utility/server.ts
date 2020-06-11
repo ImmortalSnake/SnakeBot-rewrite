@@ -2,7 +2,7 @@ import { CommandStore, KlasaMessage, Timestamp, KlasaGuild } from 'klasa';
 import SnakeCommand from '../../lib/structures/base/SnakeCommand';
 import SnakeEmbed from '../../lib/structures/SnakeEmbed';
 
-const verification = ['None', 'Low', 'Medium', '(╯°□°）╯︵ ┻━┻', '┻━┻ ﾐヽ(ಠ益ಠ)ノ彡┻━┻'];
+// const verification = ['None', 'Low', 'Medium', '(╯°□°）╯︵ ┻━┻', '┻━┻ ﾐヽ(ಠ益ಠ)ノ彡┻━┻'];
 const regions: Record<string, string> = {
     'brazil': ' :flag_br:',
     'europe': ':flag_eu:',
@@ -39,20 +39,20 @@ export default class extends SnakeCommand {
             **❯ Server ID**     : \`${msg.guild!.id}\`
             **❯ Server Owner**  : ${msg.guild!.owner}
             **❯ Server Region** : ${msg.guild!.region} ${regions[msg.guild!.region] || ''}
-            **❯ Verification**  : **${verification[msg.guild!.verificationLevel]}**
+            **❯ Verification**  : **${msg.guild!.verificationLevel}**
             **❯ Created At**    : ${this.timestamp.display(msg.guild!.createdAt)}
             `)
             .addField('Statistics', `
             **❯ Member Count**  : **${total}** Total | **${total - bots}** Users | **${bots}** Bots 
-            **❯ Channels**      : **${msg.guild!.channels.size}** Total | **${channels.text}** Text | **${channels.voice}** Voice | **${channels.categories}** Categories
-            **❯ Emojis**        : **${msg.guild!.emojis.size}** Total
-            **❯ Roles**         : **${msg.guild!.roles.size}** Total`)
+            **❯ Channels**      : **${msg.guild!.channels.cache.size}** Total | **${channels.text}** Text | **${channels.voice}** Voice | **${channels.categories}** Categories
+            **❯ Emojis**        : **${msg.guild!.emojis.cache.size}** Total
+            **❯ Roles**         : **${msg.guild!.roles.cache.size}** Total`)
             .init());
     }
 
     private stats(guild: KlasaGuild) {
         const channels = { voice: 0, text: 0, categories: 0 };
-        for (const chan of guild.channels.values()) {
+        for (const chan of guild.channels.cache.values()) {
             if (chan.type === 'voice') channels.voice++;
             else if (chan.type === 'text') channels.text++;
             else channels.categories++;
@@ -60,7 +60,7 @@ export default class extends SnakeCommand {
 
         return {
             total: guild.memberCount,
-            bots: guild.members.filter(m => m.user.bot).size,
+            bots: guild.members.cache.filter(m => m.user.bot).size,
             channels
         };
     }

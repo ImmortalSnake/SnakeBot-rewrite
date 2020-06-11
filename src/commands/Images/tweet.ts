@@ -6,6 +6,7 @@ import { readFile } from 'fs-nextra';
 import { join } from 'path';
 import { assetFolder } from '../../lib/utils/constants';
 import Util from '../../lib/utils/Util';
+import { TextChannel } from 'discord.js';
 
 export default class extends SnakeCommand {
 
@@ -20,7 +21,7 @@ export default class extends SnakeCommand {
     }
 
     public async run(msg: KlasaMessage, [text]: [string]): Promise<KlasaMessage | KlasaMessage[]> {
-        return msg.channel.sendFile(await this.generate(msg.author, text), 'tweet.png');
+        return (msg.channel as TextChannel).sendFile(await this.generate(msg.author, text), 'tweet.png');
     }
 
     public async generate(user: KlasaUser, text: string) {

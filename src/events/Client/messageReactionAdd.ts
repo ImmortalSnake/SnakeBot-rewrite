@@ -13,18 +13,19 @@ export default class extends Event {
     }
 
     public async run(data: WSMessageReactionAdd) {
-        const channel = this.client.channels.get(data.channel_id) as TextChannel;
+        // return null;
+        const channel = this.client.channels.cache.get(data.channel_id) as TextChannel;
         if (!channel || channel.type !== 'text' || !channel.readable) return null;
 
         const message = await channel.messages.fetch(data.message_id);
 
-        const [starboard] = await message.guildSettings.resolve('starboard') as StarboardSettings[];
-        const { count } = message.reactions.get(data.emoji.name)!;
+        const starboard = await message.guildSettings.get('starboard') as StarboardSettings;
+        const { count } = message.reactions.cache.get(data.emoji.name)!;
 
         if (data.emoji.name !== starboard.emoji
             || count! < starboard.required
-            || !starboard.channel?.postable || !starboard.channel.embedable
-            || (channel.nsfw && !starboard.channel.nsfw)) return null;
+            || !starboard.channel?.postable || !starboard.channel?.embedable
+            || (channel.nsfw && !starboard.channel?.nsfw)) return null;
 
         const text = `${starboard.emoji} **${count}** in ${channel.toString()} | ${message.id}`;
         const embed = new MessageEmbed()
@@ -37,7 +38,7 @@ export default class extends Event {
         const msg = await this.fetchMessage(message.id, starboard);
         if (msg) return msg.edit(text, embed);
         return starboard.channel.send(text, embed)
-            .then(m => message.guildSettings.update('starboard.messages', `${message.id}-${m.id}`, { arrayAction: 'add' }));
+            .then(m => message.guildSettings.update('starboard.messages', `${message.id}-${m.id}`, { action: 'add' }));
     }
 
     private async fetchMessage(id: string, starboard: StarboardSettings) {

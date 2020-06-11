@@ -1,4 +1,4 @@
-import { util, CommandStore, KlasaMessage, SettingsFolderUpdateResult, SchemaEntry, SchemaFolder, Schema, Settings, SettingsValue } from 'klasa';
+import { util, CommandStore, KlasaMessage, SettingsUpdateResult, SchemaFolder, SchemaPiece, Schema, Settings } from 'klasa';
 import SnakeCommand from '../../lib/structures/base/SnakeCommand';
 import SnakeEmbed from '../../lib/structures/SnakeEmbed';
 
@@ -32,8 +32,8 @@ export default class extends SnakeCommand {
         const entry = this.getPath(key);
         const prefix = msg.guildSettings.get('prefix');
 
-        if (!entry || (entry.type === 'Folder' ? !(entry as SchemaFolder).configurableKeys.length : !(entry as SchemaEntry).configurable)) return msg.sendLocale('COMMAND_CONF_GET_NOEXT', [key]);
-        const path = entry.path.split('.').map(x => util.toTitleCase(x)).join('/');
+        if (!entry || (entry.type === 'Folder' ? !(entry as SchemaFolder).configurableKeys.length : !(entry as SchemaPiece).configurable)) return msg.sendLocale('COMMAND_CONF_GET_NOEXT', [key]);
+        const path = entry.path.split('.').map((x: any) => util.toTitleCase(x)).join('/');
         const display = this.display(msg.guildSettings, msg, entry);
 
         if (entry.type === 'Folder') {
@@ -51,41 +51,41 @@ export default class extends SnakeCommand {
     }
 
     public async set(msg: KlasaMessage, [key, valueToSet]: [string, string]): Promise<KlasaMessage | KlasaMessage[]> {
-        const entry = this.check(msg, key, await msg.guildSettings.update(key, valueToSet, { onlyConfigurable: true, arrayAction: 'add' }));
-        return msg.sendLocale('COMMAND_CONF_UPDATED', [key, msg.guild!.settings.display(msg, entry)]);
+        const entry = this.check(msg, key, await msg.guildSettings.update(key, valueToSet, { avoidUnconfigurable: true, action: 'add' }));
+        return msg.sendLocale('COMMAND_CONF_UPDATED', [key, entry]);
     }
 
     public async remove(msg: KlasaMessage, [key, valueToRemove]: [string, string]): Promise<KlasaMessage | KlasaMessage[]> {
-        const entry = this.check(msg, key, await msg.guildSettings.update(key, valueToRemove, { onlyConfigurable: true, arrayAction: 'remove' }));
-        return msg.sendLocale('COMMAND_CONF_UPDATED', [key, msg.guild!.settings.display(msg, entry)]);
+        const entry = this.check(msg, key, await msg.guildSettings.update(key, valueToRemove, { avoidUnconfigurable: true, action: 'remove' }));
+        return msg.sendLocale('COMMAND_CONF_UPDATED', [key, entry]);
     }
 
     public async reset(msg: KlasaMessage, [key]: [string]): Promise<KlasaMessage | KlasaMessage[]> {
         const entry = this.check(msg, key, await msg.guildSettings.reset(key));
-        return msg.sendLocale('COMMAND_CONF_RESET', [key, msg.guild!.settings.display(msg, entry)]);
+        return msg.sendLocale('COMMAND_CONF_RESET', [key, entry]);
     }
 
-    private check(msg: KlasaMessage, key: string, { errors, updated }: SettingsFolderUpdateResult): SchemaEntry {
+    private check(msg: KlasaMessage, key: string, { errors, updated }: SettingsUpdateResult) {
         if (errors.length) throw String(errors[0]);
         if (!updated.length) throw msg.language.get('COMMAND_CONF_NOCHANGE', key);
-        return updated[0].entry;
+        return updated[0].data;
     }
 
-    private getPath(key?: string): SchemaFolder | Schema | SchemaEntry | undefined {
-        const { schema } = this.client.gateways.get('guilds')!;
+    private getPath(key?: string): SchemaFolder | Schema | SchemaPiece | null {
+        const { schema } = this.client.gateways.guilds;
         if (!key) return schema;
         try {
-            return key.split('.').reduce((folder, key) => [...folder.values()].find(p => p.key.toLowerCase() === key) as SchemaFolder, schema);
+            return key.split('.').reduce((folder, key) => [...folder!.values()].find(p => p.key.toLowerCase() === key) as SchemaFolder, schema);
         } catch (__) {
-            return undefined;
+            return null;
         }
     }
 
-    private display(settings: Settings, msg: KlasaMessage, entry: SchemaFolder | Schema | SchemaEntry): string {
-        if (entry instanceof SchemaEntry) {
+    private display(settings: Settings, msg: KlasaMessage, entry: SchemaFolder | Schema | SchemaPiece): string {
+        if (entry instanceof SchemaPiece) {
             const value = settings.get(entry.path);
             if (value === null) return 'Not set';
-            if (entry.array) return (value as SettingsValue[]).length ? `[${(value as SettingsValue[]).map(x => entry.serializer.stringify(x, msg)).join(' | ')}]` : 'Not set';
+            if (entry.array) return (value as any[]).length ? `[${(value as any[]).map(x => entry.serializer.stringify(x, msg)).join(' | ')}]` : 'Not set';
             return entry.serializer.stringify(value, msg);
         }
 

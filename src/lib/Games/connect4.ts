@@ -39,13 +39,13 @@ export default class Connect4 {
         this.player1 = {
             id: players[0],
             val: this.p1,
-            name: this.client.users.get(players[0])!.username
+            name: this.client.users.cache.get(players[0])!.username
         };
 
         this.player2 = {
             id: players[1],
             val: this.p2,
-            name: this.client.users.get(players[1])!.username
+            name: this.client.users.cache.get(players[1])!.username
         };
 
         this.message = message;

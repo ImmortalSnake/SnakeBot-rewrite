@@ -33,7 +33,7 @@ export default class AudioPlayer {
     }
 
     public get channel() {
-        return this.channelID && this.guild.channels.get(this.channelID) as TextChannel;
+        return this.channelID && this.guild.channels.cache.get(this.channelID) as TextChannel;
     }
 
     public get totalTime() {
@@ -135,7 +135,7 @@ export default class AudioPlayer {
 
             return this.leave();
         } catch (err) {
-            this.client.emit('wtf', this.guild.id, this.player?.node, err);
+            this.client.emit('error', Error(`${this.guild.id} ${this.player?.node} ${err}`));
             if (this.channel) return this.channel.sendLocale('COMMAND_ERROR').catch();
         }
     }

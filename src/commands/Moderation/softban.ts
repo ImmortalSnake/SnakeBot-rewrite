@@ -16,7 +16,7 @@ export default class extends SnakeCommand {
     }
 
     public async run(msg: KlasaMessage, [user, days = 0, reason]: [User, number, string?]): Promise<KlasaMessage | KlasaMessage[]> {
-        const member = msg.guild!.members.get(user.id);
+        const member = msg.guild!.members.cache.get(user.id);
         if (member) {
             if (member.permissions.has('MANAGE_GUILD')) throw 'You cannot ban this user';
             else if (!member.bannable) throw 'Could not ban this user';

@@ -5,6 +5,8 @@ import { MessageEmbed } from 'discord.js';
 export default class extends Event {
 
     public async run(message: KlasaMessage, command: Command, params: string[], error: Error) {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+        // @ts-ignore
         if (error instanceof Error) this.client.emit('wtf', `[COMMAND] ${command.path}\n${error.stack || error}`);
         if (error.message) {
             await (this.client as SnakeBot).webhook.send(new MessageEmbed()
@@ -21,9 +23,13 @@ export default class extends Event {
                 .setFooter(this.client.user!.tag, this.client.user!.displayAvatarURL())
                 .setTimestamp());
 
+            // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+            // @ts-ignore
             return message.sendLocale('COMMAND_ERROR').catch(e => this.client.emit('wtf', e));
         }
 
+        // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+        // @ts-ignore
         return message.send(error).catch(e => this.client.emit('wtf', e));
     }
 

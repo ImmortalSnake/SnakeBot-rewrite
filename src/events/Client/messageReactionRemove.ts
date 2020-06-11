@@ -13,13 +13,13 @@ export default class extends Event {
     }
 
     public async run(data: WSMessageReactionAdd) {
-        const channel = this.client.channels.get(data.channel_id) as TextChannel;
+        const channel = this.client.channels.cache.get(data.channel_id) as TextChannel;
         if (!channel || channel.type !== 'text' || !channel.readable) return null;
 
         const message = await channel.messages.fetch(data.message_id);
 
-        const [starboard] = await message.guildSettings.resolve('starboard') as StarboardSettings[];
-        const count = message.reactions.get(data.emoji.name)?.count;
+        const starboard = await message.guildSettings.get('starboard') as StarboardSettings;
+        const count = message.reactions.cache.get(data.emoji.name)?.count;
 
         if (data.emoji.name !== starboard.emoji
             || !starboard.channel?.postable || !starboard.channel.embedable
@@ -37,7 +37,7 @@ export default class extends Event {
         if (msg) {
             if (!count || count < starboard.required) {
                 return msg.delete()
-                    .then(() => message.guildSettings.update('starboard.messages', `${message.id}-${msg.id}`, { arrayAction: 'remove' }));
+                    .then(() => message.guildSettings.update('starboard.messages', `${message.id}-${msg.id}`, { action: 'remove' }));
             }
 
             return msg.edit(text, embed);

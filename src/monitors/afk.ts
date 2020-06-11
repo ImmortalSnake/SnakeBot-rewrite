@@ -1,4 +1,5 @@
-import { Monitor, MonitorStore, KlasaMessage, SettingsFolder, Duration } from 'klasa';
+import { Monitor, MonitorStore, KlasaMessage, Duration } from 'klasa';
+import { TextChannel } from 'discord.js';
 
 export default class extends Monitor {
 
@@ -10,7 +11,7 @@ export default class extends Monitor {
     }
 
     public async run(msg: KlasaMessage) {
-        if (!msg.guild || !msg.channel.postable) return;
+        if (!msg.guild || !(msg.channel as TextChannel).postable) return;
         const isAFK = msg.author.settings.get('afk.time');
 
         if (isAFK) {
@@ -20,10 +21,15 @@ export default class extends Monitor {
         }
 
         for (const user of msg.mentions.users.values()) {
-            const afk = user.settings.get('afk') as SettingsFolder;
-            if (afk?.get('time')) return msg.sendLocale('MONITOR_AFK_USER', [user.tag, Duration.toNow(afk.get('time') as number), afk.get('reason')]);
+            const afk = user.settings.get('afk') as AFKSettings;
+            if (afk.time) return msg.sendLocale('MONITOR_AFK_USER', [user.tag, Duration.toNow(afk.time), afk.reason]);
         }
 
     }
 
+}
+
+interface AFKSettings {
+    reason?: string;
+    time?: number;
 }

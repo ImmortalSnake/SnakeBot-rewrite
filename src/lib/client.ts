@@ -19,8 +19,8 @@ import './structures/schemas/UserSchema';
 const { WebhookID, WebhookToken } = SnakeBotConfig;
 
 KlasaClient
-    .use(GiveawayClient)
-    .use(DashboardClient);
+    .use(GiveawayClient);
+//    .use(DashboardClient);
 
 export default class SnakeBot extends KlasaClient {
 
@@ -39,11 +39,11 @@ export default class SnakeBot extends KlasaClient {
 
         this.registerStore(this.apis);
         this.audio = new AudioManager(this, LavalinkServer, {
-            user: this.options.clientID,
+            user: '543796400165748736',
             shards: this.options.shardCount
         });
 
-        this.webhook = new WebhookClient(WebhookID, WebhookToken, { disableEveryone: true });
+        this.webhook = new WebhookClient(WebhookID, WebhookToken);
 
     }
 

@@ -4,6 +4,7 @@ import { readFile } from 'fs-nextra';
 import { join } from 'path';
 import { assetFolder } from '../../lib/utils/constants';
 import { Canvas } from 'canvas-constructor';
+import { TextChannel } from 'discord.js';
 
 export default class extends SnakeCommand {
 
@@ -20,7 +21,7 @@ export default class extends SnakeCommand {
     public async run(msg: KlasaMessage, [text]: [string]): Promise<KlasaMessage | KlasaMessage[]> {
         const mocked = text.split('').map(ch => Math.random() > 0.35 ? ch : ch.toUpperCase()).join('');
 
-        return msg.channel.sendFile(await this.generate(mocked), 'mock.png');
+        return (msg.channel as TextChannel).sendFile(await this.generate(mocked), 'mock.png');
     }
 
     public async generate(text: string) {

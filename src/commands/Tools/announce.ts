@@ -15,8 +15,8 @@ export default class extends SnakeCommand {
     }
 
     public async run(msg: KlasaMessage, [text]: [string]): Promise<KlasaMessage | KlasaMessage[]> {
-        const [role] = await msg.guildSettings.resolve('roles.announce') as [Role];
-        const [chan] = await msg.guildSettings.resolve('channels.announce') as [TextChannel];
+        const [role] = await msg.guildSettings.get('roles.announce') as [Role];
+        const [chan] = await msg.guildSettings.get('channels.announce') as [TextChannel];
 
         if (!chan || !chan.postable) throw `I cant send any messages to the announcement channel ${chan.toString()}`;
         if (!role || (!role.mentionable && !role.editable)) throw `I cant mention the announcement role ${role.name}`;

@@ -4,7 +4,7 @@ import { GuildMember, TextChannel } from 'discord.js';
 export default class GuildMemberAddEvent extends Event {
 
     public async run(member: GuildMember) {
-        const [welcomeChan] = await member.guild.settings.resolve('channels.leave') as [TextChannel];
+        const welcomeChan = await member.guild.settings.get('channels.leave') as TextChannel;
         if (welcomeChan && welcomeChan.postable) {
             const welcomeMess = this.format(
                 member.guild.settings.get('message.leave') as string,

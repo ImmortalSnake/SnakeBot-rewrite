@@ -31,19 +31,19 @@ export default class MemeHandler {
     }
 
     public async cat(channel: string) {
-        const chan = this.client.channels.get(channel) as TextChannel;
+        const chan = this.client.channels.cache.get(channel) as TextChannel;
         if (!chan) return;
         return chan.send(await this.search_reddit(this.catURL));
     }
 
     public async dog(channel: string) {
-        const chan = this.client.channels.get(channel) as TextChannel;
+        const chan = this.client.channels.cache.get(channel) as TextChannel;
         if (!chan) return;
         return chan.send(await this.search_reddit(this.dogURL));
     }
 
     public async meme(channel: string) {
-        const chan = this.client.channels.get(channel) as TextChannel;
+        const chan = this.client.channels.cache.get(channel) as TextChannel;
         if (!chan) return;
         return chan.send(await this.search_reddit(this.random));
     }

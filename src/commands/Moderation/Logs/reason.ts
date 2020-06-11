@@ -18,9 +18,9 @@ export default class extends SnakeCommand {
         const log = cases.find(c => c.id === ID);
         if (!log) throw msg.language.get('COMMAND_CASE_INVALID', ID);
 
-        await msg.guildSettings.update('modlogs', log, { arrayAction: 'remove' });
+        await msg.guildSettings.update('modlogs', log, { action: 'remove' });
         log.reason = reason;
-        await msg.guildSettings.update('modlogs.cases', log, { arrayAction: 'add' });
+        await msg.guildSettings.update('modlogs.cases', log, { action: 'add' });
 
         return msg.send(ModLog.renderRawEmbed(msg, log));
     }

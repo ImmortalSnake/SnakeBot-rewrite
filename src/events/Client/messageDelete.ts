@@ -5,7 +5,7 @@ export default class extends Event {
 
     public async run(message: Message) {
         if (!message.guild || message.author.bot) return null;
-        const [logChannel] = await message.guildSettings.resolve('channels.log') as [TextChannel];
+        const logChannel = await message.guildSettings.get('channels.log') as TextChannel;
 
         if (!logChannel?.postable || !logChannel.embedable) return null;
         return logChannel.send(new MessageEmbed()

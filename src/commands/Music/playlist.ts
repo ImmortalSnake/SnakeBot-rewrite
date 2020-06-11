@@ -14,7 +14,7 @@ export default class extends MusicCommand {
 
     public async add(msg: KlasaMessage, [tracks]: [AudioTrack[]]) {
         const loaded = tracks.map(x => x.info.uri);
-        await msg.author.settings.update('playlist', loaded, { arrayAction: 'add' });
+        await msg.author.settings.update('playlist', loaded, { action: 'add' });
 
         return msg.send(`Added ${loaded.length === 1 ? `**${loaded[0]}**` : `**${loaded.length}** songs`} to your playlist!`);
     }

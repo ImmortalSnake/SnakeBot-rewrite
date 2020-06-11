@@ -20,7 +20,7 @@ export default class extends SnakeCommand {
         if (user.id === msg.author.id) throw msg.language.get('MODERATION_SELF', 'ban');
         if (user.id === this.client.user!.id) throw msg.language.get('MODERATION_ME', 'ban');
 
-        const member = msg.guild!.members.get(user.id);
+        const member = msg.guild!.members.resolve(user.id);
         if (member) {
             if (member.roles.highest.position >= msg.member!.roles.highest.position) throw msg.language.get('MODERATION_NO_ACTION_USER', 'ban');
             if (!member.bannable) throw msg.language.get('MODERATION_NO_ACTION_ME', 'ban');

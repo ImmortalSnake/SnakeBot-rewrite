@@ -77,14 +77,14 @@ export default class ModLog {
         this.id = cases.length + 1;
         this.timestamp = Date.now();
 
-        const { errors } = await this.message.guildSettings.update('modlogs', this.data, { arrayAction: 'add' });
+        const { errors } = await this.message.guildSettings.update('modlogs', this.data, { action: 'add' });
         if (errors.length) throw errors[0];
 
         return this.send();
     }
 
     public async send() {
-        const [modlogChan] = await this.message.guildSettings.resolve('channels.modlog') as [TextChannel];
+        const [modlogChan] = await this.message.guildSettings.get('channels.modlog') as [TextChannel];
         if (modlogChan) return modlogChan.send(this.renderEmbed);
         return null;
     }

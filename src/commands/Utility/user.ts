@@ -35,7 +35,7 @@ export default class extends SnakeCommand {
                     `❯ **Server Join Date:** \`${this.timestamp.display(member.joinedTimestamp!)}\``,
                     `❯ **Highest Role:** ${member.roles.highest}`
                 ])
-                .addField(`Roles (${member.roles.size})`, [...member.roles.values()]
+                .addField(`Roles (${member.roles.cache.size})`, [...member.roles.cache.values()]
                     .sort((a, b) => b.comparePositionTo(a)).slice(1).join('|')
                     .slice(0, 1000) || 'None');
         }

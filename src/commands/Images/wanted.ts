@@ -5,6 +5,7 @@ import { join } from 'path';
 import { assetFolder } from '../../lib/utils/constants';
 import { Canvas } from 'canvas-constructor';
 import Util from '../../lib/utils/Util';
+import { TextChannel } from 'discord.js';
 
 export default class extends SnakeCommand {
 
@@ -20,7 +21,7 @@ export default class extends SnakeCommand {
 
     public async run(msg: KlasaMessage, [user]: [KlasaUser]): Promise<KlasaMessage | KlasaMessage[]> {
         const image = await Util.getImage(msg, { user });
-        return msg.channel.sendFile(await this.generate(image), 'wanted.png');
+        return (msg.channel as TextChannel).sendFile(await this.generate(image), 'wanted.png');
     }
 
     public async generate(image: Buffer) {

@@ -4,6 +4,7 @@ import { readFile } from 'fs-nextra';
 import { Canvas } from 'canvas-constructor';
 import { assetFolder } from '../../lib/utils/constants';
 import { join } from 'path';
+import { TextChannel } from 'discord.js';
 
 export default class extends SnakeCommand {
 
@@ -18,7 +19,7 @@ export default class extends SnakeCommand {
     }
 
     public async run(msg: KlasaMessage, [text]: [string]): Promise<KlasaMessage | KlasaMessage[]> {
-        return msg.channel.sendFile(await this.generate(msg.author, text.replace(/\n/g, '')), 'youtube.png');
+        return (msg.channel as TextChannel).sendFile(await this.generate(msg.author, text.replace(/\n/g, '')), 'youtube.png');
     }
 
     public async generate(user: KlasaUser, text: string) {

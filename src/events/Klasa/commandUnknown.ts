@@ -14,11 +14,17 @@ export default class TagHandler extends Event {
                 timer.stop();
                 const response = await commandRun as KlasaMessage | KlasaMessage[];
                 await this.client.finalizers.run(message, tagCommand, response, timer);
+                // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+                // @ts-ignore
                 this.client.emit('commandSuccess', message, tagCommand, ['show', command], response);
             } catch (error) {
+                // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+                // @ts-ignore
                 this.client.emit('commandError', message, tagCommand, ['show', command], error);
             }
         } catch (response) {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+            // @ts-ignore
             this.client.emit('commandInhibited', message, tagCommand, response);
         }
     }

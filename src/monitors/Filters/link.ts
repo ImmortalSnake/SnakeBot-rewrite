@@ -23,7 +23,7 @@ export default class extends Monitor {
         if (staffbypass && await msg.hasAtLeastPermissionLevel(4)) return;
 
         await msg.delete({ reason: 'No links allowed' });
-        const [logChannel] = await msg.guildSettings.resolve('channels.log') as [TextChannel];
+        const [logChannel] = await msg.guildSettings.get('channels.log') as [TextChannel];
 
         if (!logChannel?.postable || !logChannel.embedable) return null;
         return logChannel.send(new MessageEmbed()
