@@ -920,15 +920,15 @@ json-stable-stringify-without-jsonify@^1.0.1:
   resolved "https://registry.yarnpkg.com/json-stable-stringify-without-jsonify/-/json-stable-stringify-without-jsonify-1.0.1.tgz#9db7b59496ad3f3cfef30a75142d2d930ad72651"
   integrity sha1-nbe1lJatPzz+8wp1FC0tkwrXJlE=
 
-klasa-dashboard-hooks@dirigeants/klasa-dashboard-hooks#settings:
+klasa-dashboard-hooks@dirigeants/klasa-dashboard-hooks#d.js_managers:
   version "0.0.1-dev"
-  resolved "https://codeload.github.com/dirigeants/klasa-dashboard-hooks/tar.gz/39c5be557c75d3fdfe73d65db760ab0167bf425b"
+  resolved "https://codeload.github.com/dirigeants/klasa-dashboard-hooks/tar.gz/32e6436519488fb479c3174a75bbc109b629e880"
   dependencies:
     node-fetch "^2.6.0"
 
-"klasa-giveaway@github:immortalsnake/klasa-giveaway#settings":
-  version "1.1.5"
-  resolved "https://codeload.github.com/immortalsnake/klasa-giveaway/tar.gz/07bb8ac7a74b3b3328aebc08665fd73de614f3e1"
+"klasa-giveaway@github:immortalsnake/klasa-giveaway#master":
+  version "1.2.5"
+  resolved "https://codeload.github.com/immortalsnake/klasa-giveaway/tar.gz/589a5d16dd572fc661c33580de7672c585f72cc3"
 
 klasa@^0.5.0:
   version "0.5.0"
@@ -1596,10 +1596,10 @@ type-fest@^0.8.1:
   resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-0.8.1.tgz#09e249ebde851d3b1e48d27c105444667f17b83d"
   integrity sha512-4dbzIzqvjtgiM5rw1k5rEHtBANKmdudhGyBEajN01fEyhaAIhsoKNy6y7+IN93IfpFtwY9iqi7kD+xwKhQsNJA==
 
-typescript@^3.7.4:
-  version "3.7.5"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.7.5.tgz#0692e21f65fd4108b9330238aac11dd2e177a1ae"
-  integrity sha512-/P5lkRXkWHNAbcJIiHPfRoKqyd7bsyCma1hZNUGfn20qm64T6ZBlrzprymeu918H+mB/0rIg2gGK/BXkhhYgBw==
+typescript@^3.9.5:
+  version "3.9.5"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.9.5.tgz#586f0dba300cde8be52dd1ac4f7e1009c1b13f36"
+  integrity sha512-hSAifV3k+i6lEoCJ2k6R2Z/rp/H3+8sdmcn5NrS3/3kE7+RyZXm9aqvxWqjEXHAd8b0pShatpcdMTvEdvAJltQ==
 
 uri-js@^4.2.2:
   version "4.2.2"

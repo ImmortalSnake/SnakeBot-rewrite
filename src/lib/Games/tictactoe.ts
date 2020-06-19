@@ -54,7 +54,7 @@ export default class TicTacToe {
     }
 
     public validMove(m: number): boolean {
-        return this.board[m] !== 'X' || this.board[m] !== 'O';
+        return this.board[m] !== 'X' && this.board[m] !== 'O';
     }
 
     public isClient(player: Player) {

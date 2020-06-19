@@ -65,25 +65,6 @@ export default class extends Language {
             COMMAND_START_DESCRIPTION: 'Immediately starts a giveaway in the current channel',
             COMMAND_START_EXTENDED: `Same as the create command, except you dont need to specify the channel as the current channel will be used`,
 
-            GIVEAWAY_CREATE: '🎉 **GIVEAWAY** 🎉',
-            GIVEAWAY_END: '🎉 **GIVEAWAY ENDED** 🎉',
-            GIVEAWAY_DELETE: id => `Successfully deleted the giveaway with the id: \`${id}\``,
-            GIVEAWAY_WON: (winners, title) => `🎉 Congratulations ${winners}! You won **${title}**`,
-            GIVEAWAY_CREATE_SUCCESS: chan => `A giveaway was started in ${chan}!`,
-            NOT_ENOUGH_REACTIONS: count =>
-                `The Giveaway has ended, not enough people voted.
-				**Votes Required:** \`${count}\``,
-            GIVEAWAY_DESCRIPTION: (winners, tleft, author) =>
-                `**React with :tada: to enter**
-
-				**Winner Count:** \`${winners}\`
-				**Time Left:** ${tleft}
-				**Hosted By:** <@${author}>`,
-
-            GIVEWAY_LIST_TITLE: name => `Active giveaways on **${name}**`,
-            GIVEAWAY_LIST_BODY: (i, message, channel, wCount, time, title) =>
-                `\n**${i}]** \`${message}\` → <#${channel}> | \`${wCount}\` **Winner(s)** | **Ends At:** ${Util.msToDuration(time - Date.now())} | **Title:** \`${title}\``,
-
             // Command Specific Locales
 
             COMMAND_EVAL_EXTENDED: [
@@ -191,8 +172,7 @@ export default class extends Language {
             CHALLENGE_TIMEOUT: 'Challenge Request Timeout!',
             NO_SELF_PLAY: 'You cant play against yourself!',
 
-            COMMAND_AKINATOR_DESCRIPTION: '',
-            COMMAND_AKINATOR_EXTENDED: '',
+
             COMMAND_AKINATOR_NO_GUESS: 'I don\'t have any guesses. Bravo.',
             COMMAND_CONNECT4_DESCRIPTION: 'Play a game of connect4 with me or someone else',
             COMMAND_CONNECT4_EXTENDED: [
@@ -204,8 +184,8 @@ export default class extends Language {
 
             COMMAND_RPS_DESCRIPTION: 'Play Rock Paper Scissors!',
             COMMAND_RPS_EXTENDED: '',
-            COMMAND_SLOTS_DESCRIPTION: '',
-            COMMAND_SLOTS_EXTENDED: '',
+            COMMAND_SLOTS_DESCRIPTION: 'Play slots... See if you are lucky!',
+            COMMAND_SLOTS_EXTENDED: 'You win when all 3 emotes are the same. Good Luck!',
 
             COMMAND_TICTACTOE_DESCRIPTION: 'Play a game of tic-tac-toe with me or someone else',
             COMMAND_TICTACTOE_EXTENDED: `Tic-tac-toe, noughts and crosses, or Xs and Os is a paper-and-pencil game for two players, X and O, who take turns marking the spaces in a 3×3 grid.
@@ -231,6 +211,7 @@ export default class extends Language {
                 `• Node Version      :: ${nodeVersion}`,
                 `• DiscordJS Version :: ${discordVersion}`
             ].join('\n'),
+            COMMAND_SUGGEST_DESCRIPTION: `Want to see a new command or a new feature added? Give your suggestions!`,
 
             COMMAND_HITLER_DESCRIPTION: 'Generates a hitler meme',
             COMMAND_TWEET_DESCRIPTION: 'Generates a tweet image',

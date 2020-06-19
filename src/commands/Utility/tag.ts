@@ -51,7 +51,7 @@ export default class TagCommand extends SnakeCommand {
     }
 
     public list(message: KlasaMessage) {
-        return message.send(`Tags for this guild are: ${(message.guild!.settings.get('tags') as Tag[]).map(([name]) => name).join(', ')}`);
+        return message.send(`Tags for this guild are: ${(message.guild!.settings.get('tags') as Tag[]).map(([name]) => `\`${name}\``).join(', ')}`);
     }
 
     public show(message: KlasaMessage, [tag]: [string]) {

@@ -13,14 +13,13 @@ export default class extends Event {
     }
 
     public async run(data: WSMessageReactionAdd) {
-        // return null;
         const channel = this.client.channels.cache.get(data.channel_id) as TextChannel;
         if (!channel || channel.type !== 'text' || !channel.readable) return null;
 
         const message = await channel.messages.fetch(data.message_id);
 
         const starboard = await message.guildSettings.get('starboard') as StarboardSettings;
-        const { count } = message.reactions.cache.get(data.emoji.name)!;
+        const { count } = message.reactions.resolve(data.emoji.name)!;
 
         if (data.emoji.name !== starboard.emoji
             || count! < starboard.required

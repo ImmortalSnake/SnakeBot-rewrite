@@ -89,11 +89,15 @@ export default class ModLog {
         return null;
     }
 
-    public static renderRawEmbed(msg: KlasaMessage, log: ModLogData) {
+    public static async renderRawEmbed(msg: KlasaMessage, log: ModLogData) {
         const prefix = msg.guildSettings.get('prefix');
-        const description = [`**Moderator:** ${log.moderator.tag} (${log.moderator.id})`];
+        const moderator = await msg.client.users.fetch(log.moderator);
+        const description = [`**Moderator:** ${moderator} (${moderator.id})`];
 
-        if (log.user) description.push(`**User:** ${log.user?.tag} (${log.user.id})`);
+        if (log.user) {
+            const user = await msg.client.users.fetch(log.user);
+            description.push(`**User:** ${user.toString()} (${user.id})`);
+        }
         if (log.duration) description.push(`**Duration:** ${Util.msToDuration(log.duration)}`);
         description.push(`**Reason:** ${log.reason || `N/A (Use \`${prefix}reason ${log.id}\`) to set a reason`}`);
 
@@ -113,11 +117,6 @@ export interface ModLogData {
     action: ModLogAction;
     reason?: string;
     duration?: number;
-    user?: UserData;
-    moderator: UserData;
-}
-
-interface UserData {
-    id: string;
-    tag: string;
+    user?: string;
+    moderator: string;
 }
