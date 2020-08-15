@@ -1,12 +1,13 @@
 import { CommandStore, KlasaMessage } from 'klasa';
 import SnakeCommand from '../../lib/structures/base/SnakeCommand';
-import SnakeEmbed from '../../lib/structures/SnakeEmbed';
+import { MessageEmbed } from 'discord.js';
 
 export default class extends SnakeCommand {
 
     public constructor(store: CommandStore, file: string[], directory: string) {
         super(store, file, directory, {
             usage: '<suggestion:...string>',
+            runIn: ['text', 'dm'],
             examples: ['How about a better suggest command']
         });
     }
@@ -15,10 +16,13 @@ export default class extends SnakeCommand {
         await this.client.webhook.send({
             username: msg.author.username,
             avatarURL: msg.author.displayAvatarURL(),
-            embeds: [new SnakeEmbed(msg)
-                .setDescription(suggestion)
+            embeds: [new MessageEmbed()
+                .setAuthor(msg.author.tag, msg.author.displayAvatarURL())
+                .setColor(0x5ea832)
                 .setTitle('User Suggestion')
-                .init()]
+                .setDescription(suggestion)
+                .setFooter(this.client.user!.tag, this.client.user!.displayAvatarURL())
+            ]
         });
 
         return msg.sendLocale('COMMAND_SUGGESTION_REPLY');

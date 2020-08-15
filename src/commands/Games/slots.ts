@@ -6,7 +6,7 @@ export default class extends SnakeCommand {
 
     public constructor(store: CommandStore, file: string[], directory: string) {
         super(store, file, directory, {
-            cooldown: 5,
+            cooldown: 20,
             requiredPermissions: ['EMBED_LINKS']
         });
     }

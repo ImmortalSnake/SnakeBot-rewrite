@@ -30,6 +30,15 @@ export default class extends Language {
             COMMAND_YOUTUBE_NO_SEARCH: '❌ Could not find any youtube result with that title',
 
             /**
+             * Klasa locales
+             */
+            COMMAND_INVITE: () => [
+				`To add **${this.client.user!.tag}** to your discord guild:`,
+				`<${this.client.invite}>`,
+				'*The above link is generated requesting the minimum permissions required to use every command currently.*',
+			],
+
+            /**
              * Giveaway command locales
              */
 
@@ -118,7 +127,7 @@ export default class extends Language {
                 'Very doubtful'
             ],
 
-            COMMAND_AUTOMEME_DESCRIPTION: 'Sends memes every X minutes!',
+            COMMAND_AUTOMEME_DESCRIPTION: 'Sends memes every **X minutes!**',
             COMMAND_AUTOMEME_EXTENDED: '',
             COMMAND_AUTOMEME_DISABLED: 'Disabled Automemes for the server!',
             COMMAND_AUTOMEME_ENABLED: (channel, minutes) => `✅ Automemes have been set at ${channel} for every **${minutes}** minutes`,
@@ -147,10 +156,10 @@ export default class extends Language {
             COMMAND_MEME_DESCRIPTION: 'Memes to keep you healthy',
             COMMAND_MEME_EXTENDED: '**NOTE** All memes displayed are taken from reddit, please do give credit to their creators',
 
-            COMMAND_PUN_DESCRIPTION: '',
+            COMMAND_PUN_DESCRIPTION: 'Shows a random pun!',
             COMMAND_PUN_EXTENDED: '',
 
-            COMMAND_QUOTE_DESCRIPTION: '',
+            COMMAND_QUOTE_DESCRIPTION: 'Quote a message',
             COMMAND_QUOTE_EXTENDED: '',
             COMMAND_RATE_DESCRIPTION: 'Rate something out of 10',
             COMMAND_RATE_REPLY: (item, rate) => `I would give **${item}** a \`${rate} / 10\``,
@@ -192,7 +201,7 @@ export default class extends Language {
             The player who succeeds in placing three of their marks in a horizontal, vertical, or diagonal row is the winner.`,
 
             COMMAND_HELP_USAGE: usage => `📜 | **Command Usage**\n\`${usage}\``,
-            COMMAND_HELP_EXTENDED: `🔎 | **Extended Help**`,
+            COMMAND_HELP_EXTENDEDHELP: `🔎 | **Extended Help**`,
             COMMAND_STATS_DESCRIPTION: 'Shows some statistics related to the bot',
             COMMAND_STATS_GENERAL: (version, guilds, channels, users, shard, uptime, ping, uses) => [
                 `• Version      :: ${version}`,
@@ -214,6 +223,7 @@ export default class extends Language {
             COMMAND_SUGGEST_DESCRIPTION: `Want to see a new command or a new feature added? Give your suggestions!`,
 
             COMMAND_HITLER_DESCRIPTION: 'Generates a hitler meme',
+            COMMAND_MOCK_DESCRIPTION: 'Generates a spongebob mocking meme',
             COMMAND_TWEET_DESCRIPTION: 'Generates a tweet image',
             COMMAND_WANTED_DESCRIPTION: 'Generates a wanted image',
             COMMAND_YTCOMMENT_DESCRIPTION: 'Generates a youtube comment image',
@@ -254,7 +264,7 @@ export default class extends Language {
             COMMAND_MUTE_NO_ROLE: prefix => `A mute role was not found for this guild. Use \`${prefix}conf set roles/mute @muterole\` to set a mute role`,
             COMMAND_MUTE_INVALID_DURATION: 'Invalid mute duration: minimum is 1 minute and max is 30 days',
 
-            COMMAND_PURGE_DESCRIPTION: '',
+            COMMAND_PURGE_DESCRIPTION: 'Deletes **x** amount of messages in the current channel',
             COMMAND_PURGE_EXTENDED: '',
             COMMAND_PURGE_NO_MESSAGES: ':x: Could not find any messages to delete! This could be because the messages are over 14 days old',
             COMMAND_PURGE_SUCCESS: size => `**:wastebasket: Deleted ${size} messages!**`,
@@ -262,11 +272,11 @@ export default class extends Language {
             COMMAND_REASON_DESCRIPTION: 'View or edit the reason of a moderation log case',
             COMMAND_REASON_EXTENDED: '',
 
-            COMMAND_REPORT_DESCRIPTION: '',
+            COMMAND_REPORT_DESCRIPTION: 'Sends a report to someone',
             COMMAND_REPORT_EXTENDED: '',
             COMMAND_REPORT_NO_CHANNEL: prefix => `Could not find a reports channel for this server. Use \`${prefix}conf set channels/report #reportchannel\` to set one up`,
 
-            COMMAND_SLOWMODE_DESCRIPTION: '',
+            COMMAND_SLOWMODE_DESCRIPTION: 'Sets a slowmode for the channel',
             COMMAND_SLOWMODE_EXTENDED: '',
             COMMAND_SLOWMODE_MAX_TIME: ':x: Cannot set the cooldown to more than **6 hours**!',
             COMMAND_SLOWMODE_OFF: 'Slowmode for this channel has been turned **off**',
@@ -364,7 +374,7 @@ export default class extends Language {
 
             COMMAND_ANNOUNCE_SUCCESS: 'Announcement was successfully sent!',
 
-            COMMAND_AFK_DESCRIPTION: '',
+            COMMAND_AFK_DESCRIPTION: 'Set your status as AFK so I will alert anyone who mentions you!',
             COMMAND_AFK_EXTENDED: '',
 
             COMMAND_AVATAR_DESCRIPTION: 'Shows the avatar of any discord user',

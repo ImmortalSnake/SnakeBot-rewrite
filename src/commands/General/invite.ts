@@ -6,6 +6,7 @@ export default class extends SnakeCommand {
     public constructor(store: CommandStore, files: string[], directory: string) {
         super(store, files, directory, {
             guarded: true,
+            runIn: ['text', 'dm'],
             description: language => language.get('COMMAND_INVITE_DESCRIPTION')
         });
     }

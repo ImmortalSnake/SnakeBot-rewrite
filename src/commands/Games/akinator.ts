@@ -9,6 +9,7 @@ export default class extends SnakeCommand {
     public constructor(store: CommandStore, file: string[], directory: string) {
         super(store, file, directory, {
             aliases: ['aki'],
+            enabled: false,
             cooldown: 10,
             cooldownLevel: 'channel'
         });

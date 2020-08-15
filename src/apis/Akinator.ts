@@ -39,7 +39,7 @@ export default class AkinatorAPI extends APIWrapper {
             .then((body: AkiAnswerResult) => body);
     }
 
-    public async list(session: string, signature: string, step: string | number, options: AkiListOptions = {}) {
+    public async list(session: string, signature: string, step: string | number, options = {}) {
         const params = new URLSearchParams(util.mergeObjects({
             session,
             signature,
@@ -106,16 +106,16 @@ interface AkiAnswerParameters extends AkiStepInformation {
     status_minibase: string;
     options: any[];
 }
-
-interface AkiListOptions {
-    size?: number;
-    max_pic_width?: number;
-    max_pic_height?: number;
+/*
+interface AkiListOptions extends Record<string, string | undefined> {
+    size?: string;
+    max_pic_width?: string;
+    max_pic_height?: string;
     pref_photos?: string;
-    duel_allowed?: number;
-    mode_question?: number;
+    duel_allowed?: string;
+    mode_question?: string;
 }
-
+*/
 interface AkiListResult {
     completion: string;
     parameters: {

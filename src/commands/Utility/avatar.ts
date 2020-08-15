@@ -15,7 +15,7 @@ export default class extends SnakeCommand {
     public async run(msg: KlasaMessage, [user]: [KlasaUser]): Promise<KlasaMessage | KlasaMessage[]> {
         if (!user) user = msg.author;
         return msg.send(new SnakeEmbed(msg)
-            .setImage(user.displayAvatarURL())
+            .setImage(user.displayAvatarURL({ size: 2048 }))
             .setTitle(`**${user.username}**`)
             .init());
     }
