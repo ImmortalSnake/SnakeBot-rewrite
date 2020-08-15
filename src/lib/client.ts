@@ -16,7 +16,7 @@ import './structures/schemas/GuildSchema';
 import './structures/schemas/ClientSchema';
 import './structures/schemas/UserSchema';
 
-const { WebhookID, WebhookToken } = SnakeBotConfig;
+const { WebhookID, WebhookToken, lavalink } = SnakeBotConfig;
 
 KlasaClient
     .use(GiveawayClient)
@@ -27,6 +27,7 @@ export default class SnakeBot extends KlasaClient {
     public version = 'v0.5.8 - Alpha';
     public meme: MemeHandler;
     public audio: AudioManager;
+    public lavalink: boolean;
     public apis: APIWrapperStore;
     public webhook: WebhookClient;
 
@@ -38,6 +39,7 @@ export default class SnakeBot extends KlasaClient {
         this.apis = new APIWrapperStore(this);
 
         this.registerStore(this.apis);
+        this.lavalink = lavalink;
         this.audio = new AudioManager(this, LavalinkServer, {
             user: '543796400165748736',
             shards: this.options.shardCount

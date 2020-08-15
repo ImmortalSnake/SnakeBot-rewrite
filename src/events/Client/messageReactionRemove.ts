@@ -18,12 +18,14 @@ export default class extends Event {
 
         const message = await channel.messages.fetch(data.message_id);
 
-        const starboard = await message.guildSettings.get('starboard') as StarboardSettings;
+        const starboard = await message.guildSettings.get('starboard') as StarboardSettings
+        const starboardChannel = message.guild?.channels.cache.get(starboard.channel!) as TextChannel;
+
         const count = message.reactions.cache.get(data.emoji.name)?.count;
 
         if (data.emoji.name !== starboard.emoji
-            || !starboard.channel?.postable || !starboard.channel.embedable
-            || (channel.nsfw && !starboard.channel.nsfw)) return null;
+            || !starboardChannel?.postable || !starboardChannel.embedable
+            || (channel.nsfw && !starboardChannel.nsfw)) return null;
 
         const text = `${starboard.emoji} **${count}** in ${channel.toString()} | ${message.id}`;
         const embed = new MessageEmbed()
@@ -45,9 +47,10 @@ export default class extends Event {
     }
 
     private async fetchMessage(id: string, starboard: StarboardSettings) {
+        const starboardChannel = this.client.channels.cache.get(starboard.channel!) as TextChannel;
         const msg = starboard.messages.find(m => m.startsWith(id));
         const star = msg?.split('-')[1];
-        return star ? starboard.channel?.messages.fetch(star) : null;
+        return star ? starboardChannel?.messages.fetch(star) : null;
     }
 
     private getAttachments(msg: Message) {
@@ -64,6 +67,6 @@ export default class extends Event {
 interface StarboardSettings {
     emoji: string;
     required: number;
-    channel?: TextChannel;
+    channel?: string;
     messages: string[];
 }
