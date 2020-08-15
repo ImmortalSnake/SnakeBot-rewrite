@@ -1,5 +1,6 @@
 import { Inhibitor, InhibitorStore, KlasaMessage, Command } from 'klasa';
 import MusicCommand from '../lib/structures/base/MusicCommand';
+import SnakeBot from '../lib/client';
 
 export default class extends Inhibitor {
 
@@ -15,6 +16,7 @@ export default class extends Inhibitor {
 
         const { audio } = msg.guild!;
 
+        if (command.music && !(this.client as SnakeBot).lavalink) throw 'Sorry! Music commands were disabled by the bot owner'
         if (command.music.includes('DJ_REQUIRED') && !msg.member?.isDJ) throw `You need to have the DJ Role or Admin permissions to use this command`;
         if (command.music.includes('VOICE_PLAYING') && !audio.player?.playing) throw `I am not playing anything!`;
         if (command.music.includes('QUEUE_NOT_EMPTY') && !audio?.tracks.length) throw `Queue for this guild is empty! Try adding some to the queue`;

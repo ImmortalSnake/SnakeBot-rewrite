@@ -1,5 +1,6 @@
 import { KlasaClientOptions } from 'klasa';
 
+const production = process.env.NODE_ENV === 'production'
 export default {
     ownerID: '410806297580011520',
     mentionPrefix: true,
@@ -13,7 +14,10 @@ export default {
     disableEveryone: true,
     clientID: '543796400165748736',
     clientSecret: process.env.CLIENT_SECRET,
-    production: process.env.NODE_ENV === 'production',
+    production,
+    providers: {
+        default: production ? 'mongodb' : 'json'
+    },
     presence: {
         activity: {
             name: 'sb!help',
@@ -49,8 +53,8 @@ export const mongoOptions = {
 export const LavalinkServer = [
     {
         tag: 'Local Lavalink Server',
-        host: 'localhost',
-        password: 'youshallnotpass',
+        host: process.env.LAVA_HOST!,
+        password: process.env.LAVA_PASS!,
         port: 2333,
         reconnectInterval: 30 * 1000 * 10000
     }
@@ -61,5 +65,5 @@ export const SnakeBotConfig = {
     WebhookToken: process.env.WEBHOOK_TOKEN!,
     WeatherKey: process.env.WEATHER_KEY!,
     FortniteKey: process.env.FORTNITE_KEY!,
-    Lavalink: true
+    lavalink: false
 };
