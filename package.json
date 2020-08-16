@@ -22,7 +22,7 @@
     "klasa": "^0.5.0",
     "klasa-dashboard-hooks": "dirigeants/klasa-dashboard-hooks#d.js_managers",
     "klasa-giveaway": "github:immortalsnake/klasa-giveaway#master",
-    "moment": "^2.24.0",
+    "moment": "^2.27.0",
     "mongodb": "^3.2.7"
   },
   "devDependencies": {
