@@ -1,4 +1,5 @@
 import { KlasaClientOptions } from 'klasa';
+import { Giveaway } from 'klasa-giveaway';
 
 const production = process.env.NODE_ENV === 'production'
 export default {
@@ -37,7 +38,21 @@ export default {
         'PRESENCE_UPDATE',
         'TYPING_START',
         'USER_UPDATE'
-    ]
+    ],
+    giveaway: {
+        maxGiveaways: 10,
+        nextRefresh(giveaway: Giveaway): number {
+            const timeLeft = giveaway.endsAt - Date.now();
+            let nextRefresh = 4 * 3600 * 1000; // 4 hours at more than 1 day
+
+            if (timeLeft < 30) nextRefresh = 5; // 5 seconds at less than 30 seconds
+            else if (timeLeft < 180 * 1000) nextRefresh = 20 * 1000; // 20 seconds at less than 3 minute
+            else if (timeLeft < 3600 * 1000) nextRefresh = 120 * 1000; // 2 minutes at less than 1 hour
+            else if (timeLeft < 24 * 3600 * 1000) nextRefresh = 3600 * 1000; // 1 hour at less than 1 day
+
+            return giveaway.lastRefresh + nextRefresh;
+		},
+    }
 } as KlasaClientOptions;
 
 export const mongoOptions = {

@@ -926,9 +926,10 @@ klasa-dashboard-hooks@dirigeants/klasa-dashboard-hooks#d.js_managers:
   dependencies:
     node-fetch "^2.6.0"
 
-"klasa-giveaway@github:immortalsnake/klasa-giveaway#master":
+klasa-giveaway@^1.3.0:
   version "1.3.0"
-  resolved "https://codeload.github.com/immortalsnake/klasa-giveaway/tar.gz/8ebd12de6db93b64d3cffdc2b802f9bdf3065d32"
+  resolved "https://registry.yarnpkg.com/klasa-giveaway/-/klasa-giveaway-1.3.0.tgz#e68a3ebdd181757c4c105917b438a48a5ce7b4ff"
+  integrity sha512-93dc0tnfsfguIKh1/3b66FlDBLkyLBNlKiWJZ3bRbt1SvwXGELPkMuhykg/NKz2dVTFTOS6k3vqIJu8A6LRbkg==
 
 klasa@^0.5.0:
   version "0.5.0"

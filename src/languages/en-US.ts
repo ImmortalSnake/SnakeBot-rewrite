@@ -373,6 +373,7 @@ export default class extends Language {
             COMMAND_YOUTUBE_EXTENDED: 'Fetches details of a particular youtube channel, command or video',
 
             COMMAND_ANNOUNCE_SUCCESS: 'Announcement was successfully sent!',
+            COMMAND_SELFROLE_DESCRIPTION: 'Choose which roles you like and add them!',
 
             COMMAND_AFK_DESCRIPTION: 'Set your status as AFK so I will alert anyone who mentions you!',
             COMMAND_AFK_EXTENDED: '',
