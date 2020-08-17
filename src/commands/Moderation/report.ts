@@ -13,7 +13,8 @@ export default class extends SnakeCommand {
     }
 
     public async run(msg: KlasaMessage, [user, reason = 'N/A']: [GuildMember, string]): Promise<KlasaMessage | KlasaMessage[] | null> {
-        const reportschan = msg.guildSettings.get('channels.report') as TextChannel;
+        const chanID = msg.guildSettings.get('channels.report') as string;
+        const reportschan = msg.guild?.channels.cache.get(chanID) as TextChannel;
         if (!reportschan) throw msg.language.get('COMMAND_REPORT_NO_CHANNEL', msg.guildSettings.get('prefix'));
 
         await reportschan.send(new SnakeEmbed(msg)

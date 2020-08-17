@@ -95,7 +95,7 @@ export default class TicTacToe {
             .then(mess => parseInt(mess.content, 10))
             .catch(e => { throw e; });
 
-        if (!m || m > 9 || m < 1 || !this.validMove(m)) {
+        if (!m || m > 9 || m < 1 || !this.validMove(m - 1)) {
             await this.message.send('Invalid Move');
             return this.humanMove(player);
         }

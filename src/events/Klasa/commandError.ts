@@ -16,10 +16,10 @@ export default class extends Event {
                 .addField('Message', message.content.slice(0, 1000))
                 .addField('Guild', `**${message.guild?.name || 'DMs'}**`, true)
                 .addField('Language', `**${message.language.name}**`, true)
-                .setDescription(`
-                **Command**: \`${command.name}\`
-                **Error**: ${util.codeBlock('js', (error.stack || error.message).slice(0, 2000))}
-                `)
+                .setDescription([
+                    `**Command**: \`${command.name}\``,
+                    `**Error**: ${util.codeBlock('js', (error.stack || error.message).slice(0, 2000))}`
+                ].join('\n'))
                 .setFooter(this.client.user!.tag, this.client.user!.displayAvatarURL())
                 .setTimestamp());
 

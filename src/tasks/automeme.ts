@@ -8,7 +8,7 @@ export default class extends Task {
         const chan = this.client.channels.cache.get(channel) as TextChannel;
         if (!chan) return;
 
-        await (this.client as SnakeBot).meme.meme(channel);
+        await (this.client as SnakeBot).meme.meme(channel).catch(() => null);
     }
 
 }

@@ -12,6 +12,7 @@ export default class extends SnakeCommand {
     public constructor(store: CommandStore, file: string[], directory: string) {
         super(store, file, directory, {
             aliases: ['commands', 'cmd', 'cmds'],
+            runIn: ['text', 'dm'],
             guarded: true,
             description: language => language.get('COMMAND_HELP_DESCRIPTION'),
             usage: '(Command:command|Category:category|page:integer)',
@@ -49,7 +50,7 @@ export default class extends SnakeCommand {
 
                 ${msg.language.get('COMMAND_HELP_USAGE', input.usage.fullUsage(msg))}
 
-                ${msg.language.get('COMMAND_HELP_EXTENDED')}
+                ${msg.language.get('COMMAND_HELP_EXTENDEDHELP')}
                 ${util.isFunction(input.extendedHelp) ? input.extendedHelp(msg.language) : input.extendedHelp}
 
                 ${input instanceof SnakeCommand ? `💬 | **Examples**\n${input.displayExamples(prefix)}` : ''}`)

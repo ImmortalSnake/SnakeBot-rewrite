@@ -10,7 +10,8 @@ export default class extends SnakeCommand {
     }
 
     public async run(msg: KlasaMessage): Promise<KlasaMessage | KlasaMessage[] | null> {
-        await this.client.meme.meme(msg.channel.id);
+        const sent = await this.client.meme.meme(msg.channel.id).catch(() => null);
+        if (!sent) throw ':x: Oops! An error occured... Try again later!';
         return null;
     }
 

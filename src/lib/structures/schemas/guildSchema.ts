@@ -34,7 +34,7 @@ export default Client.defaultGuildSchema
     .add('tags', 'any', { 'array': true, 'configurable': false, 'default': [] })
 
     .add('starboard', folder => folder
-        .add('required', 'Number', { 'min': 1, 'default': 5 })
+        .add('required', 'Number', { 'min': 3, 'default': 5 })
         .add('emoji', 'string', { 'default': '⭐' })
         .add('channel', 'textchannel')
         .add('messages', 'string', { 'array': true, 'default': [], 'configurable': false }))
