@@ -12,42 +12,25 @@ export default class extends SnakeCommand {
             usage: '<user:member> [reason:...str]',
             requiredPermissions: ['MANAGE_ROLES'],
             permissionLevel: 5,
-            examples: ['@Jeff Pinged Admin role for no reason --duration=30min']
+            examples: ['@Jeff Pinged Admin role for no reason']
         });
     }
 
     public async run(msg: KlasaMessage, [member, reason]: [GuildMember, string?]): Promise<KlasaMessage | KlasaMessage[]> {
-        const [muteRole] = await msg.guildSettings.get('roles.mute') as [Role];
-
+        const roleID = msg.guildSettings.get('roles.mute') as string;
+        const muteRole = msg.guild?.roles.cache.get(roleID);
         if (!muteRole) throw msg.language.get('COMMAND_MUTE_NO_ROLE', msg.guildSettings.get('prefix'));
+
         if (member.roles.highest.position >= msg.member!.roles.highest.position && !await msg.hasAtLeastPermissionLevel(7)) throw 'You cannot mute this user.';
         if (member.roles.cache.has(muteRole.id)) throw 'The member is already muted.';
 
-        const { duration } = this.parseDuration(msg);
         await member.roles.add(muteRole.id, reason);
-
-        return new ModLog(msg, 'Mute')
+        await new ModLog(msg, 'Mute')
             .setUser(member.user)
             .setReason(reason)
-            .setDuration(duration?.offset)
             .save()
-            .then(async () => {
-                if (duration) {
-                    return this.client.schedule.create('unmute', duration.offset, { data: { guild: msg.guild!.id, user: member.id } })
-                        .then(() => msg.sendMessage(`${member.user.tag} got temporarily muted for ${Util.msToDuration(duration.offset)}.${reason ? ` With reason of: ${reason}` : ''}`));
-                }
 
-                return msg.sendMessage(`${member.toString()} was muted.${reason ? ` With reason of: ${reason}` : ''}`);
-            });
-    }
-
-    private parseDuration(msg: KlasaMessage) {
-        const durationFlag = msg.flagArgs.duration || msg.flagArgs.time;
-        const duration = durationFlag ? new Duration(durationFlag) : null;
-
-        if (duration && (duration.offset < 0 || duration.offset > 2592000000)) throw msg.language.get('COMMAND_MUTE_INVALID_DURATION');
-
-        return { duration };
+        return msg.sendMessage(`✅ ${member.toString()} was muted.${reason ? ` With reason of: ${reason}` : ''}`);
     }
 
 }

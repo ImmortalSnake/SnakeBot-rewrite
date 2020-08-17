@@ -15,7 +15,8 @@ export default class extends SnakeCommand {
     }
 
     public async run(msg: KlasaMessage, [member, reason]: [GuildMember, string?]): Promise<KlasaMessage | KlasaMessage[]> {
-        const [muteRole] = await msg.guildSettings.get('roles.mute') as [Role];
+        const roleID = msg.guildSettings.get('roles.mute') as string;
+        const muteRole = msg.guild?.roles.cache.get(roleID)
 
         if (!muteRole) throw msg.language.get('COMMAND_MUTE_NO_ROLE', msg.guildSettings.get('prefix'));
         if (!member.roles.cache.has(muteRole.id)) throw msg.language.get('COMMAND_UNMUTE_NOT_MUTED');

@@ -5,7 +5,9 @@ export default class extends Event {
 
     public async run(channel: DMChannel | GuildChannel) {
         if (channel instanceof DMChannel) return null;
-        const logChannel = await channel.guild.settings.get('channels.log') as TextChannel;
+
+        const chanID = channel.guild.settings.get('channels.log') as string;
+        const logChannel = channel.guild.channels.cache.get(chanID) as TextChannel;
 
         if (!logChannel?.postable || !logChannel.embedable) return null;
         return logChannel.send(new MessageEmbed()

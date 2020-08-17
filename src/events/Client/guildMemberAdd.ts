@@ -4,8 +4,10 @@ import { GuildMember, TextChannel } from 'discord.js';
 export default class GuildMemberAddEvent extends Event {
 
     public async run(member: GuildMember) {
-        const welcomeChan = await member.guild.settings.get('channels.welcome') as TextChannel;
+        const chanID = member.guild.settings.get('channels.welcome') as string;
+        const welcomeChan = member.guild.channels.cache.get(chanID) as TextChannel;
         const welcomeRoles = member.guild.settings.get('roles.auto') as string[];
+
         if (welcomeChan && welcomeChan.postable) {
             const welcomeMess = this.format(
                 member.guild.settings.get('message.welcome') as string,

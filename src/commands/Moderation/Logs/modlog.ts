@@ -16,8 +16,8 @@ export default class extends SnakeCommand {
     }
 
     public async run(msg: KlasaMessage, [user]: [KlasaUser]): Promise<KlasaMessage | KlasaMessage[] | null> {
-        const cases = msg.guildSettings.get('modlogs') as ModLogData[];
-        if (user) cases.filter(c => c.user === user.id);
+        let cases = msg.guildSettings.get('modlogs') as ModLogData[];
+        if (user) cases = cases.filter(c => c.user === user.id);
 
         if (cases.length === 0) throw `No cases were found for ${user?.tag || msg.guild!.name}`;
 
@@ -27,10 +27,10 @@ export default class extends SnakeCommand {
             .setAuthor(this.client.user!.tag, this.client.user!.displayAvatarURL()));
 
         for (const lst of util.chunk(cases, 10)) {
-            const description = lst.map(async (c) => {
+            const description = lst.map((c) => {
                 if (c.user) {
-                    const user = await msg.client.users.fetch(c.user);
-                    return `**Case ${c.id}: ${c.action}** ${`(${user})` || ''} *${c.reason || 'N/A'}*`;
+                    const user = msg.client.users.cache.get(c.user);
+                    return `**Case ${c.id}: ${c.action}** \`${user?.tag || ''} (${c.user})\` *${c.reason || 'N/A'}*`;
                 }
 
                 return `**Case ${c.id}: ${c.action}** *${c.reason || 'N/A'}*`;

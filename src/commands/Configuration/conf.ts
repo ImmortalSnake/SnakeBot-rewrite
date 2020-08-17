@@ -1,4 +1,4 @@
-import { util, CommandStore, KlasaMessage, SettingsUpdateResult, SchemaFolder, SchemaPiece, Schema, Settings } from 'klasa';
+import { util, CommandStore, KlasaMessage, SettingsUpdateResult, SchemaFolder, SchemaPiece, Schema, Settings, KlasaGuild } from 'klasa';
 import SnakeCommand from '../../lib/structures/base/SnakeCommand';
 import SnakeEmbed from '../../lib/structures/SnakeEmbed';
 
@@ -51,7 +51,7 @@ export default class extends SnakeCommand {
     }
 
     public async set(msg: KlasaMessage, [key, valueToSet]: [string, string]): Promise<KlasaMessage | KlasaMessage[]> {
-        const entry = this.check(msg, key, await msg.guildSettings.update(key, valueToSet, { avoidUnconfigurable: true, action: 'add' }));
+        const entry = this.check(msg, key, await msg.guildSettings.update(key, valueToSet, msg.guild as KlasaGuild, { avoidUnconfigurable: true, action: 'add' }));
         return msg.sendLocale('COMMAND_CONF_UPDATED', [key, entry]);
     }
 

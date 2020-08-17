@@ -22,7 +22,8 @@ export default class extends Monitor {
         if (staffbypass && await msg.hasAtLeastPermissionLevel(4)) return;
 
         await msg.delete({ reason: 'No invites allowed' });
-        const [logChannel] = await msg.guildSettings.get('channels.log') as [TextChannel];
+        const chanID = msg.guildSettings.get('channels.log') as string;
+        const logChannel = msg.guild.channels.cache.get(chanID) as TextChannel;
 
         if (!logChannel?.postable || !logChannel.embedable) return null;
         return logChannel.send(new MessageEmbed()
