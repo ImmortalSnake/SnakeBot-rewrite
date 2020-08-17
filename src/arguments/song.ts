@@ -59,7 +59,7 @@ export default class extends Argument {
     }
 
     private filter(msg: KlasaMessage, tracks: AudioTrack[]) {
-        if (msg.member!.isDJ) return tracks;
+        if (msg.member!.isDJ()) return tracks;
 
         const allowStreams = msg.guildSettings.get('music.allowstreams');
         const maxduration = msg.guildSettings.get('music.maxduration') as number;

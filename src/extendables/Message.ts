@@ -54,14 +54,4 @@ export default class extends Extendable {
         return collected.first()!.emoji.name === '✅';
     }
 
-    public get parseFlags(this: Message) {
-        const flags: Record<string, string | boolean> = {};
-        this.content.split('--').slice(1).forEach(flag => {
-            const [key, ...value] = flag.split(/[ =]/g);
-            flags[key] = value.join(' ') || true;
-        });
-
-        return flags;
-    }
-
 }

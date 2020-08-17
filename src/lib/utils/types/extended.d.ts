@@ -6,11 +6,10 @@ declare module 'discord.js' {
     interface Message {
         public prompt(content: string | MessageEmbed, options?: MessagePromptOptions): Promise<Message>;
         public ask(content: string | MessageEmbed, options?: MessageAskOptions): Promise<boolean>;
-        public parseFlags: Record<string, string | number>;
     }
 
     interface GuildMember {
-        public isDJ: boolean;
+        public isDJ(): boolean;
     }
 
     interface User {

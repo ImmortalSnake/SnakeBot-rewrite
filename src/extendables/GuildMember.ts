@@ -10,7 +10,7 @@ export default class extends Extendable {
 
     }
 
-    public get isDJ(this: GuildMember) {
+    public isDJ(this: GuildMember) {
         return this.hasPermission('ADMINISTRATOR') || (this.guild.settings.get('roles.dj') as string[]).some(r => this.roles.cache.has(r));
     }
 
