@@ -20,9 +20,9 @@ export default class extends SnakeCommand {
 
         await msg.guildSettings.update('modlogs', log, { action: 'remove' });
         log.reason = reason;
-        await msg.guildSettings.update('modlogs.cases', log, { action: 'add' });
+        await msg.guildSettings.update('modlogs', log, { action: 'add' });
 
-        return msg.send(ModLog.renderRawEmbed(msg, log));
+        return ModLog.renderRawEmbed(msg, log).then(embed => msg.send(embed));
     }
 
 }

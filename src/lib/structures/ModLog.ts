@@ -28,15 +28,15 @@ export default class ModLog {
         return this.message.client;
     }
 
-    public get data() {
+    public get data(): ModLogData {
         return {
-            id: this.id,
-            timestamp: this.timestamp,
+            id: this.id!,
+            timestamp: this.timestamp!,
             action: this.action,
             reason: this.reason,
             duration: this.duration,
-            user: this.user ? { id: this.user.id, tag: this.user.tag } : null,
-            moderator: { id: this.moderator.id, tag: this.moderator.user.tag }
+            user: this.user ? this.user.id : null,
+            moderator: this.moderator.id
         };
     }
 
@@ -84,9 +84,12 @@ export default class ModLog {
     }
 
     public async send() {
-        const [modlogChan] = await this.message.guildSettings.get('channels.modlog') as [TextChannel];
-        if (modlogChan) return modlogChan.send(this.renderEmbed);
-        return null;
+        const modlogChan = await this.message.guildSettings.get('channels.modlog') as string;
+        if (!modlogChan) return null;
+
+        const channel = this.client.channels.cache.get(modlogChan) as TextChannel;
+        if (!channel) return null;
+        return channel.send(this.renderEmbed);
     }
 
     public static async renderRawEmbed(msg: KlasaMessage, log: ModLogData) {
@@ -98,9 +101,9 @@ export default class ModLog {
             const user = await msg.client.users.fetch(log.user);
             description.push(`**User:** ${user.toString()} (${user.id})`);
         }
+
         if (log.duration) description.push(`**Duration:** ${Util.msToDuration(log.duration)}`);
         description.push(`**Reason:** ${log.reason || `N/A (Use \`${prefix}reason ${log.id}\`) to set a reason`}`);
-
         return new SnakeEmbed(msg)
             .setColor(COLORS.MODLOG[log.action])
             .setTitle(`${log.action} | Case: ${log.id}`)
@@ -117,6 +120,6 @@ export interface ModLogData {
     action: ModLogAction;
     reason?: string;
     duration?: number;
-    user?: string;
+    user: string | null;
     moderator: string;
 }

@@ -18,7 +18,7 @@ export default class extends SnakeCommand {
         const log = cases.find(c => c.id === ID);
 
         if (!log) throw msg.language.get('COMMAND_CASE_INVALID', ID);
-        return msg.send(ModLog.renderRawEmbed(msg, log));
+        return ModLog.renderRawEmbed(msg, log).then(embed => msg.send(embed));
     }
 
 }
