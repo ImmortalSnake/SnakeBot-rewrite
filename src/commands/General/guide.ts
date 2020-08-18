@@ -118,7 +118,10 @@ export default class extends SnakeCommand {
 
         const mess = GUIDES.map(g => `**${g.title}** - \`${prefix}guide ${g.name}\``).join('\n')
         return msg.send(new SnakeEmbed(msg)
-            .setDescription(`**Here are a list of guides available:**\n\n${mess}`)
+            .setDescription([
+                `Use \`${prefix}help\` to see the list of commands available`,
+                `**Here are a list of guides available:**\n\n${mess}`
+            ])
             .init()
         )
     }

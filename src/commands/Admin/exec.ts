@@ -26,7 +26,7 @@ export default class extends SnakeCommand {
         const outerr = result.stderr ? `**\`ERROR\`**${util.codeBlock('prolog', result.stderr)}` : '';
         const content = [output, outerr].join('\n') || 'No output';
 
-        if (content.length < 2000) return msg.sendMessage([output, outerr].join('\n'));
+        if (content.length < 2000) return msg.sendMessage([output, outerr].join('\n')).catch(() => null);
 
         let sendAs = msg.flagArgs.sendAs || msg.flagArgs.output;
         const options = ['haste', 'log', 'file'];

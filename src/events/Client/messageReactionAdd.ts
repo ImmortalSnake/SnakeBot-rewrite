@@ -20,14 +20,14 @@ export default class extends Event {
 
         const starboard = await message.guildSettings.get('starboard') as StarboardSettings;
         const starboardChannel = message.guild?.channels.cache.get(starboard.channel!) as TextChannel;
-        const { count } = message.reactions.resolve(data.emoji.name)!;
+        const reaction = message.reactions.resolve(data.emoji.name);
 
         if (data.emoji.name !== starboard.emoji
-            || count! < starboard.required
+            || !reaction || reaction.count! < starboard.required
             || !starboardChannel?.postable || !starboardChannel?.embedable
             || (channel.nsfw && !starboardChannel?.nsfw)) return null;
 
-        const text = `${starboard.emoji} **${count}** in ${channel.toString()} | ${message.id}`;
+        const text = `${starboard.emoji} **${reaction.count}** in ${channel.toString()} | ${message.id}`;
         const embed = new MessageEmbed()
             .setColor(COLORS.STARBOARD)
             .setAuthor(message.author.tag, message.author.displayAvatarURL())

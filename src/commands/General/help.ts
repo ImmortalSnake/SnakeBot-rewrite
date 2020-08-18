@@ -97,6 +97,11 @@ export default class extends SnakeCommand {
         const color = message.member!.displayColor;
         const startEmbed = new SnakeEmbed(message)
             .setTitle('Help')
+            .setDescription([
+                `**Here are the list of commands available in this bot**`,
+                `Use \`${prefix}guide\` to see all the guides on how to use the bot to the fullest`,
+                `[Support](https://discord.gg/b8S3HAw)\t[Invite](${this.client.invite})`
+            ])
             .init();
 
         commands.forEach((_, category) => startEmbed.addField(`**${category}**`, `\`${prefix}${this.name} ${category}\``, true));
