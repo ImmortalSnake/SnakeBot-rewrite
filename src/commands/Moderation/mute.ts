@@ -1,8 +1,7 @@
-import { CommandStore, KlasaMessage, Duration } from 'klasa';
-import { GuildMember, Role } from 'discord.js';
+import { CommandStore, KlasaMessage } from 'klasa';
+import { GuildMember } from 'discord.js';
 import SnakeCommand from '../../lib/structures/base/SnakeCommand';
 import ModLog from '../../lib/structures/ModLog';
-import Util from '../../lib/utils/Util';
 
 export default class extends SnakeCommand {
 
@@ -28,7 +27,7 @@ export default class extends SnakeCommand {
         await new ModLog(msg, 'Mute')
             .setUser(member.user)
             .setReason(reason)
-            .save()
+            .save();
 
         return msg.sendMessage(`✅ ${member.toString()} was muted.${reason ? ` With reason of: ${reason}` : ''}`);
     }

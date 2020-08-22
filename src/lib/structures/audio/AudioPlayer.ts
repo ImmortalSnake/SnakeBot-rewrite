@@ -72,9 +72,9 @@ export default class AudioPlayer {
             guild: this.guild.id,
             channel: voiceChannel.id,
             node: node.id
-        })
+        });
 
-        player.on('end', data => this.onEnd(data))
+        player.on('end', data => this.onEnd(data));
         player.on('error', data => this.client.console.error(`An error has occured at ${this.guild.id}:\n${data.error}\n${data.reason}`));
 
         await player.volume(volume);

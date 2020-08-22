@@ -21,8 +21,7 @@ export default class extends SnakeCommand {
                 .setColor(0x5ea832)
                 .setTitle('User Suggestion')
                 .setDescription(suggestion)
-                .setFooter(this.client.user!.tag, this.client.user!.displayAvatarURL())
-            ]
+                .setFooter(this.client.user!.tag, this.client.user!.displayAvatarURL())]
         });
 
         return msg.sendLocale('COMMAND_SUGGESTION_REPLY');

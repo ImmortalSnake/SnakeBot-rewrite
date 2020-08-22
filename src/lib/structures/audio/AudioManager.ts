@@ -43,7 +43,7 @@ export default class AudioManager extends Manager {
                 }
 
                 return [];
-            })
+            });
     }
 
 }

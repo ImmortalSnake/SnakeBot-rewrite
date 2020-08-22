@@ -1,5 +1,5 @@
-import { CommandStore, KlasaMessage, Duration } from 'klasa';
-import { GuildMember, Role } from 'discord.js';
+import { CommandStore, KlasaMessage } from 'klasa';
+import { GuildMember } from 'discord.js';
 import SnakeCommand from '../../lib/structures/base/SnakeCommand';
 import ModLog from '../../lib/structures/ModLog';
 import Util from '../../lib/utils/Util';
@@ -24,17 +24,17 @@ export default class extends SnakeCommand {
         if (member.roles.highest.position >= msg.member!.roles.highest.position && !await msg.hasAtLeastPermissionLevel(7)) throw 'You cannot mute this user.';
         if (member.roles.cache.has(muteRole.id)) throw 'The member is already muted.';
 
-        const offset = duration.getTime() - Date.now()
+        const offset = duration.getTime() - Date.now();
 
         await member.roles.add(muteRole.id, reason);
         await new ModLog(msg, 'Mute')
             .setUser(member.user)
             .setReason(reason)
             .setDuration(offset)
-            .save()
-        
+            .save();
+
         return this.client.schedule.create('unmute', duration, { data: { guild: msg.guild!.id, user: member.id }, catchUp: true })
-                .then(() => msg.sendMessage(`✅ ${member.user.toString()} got temporarily muted for ${Util.msToDuration(offset)}.${reason ? ` With reason of: **${reason}**` : ''}`));
+            .then(() => msg.sendMessage(`✅ ${member.user.toString()} got temporarily muted for ${Util.msToDuration(offset)}.${reason ? ` With reason of: **${reason}**` : ''}`));
     }
 
 }

@@ -1,7 +1,7 @@
 import { KlasaClientOptions } from 'klasa';
 import { Giveaway } from 'klasa-giveaway';
 
-const production = process.env.NODE_ENV === 'production'
+const production = process.env.NODE_ENV === 'production';
 export default {
     ownerID: '410806297580011520',
     mentionPrefix: true,
@@ -17,7 +17,7 @@ export default {
     clientSecret: process.env.CLIENT_SECRET,
     production,
     providers: {
-        default: production ? 'mongodb' : 'json'
+        'default': production ? 'mongodb' : 'json'
     },
     presence: {
         activity: {
@@ -51,7 +51,7 @@ export default {
             else if (timeLeft < 24 * 3600 * 1000) nextRefresh = 3600 * 1000; // 1 hour at less than 1 day
 
             return giveaway.lastRefresh + nextRefresh;
-		},
+        }
     }
 } as KlasaClientOptions;
 
@@ -79,5 +79,5 @@ export const SnakeBotConfig = {
     WebhookID: process.env.WEBHOOK_ID!,
     WebhookToken: process.env.WEBHOOK_TOKEN!,
     WeatherKey: process.env.WEATHER_KEY!,
-    FortniteKey: process.env.FORTNITE_KEY!,
+    FortniteKey: process.env.FORTNITE_KEY!
 };

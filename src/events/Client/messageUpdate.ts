@@ -5,7 +5,7 @@ export default class extends Event {
 
     public async run(oldMessage: Message, newMessage: Message) {
         if (!newMessage.guild || newMessage.author.bot || oldMessage.content === newMessage.content || newMessage.deleted) return null;
-        
+
         const chanID = newMessage.guildSettings.get('channels.log') as string;
         const logChannel = newMessage.guild.channels.cache.get(chanID) as TextChannel;
 

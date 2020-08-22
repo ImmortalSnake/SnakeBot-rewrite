@@ -33,10 +33,10 @@ export default class extends Language {
              * Klasa locales
              */
             COMMAND_INVITE: () => [
-				`To add **${this.client.user!.tag}** to your discord guild:`,
-				`<${this.client.invite}>`,
-				'*The above link is generated requesting the minimum permissions required to use every command currently.*',
-			],
+                `To add **${this.client.user!.tag}** to your discord guild:`,
+                `<${this.client.invite}>`,
+                '*The above link is generated requesting the minimum permissions required to use every command currently.*'
+            ],
 
             /**
              * Giveaway command locales

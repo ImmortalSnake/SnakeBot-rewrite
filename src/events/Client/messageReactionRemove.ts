@@ -18,7 +18,7 @@ export default class extends Event {
 
         const message = await channel.messages.fetch(data.message_id);
 
-        const starboard = await message.guildSettings.get('starboard') as StarboardSettings
+        const starboard = await message.guildSettings.get('starboard') as StarboardSettings;
         const starboardChannel = message.guild?.channels.cache.get(starboard.channel!) as TextChannel;
 
         const count = message.reactions.cache.get(data.emoji.name)?.count;

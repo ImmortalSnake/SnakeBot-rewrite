@@ -1,5 +1,5 @@
 import Util from '../../utils/Util';
-import { TrackData, PlaylistInfo,  } from '@lavacord/discord.js';
+import { TrackData, PlaylistInfo } from '@lavacord/discord.js';
 
 interface AudioTrackInfo {
     identifier: string;

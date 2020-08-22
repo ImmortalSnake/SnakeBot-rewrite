@@ -27,7 +27,7 @@ export default class extends SnakeCommand {
             .setAuthor(this.client.user!.tag, this.client.user!.displayAvatarURL()));
 
         for (const lst of util.chunk(cases, 10)) {
-            const description = lst.map((c) => {
+            const description = lst.map(c => {
                 if (c.user) {
                     const user = msg.client.users.cache.get(c.user);
                     return `**Case ${c.id}: ${c.action}** \`${user?.tag || ''} (${c.user})\` *${c.reason || 'N/A'}*`;

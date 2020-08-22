@@ -13,7 +13,8 @@ export default class extends MusicCommand {
     }
 
     public async view(msg: KlasaMessage) {
-        const tracks = msg.author.settings.get('playlist')
+        const tracks = await msg.author.settings.get('playlist');
+        console.log(tracks);
     }
 
     public async add(msg: KlasaMessage, [tracks]: [AudioTrack[]]) {

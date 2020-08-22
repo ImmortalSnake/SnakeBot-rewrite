@@ -6,6 +6,7 @@ import APIWrapperStore from './structures/base/APIWrapperStore';
 import { WebhookClient } from 'discord.js';
 import { SnakeBotConfig, LavalinkServer } from '../config';
 import { GiveawayClient } from 'klasa-giveaway';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { DashboardClient } from 'klasa-dashboard-hooks';
 
 
@@ -19,8 +20,8 @@ import './structures/schemas/UserSchema';
 const { WebhookID, WebhookToken } = SnakeBotConfig;
 
 KlasaClient
-    .use(GiveawayClient)
-    //.use(DashboardClient);
+    .use(GiveawayClient);
+// .use(DashboardClient);
 
 export default class SnakeBot extends KlasaClient {
 
