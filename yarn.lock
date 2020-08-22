@@ -32,6 +32,13 @@
     combined-stream "^1.0.8"
     mime-types "^2.1.12"
 
+"@lavacord/discord.js@^0.0.7":
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/@lavacord/discord.js/-/discord.js-0.0.7.tgz#8ba1e944cb5853693a72274ead66798a79e1c07a"
+  integrity sha512-EJ3Jz7Eeepbb+fTirLmVGRshtACuzkhDFccR+6hrTRAmEV9P3dFsfbCtsZfLhRa2j2geJ73VqpjfiJmml0AMuQ==
+  dependencies:
+    lavacord "1.1.9"
+
 "@types/bson@*":
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/@types/bson/-/bson-4.0.1.tgz#2bfc80819e7055b76d5496d5344ed23e5d12bbb2"
@@ -430,12 +437,6 @@ detect-libc@^1.0.2:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/detect-libc/-/detect-libc-1.0.3.tgz#fa137c4bd698edf55cd5cd02ac559f91a4c4ba9b"
   integrity sha1-+hN8S9aY7fVc1c0CrFWfkaTEups=
-
-"discord.js-lavalink@github:MrJacz/discord.js-lavalink#v3":
-  version "3.0.0"
-  resolved "https://codeload.github.com/MrJacz/discord.js-lavalink/tar.gz/2863eefbdb1c50168dea1de2852ba6b55e9d3e14"
-  dependencies:
-    ws "^7.1.2"
 
 discord.js@^12.3.1:
   version "12.3.1"
@@ -936,6 +937,14 @@ klasa@^0.5.0:
   integrity sha512-BrXP/rCvL7Sh4T3hnSOJTDbT5JT3Q3Di4sAg537OCzH/eRnYbeny4J99vkTGE5Lkm241HNH+kd+DURWaavBa6A==
   dependencies:
     fs-nextra "^0.4.7"
+
+lavacord@1.1.9:
+  version "1.1.9"
+  resolved "https://registry.yarnpkg.com/lavacord/-/lavacord-1.1.9.tgz#e7e355f969eb082a36e20814fdc6a9b01f3f81a1"
+  integrity sha512-haZghbblO1w3Hodc9q63ZWgV5zA/jB6xFKS17fImK5aIdn0PkKuZ6AsJBxMFpR275v8GNYOxg6cTQBYBQ+batQ==
+  dependencies:
+    node-fetch "^2.6.0"
+    ws "^7.3.0"
 
 levn@^0.3.0, levn@~0.3.0:
   version "0.3.0"
@@ -1649,7 +1658,7 @@ write@1.0.3:
   dependencies:
     mkdirp "^0.5.1"
 
-ws@^7.1.2, ws@^7.3.1:
+ws@^7.3.0, ws@^7.3.1:
   version "7.3.1"
   resolved "https://registry.yarnpkg.com/ws/-/ws-7.3.1.tgz#d0547bf67f7ce4f12a72dfe31262c68d7dc551c8"
   integrity sha512-D3RuNkynyHmEJIpD2qrgVkc9DQ23OrN/moAwZX4L8DfvszsJxpjQuUq3LMx6HoYji9fbIOBY18XWBsAux1ZZUA==

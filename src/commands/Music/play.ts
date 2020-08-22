@@ -18,7 +18,7 @@ export default class extends MusicCommand {
     public async run(msg: KlasaMessage, [tracks]: [AudioTrack[]]): Promise<KlasaMessage | KlasaMessage[] | null> {
         if (!msg.guild!.audio || !msg.guild!.me!.voice.channelID) await (this.store.get('join') as Command)!.run(msg, []);
 
-        tracks.forEach(track => msg.guild!.audio!.handleTrack(msg, track));
+        await Promise.all(tracks.map(track => msg.guild!.audio!.handleTrack(msg, track)));
         const { uri, title, length } = tracks[0].info;
 
         const embed = new MessageEmbed()

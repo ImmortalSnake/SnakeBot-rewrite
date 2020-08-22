@@ -67,11 +67,11 @@ export const mongoOptions = {
 
 export const LavalinkServer = [
     {
-        tag: 'Local Lavalink Server',
+        id: '1',
         host: process.env.LAVA_HOST!,
         password: process.env.LAVA_PASS!,
-        port: 2333,
-        reconnectInterval: 30 * 1000 * 10000
+        port: process.env.LAVA_PORT!,
+        reconnectInterval: 30 * 1000
     }
 ];
 
@@ -80,5 +80,4 @@ export const SnakeBotConfig = {
     WebhookToken: process.env.WEBHOOK_TOKEN!,
     WeatherKey: process.env.WEATHER_KEY!,
     FortniteKey: process.env.FORTNITE_KEY!,
-    lavalink: false
 };

@@ -1,5 +1,5 @@
 import Util from '../../utils/Util';
-import { LavalinkTrackLoaded, LavalinkPlaylistInfo } from './AudioManager';
+import { TrackData, PlaylistInfo,  } from '@lavacord/discord.js';
 
 interface AudioTrackInfo {
     identifier: string;
@@ -18,9 +18,9 @@ export default class AudioTrack {
     public info: AudioTrackInfo;
     public requester = '';
     public skippers: string[] = [];
-    public playlist: LavalinkPlaylistInfo;
+    public playlist: PlaylistInfo;
 
-    public constructor(data: LavalinkTrackLoaded, playlistInfo: LavalinkPlaylistInfo) {
+    public constructor(data: TrackData, playlistInfo: PlaylistInfo) {
         this.track = data.track;
         this.info = data.info;
 

@@ -68,15 +68,16 @@ export default class AudioPlayer {
         if (!node) throw 'No lavalink nodes were initialised';
 
         const volume = this.guild.settings.get('music.volume') as number;
-        this.manager.join({
+        const player = await this.manager.join({
             guild: this.guild.id,
             channel: voiceChannel.id,
-            host: node.tag || node.host
+            node: node.id
         })
-            .on('end', data => this.onEnd(data))
-            .on('error', err => this.client.console.error(`An error has occured at ${this.guild.id}:\n${err}`));
 
-        await this.player!.volume(volume);
+        player.on('end', data => this.onEnd(data))
+        player.on('error', data => this.client.console.error(`An error has occured at ${this.guild.id}:\n${data.error}\n${data.reason}`));
+
+        await player.volume(volume);
         return this;
     }
 

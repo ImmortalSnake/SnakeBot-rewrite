@@ -1,25 +1,25 @@
 import SnakeBot from '../../client';
 import fetch from 'node-fetch';
-import { PlayerManager, LavalinkNodeOptions, PlayerManagerOptions } from 'discord.js-lavalink';
+import { Manager, ManagerOptions, LavalinkNodeOptions, TrackData, PlaylistInfo } from '@lavacord/discord.js';
 import AudioTrack from './AudioTrack';
 
-export default class AudioManager extends PlayerManager {
+export default class AudioManager extends Manager {
 
     public readonly client: SnakeBot;
-    public constructor(client: SnakeBot, nodes: LavalinkNodeOptions[], options: PlayerManagerOptions) {
+    public constructor(client: SnakeBot, nodes: LavalinkNodeOptions[], options: ManagerOptions) {
         super(client, nodes, options);
         this.client = client;
 
         // listen for all events
         this
-            .on('ready', node => this.client.console.log(`Successfully initialised Lavalink node: ${node.tag}`))
-            .on('reconnecting', node => this.client.console.log(`Attempting to reconnect to Lavalink Node ${node.tag}`))
-            .on('error', (node, err) => this.client.console.warn(`There was an error at Lavalink Node ${node.tag}:\n${err}`))
-            .on('disconnect', (node, code, reason) => this.client.console.warn(`Disconnected from Lavalink Node ${node.tag}\nCode: ${code}\nReason: ${reason}`));
+            .on('ready', node => this.client.console.log(`Successfully initialised Lavalink node: ${node.id}`))
+            .on('reconnecting', node => this.client.console.log(`Attempting to reconnect to Lavalink Node ${node.id}`))
+            .on('error', (err, node) => this.client.console.warn(`There was an error at Lavalink Node ${node.id}:\n${err}`))
+            .on('disconnect', (data, node) => this.client.console.warn(`Disconnected from Lavalink Node ${node.id}\nCode: ${data.code}\nReason: ${data.reason}`));
     }
 
     public get node() {
-        return this.idealNodes.first();
+        return this.idealNodes[0];
     }
 
     public async fetchSongs(query: string): Promise<AudioTrack[]> {
@@ -44,10 +44,6 @@ export default class AudioManager extends PlayerManager {
 
                 return [];
             })
-            .catch(err => {
-                this.client.console.error(err);
-                throw 'An error has occurred... Try again later!';
-            });
     }
 
 }
@@ -56,29 +52,10 @@ export default class AudioManager extends PlayerManager {
 interface LavalinkLoadTracksResult {
     status?: number;
     loadType: 'TRACK_LOADED' | 'PLAYLIST_LOADED' | 'SEARCH_RESULT' | 'NO_MATCHES' | 'LOAD_FAILED';
-    tracks: LavalinkTrackLoaded[];
-    playlistInfo: LavalinkPlaylistInfo;
+    tracks: TrackData[];
+    playlistInfo: PlaylistInfo;
     exception?: {
         message: string;
         severity: string;
     };
-}
-
-export interface LavalinkTrackLoaded {
-    track: string;
-    info: {
-        identifier: string;
-        isSeekable: boolean;
-        author: string;
-        length: number;
-        isStream: boolean;
-        position: number;
-        title: string;
-        uri: string;
-    };
-}
-
-export interface LavalinkPlaylistInfo {
-    name?: string;
-    selectedTrack?: number;
 }

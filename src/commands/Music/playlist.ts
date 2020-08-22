@@ -6,10 +6,14 @@ export default class extends MusicCommand {
 
     public constructor(store: CommandStore, file: string[], directory: string) {
         super(store, file, directory, {
-            usage: '<add|load|view> (song:song)',
+            usage: '<add|load|view:default> (song:song)',
             subcommands: true,
             examples: ['', '50']
         });
+    }
+
+    public async view(msg: KlasaMessage) {
+        const tracks = msg.author.settings.get('playlist')
     }
 
     public async add(msg: KlasaMessage, [tracks]: [AudioTrack[]]) {

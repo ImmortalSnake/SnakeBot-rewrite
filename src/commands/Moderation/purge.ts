@@ -1,5 +1,5 @@
 import { CommandStore, KlasaMessage } from 'klasa';
-import { User, Message } from 'discord.js';
+import { User, Message, TextChannel } from 'discord.js';
 import SnakeCommand from '../../lib/structures/base/SnakeCommand';
 import { Day } from '../../lib/utils/constants';
 
@@ -28,7 +28,7 @@ export default class extends SnakeCommand {
         const del = messages.first(limit);
         if (!del) throw msg.language.get('COMMAND_PURGE_NO_MESSAGES');
 
-        const deleted = await msg.channel.bulkDelete(del);
+        const deleted = await (msg.channel as TextChannel).bulkDelete(del);
 
         await msg.sendLocale('COMMAND_PURGE_SUCCESS', [deleted.size])
             .then(m => m.delete({ timeout: 10000 }));
