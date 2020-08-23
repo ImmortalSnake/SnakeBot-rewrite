@@ -9,7 +9,7 @@ export default class extends Event {
         const chanID = newMessage.guildSettings.get('channels.log') as string;
         const logChannel = newMessage.guild.channels.cache.get(chanID) as TextChannel;
 
-        if (!logChannel.postable || !logChannel.embedable) return null;
+        if (!logChannel?.postable || !logChannel.embedable) return null;
         return logChannel.send(new MessageEmbed()
             .setColor('ORANGE')
             .setTitle(`Message Updated in #${(oldMessage.channel as TextChannel).name}`)

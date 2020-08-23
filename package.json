@@ -20,7 +20,7 @@
     "discord.js": "^12.3.1",
     "dotenv": "^8.0.0",
     "klasa": "^0.5.0",
-    "klasa-dashboard-hooks": "dirigeants/klasa-dashboard-hooks#d.js_managers",
+    "klasa-dashboard-hooks": "github:skyra-project/klasa-dashboard-hooks#master",
     "klasa-giveaway": "github:immortalsnake/klasa-giveaway#master",
     "moment": "^2.24.0",
     "mongodb": "^3.2.7"
