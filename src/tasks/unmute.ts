@@ -14,7 +14,7 @@ export default class extends Task {
         if (!member) return;
         const muteRole = member.roles.cache.get(_guild.settings.get('roles.muted') as string) || member.roles.cache.find(r => r.name.toLowerCase() === 'muted');
         if (!muteRole) return;
-        await member.roles.remove(muteRole.id);
+        await member.roles.remove(muteRole.id).catch(() => null);
     }
 
 }
