@@ -25,7 +25,7 @@ KlasaClient
 
 export default class SnakeBot extends KlasaClient {
 
-    public version = 'v0.6 - Alpha';
+    public version = 'v0.6.0.1 - Alpha';
     public meme: MemeHandler;
     public audio: AudioManager;
     public apis: APIWrapperStore;

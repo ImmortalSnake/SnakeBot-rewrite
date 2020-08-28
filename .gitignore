@@ -11,6 +11,7 @@ node_modules/
 
 # ignore built folders
 dist/
+tmp/
 
 # ignore logs
 *.log

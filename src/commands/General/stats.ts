@@ -36,8 +36,8 @@ export default class extends SnakeCommand {
                     (usage.heapUsed / 1024 / 1024).toFixed(2),
                     process.version,
                     discordVersion)))
-            .addField('Support', `[Click Here](https://discord.gg/b8S3HAw)`, true)
-            .addField('Invite', `[Click Here](${this.client.invite})`, true)
+            .addField('Support', `[\`Click Here\`](https://discord.gg/b8S3HAw)`, true)
+            .addField('Invite', `[\`Click Here\`](${this.client.invite})`, true)
             .setFooter(`Requested By: ${msg.author.tag}`);
 
         return msg.send(embed);
