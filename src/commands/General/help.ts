@@ -62,13 +62,18 @@ export default class extends SnakeCommand {
             const previousHandler = this.handlers.get(msg.author.id);
             if (previousHandler) previousHandler.stop();
 
-            const handler = await (await this.buildDisplay(msg)).run(await msg.send('Loading Commands...') as KlasaMessage, {
-                filter: (_, user) => user.id === msg.author.id,
-                startPage: input,
-                time
-            });
-            handler.on('end', () => this.handlers.delete(msg.author.id));
-            this.handlers.set(msg.author!.id, handler);
+            try {
+                const handler = await (await this.buildDisplay(msg)).run(await msg.send('Loading Commands...') as KlasaMessage, {
+                    filter: (_, user) => user.id === msg.author.id,
+                    startPage: input,
+                    time
+                });
+                handler.on('end', () => this.handlers.delete(msg.author.id));
+                this.handlers.set(msg.author!.id, handler);
+            } catch (e) {
+                return null;
+            }
+
             return null;
         }
 

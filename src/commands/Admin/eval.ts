@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { CommandStore, KlasaMessage, util, Stopwatch, Type } from 'klasa';
 import { inspect } from 'util';
 import Util from '../../lib/utils/Util';
 import SnakeCommand from '../../lib/structures/base/SnakeCommand';
-import { TextChannel } from 'discord.js';
+import { TextChannel, MessageEmbed } from 'discord.js';
 
 interface IEvalResult {
     success: boolean;
