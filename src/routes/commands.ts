@@ -5,6 +5,8 @@ import { util } from 'klasa';
 export default class extends Route {
 
     public constructor(store: RouteStore, file: string[], directory: string) {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+        // @ts-ignore
         super(store, file, directory, { route: 'commands' });
     }
 

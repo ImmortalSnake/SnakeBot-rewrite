@@ -4,6 +4,8 @@ import { ServerResponse } from 'http';
 export default class extends Middleware {
 
     public constructor(store: MiddlewareStore, file: string[], directory: string) {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+        // @ts-ignore
         super(store, file, directory, { priority: 10 });
     }
 

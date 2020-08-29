@@ -37,6 +37,8 @@ export default class extends Language {
                 `<${this.client.invite}>`,
                 '*The above link is generated requesting the minimum permissions required to use every command currently.*'
             ],
+            COMMAND_PING: '**Ping?**',
+            COMMAND_PINGPONG: (diff, ping) => `**Pong!** (**Roundtrip took:** \`${diff}ms\`, **Heartbeat:** \`${ping}ms\`)`,
 
             /**
              * Giveaway command locales
