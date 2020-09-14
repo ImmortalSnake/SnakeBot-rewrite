@@ -23,7 +23,7 @@
     "klasa-dashboard-hooks": "github:dirigeants/klasa-dashboard-hooks#031248f907b92927ccc3bd585d6a8da85e6522de",
     "klasa-giveaway": "github:immortalsnake/klasa-giveaway#master",
     "moment": "^2.24.0",
-    "mongodb": "^3.2.7"
+    "mongodb": "^3.6.2"
   },
   "devDependencies": {
     "@types/cheerio": "^0.22.16",
