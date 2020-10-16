@@ -27,7 +27,7 @@
   },
   "devDependencies": {
     "@types/cheerio": "^0.22.16",
-    "@types/mongodb": "^3.3.16",
+    "@types/mongodb": "^3.5.28",
     "@types/node": "^13.5.0",
     "@types/node-fetch": "^2.5.4",
     "@types/ws": "^7.2.1",
